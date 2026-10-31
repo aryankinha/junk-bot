@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"boss_median_s":11.9666666666668,"bot":"perfect","level":1,"monster_share":1.0,"outcomes":{"won":100},"parts_lost_mean":0.87,"runs":100,"win_rate":1.0,"wins":100}
+{"boss_median_s":29.4166666666663,"bot":"random","level":1,"monster_share":0.48,"outcomes":{"boss":1,"ground_slam":4,"laser_sweep":1,"rocket_barrage":2,"won":92},"parts_lost_mean":0.86,"runs":100,"win_rate":0.92,"wins":92}
+{"boss_median_s":19.1333333333335,"bot":"no_dodge","level":1,"monster_share":0.26,"outcomes":{"double_slam":2,"elite_bruiser":52,"laser_sweep":1,"rocket_barrage":1,"won":44},"parts_lost_mean":1.78,"runs":100,"win_rate":0.44,"wins":44}
+{"boss_median_s":24.6999999999999,"bot":"perfect","level":3,"monster_share":0.96,"outcomes":{"elite_bruiser":1,"won":99},"parts_lost_mean":0.07,"runs":100,"win_rate":0.99,"wins":99}
+{"boss_median_s":33.766666666666,"bot":"random","level":3,"monster_share":0.51,"outcomes":{"double_slam":6,"elite_bruiser":7,"ground_slam":2,"laser_sweep":10,"rocket_barrage":3,"won":72},"parts_lost_mean":1.41,"runs":100,"win_rate":0.72,"wins":72}
+{"boss_median_s":31.7333333333328,"bot":"no_dodge","level":3,"monster_share":0.14,"outcomes":{"double_slam":3,"elite_bruiser":57,"ground_slam":10,"laser_sweep":9,"rocket_barrage":8,"won":13},"parts_lost_mean":2.75,"runs":100,"win_rate":0.13,"wins":13}
+{"boss_median_s":34.116666666666,"bot":"perfect","level":5,"monster_share":0.97,"outcomes":{"elite_bruiser":2,"won":98},"parts_lost_mean":0.07,"runs":100,"win_rate":0.98,"wins":98}
+{"boss_median_s":43.9999999999988,"bot":"random","level":5,"monster_share":0.57,"outcomes":{"boss":1,"double_slam":4,"elite_bruiser":3,"ground_slam":5,"laser_sweep":21,"rocket_barrage":4,"won":62},"parts_lost_mean":1.63,"runs":100,"win_rate":0.62,"wins":62}
+{"boss_median_s":43.3166666666655,"bot":"no_dodge","level":5,"monster_share":0.3,"outcomes":{"double_slam":9,"elite_bruiser":28,"ground_slam":15,"laser_sweep":26,"rocket_barrage":18,"won":4},"parts_lost_mean":2.95,"runs":100,"win_rate":0.04,"wins":4}

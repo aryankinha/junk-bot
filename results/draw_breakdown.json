@@ -1,0 +1,13 @@
+{
+  "categories": {
+    "gates": 13,
+    "lane_markings": 2,
+    "player": 2,
+    "road": 2,
+    "scenery": 2,
+    "scrap": 1,
+    "ui": 16
+  },
+  "context": "Desktop Compatibility; category isolation; not phone performance",
+  "total": 32
+}

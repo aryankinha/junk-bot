@@ -1,0 +1,49 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SCRIPT ERROR: Parse Error: Cannot infer the type of "size" variable because the value doesn't have a set type.
+          at: GDScript::reload (res://src/view/robot_builder.gd:27)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://src/view/world_view.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://src/view/run_view.gd:0)
+ERROR: Failed to load script "res://src/view/run_view.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+SCRIPT ERROR: Invalid call. Nonexistent function 'new' in base 'GDScript'.
+          at: WorldView._ready (res://src/view/world_view.gd:40)
+          GDScript backtrace (most recent call first):
+              [0] _ready (res://src/view/world_view.gd:40)
+              [1] _ready (res://src/view/run_view.gd:89)
+SCRIPT ERROR: Invalid assignment of property or key 'scale' with value of type 'Vector3' on a base object of type 'Nil'.
+          at: start_run (res://src/view/run_view.gd:311)
+          GDScript backtrace (most recent call first):
+              [0] start_run (res://src/view/run_view.gd:311)
+              [1] _ready (res://src/view/run_view.gd:98)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:133)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:133)
+              [1] _process (res://src/view/run_view.gd:406)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:133)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:133)
+              [1] _process (res://src/view/run_view.gd:406)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:133)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:133)
+              [1] _process (res://src/view/run_view.gd:406)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:133)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:133)
+              [1] _process (res://src/view/run_view.gd:406)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:133)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:133)
+              [1] _process (res://src/view/run_view.gd:406)
+WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 1 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

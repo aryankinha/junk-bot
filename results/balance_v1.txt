@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"boss_median_s":12.3166666666669,"bot":"perfect","level":1,"monster_share":0.0,"outcomes":{"won":25},"parts_lost_mean":0.92,"runs":25,"win_rate":1.0,"wins":25}
+{"boss_median_s":27.4333333333331,"bot":"random","level":1,"monster_share":0.0,"outcomes":{"boss":1,"won":24},"parts_lost_mean":0.6,"runs":25,"win_rate":0.96,"wins":24}
+{"boss_median_s":17.8666666666669,"bot":"no_dodge","level":1,"monster_share":0.0,"outcomes":{"rocket_barrage":1,"won":24},"parts_lost_mean":2.08,"runs":25,"win_rate":0.96,"wins":24}
+{"boss_median_s":15.666666666667,"bot":"perfect","level":3,"monster_share":0.24,"outcomes":{"won":25},"parts_lost_mean":0.0,"runs":25,"win_rate":1.0,"wins":25}
+{"boss_median_s":18.1166666666669,"bot":"random","level":3,"monster_share":0.76,"outcomes":{"won":25},"parts_lost_mean":0.0,"runs":25,"win_rate":1.0,"wins":25}
+{"boss_median_s":17.6833333333336,"bot":"no_dodge","level":3,"monster_share":0.24,"outcomes":{"elite_bruiser":1,"won":24},"parts_lost_mean":1.36,"runs":25,"win_rate":0.96,"wins":24}
+{"boss_median_s":17.4333333333336,"bot":"perfect","level":5,"monster_share":0.52,"outcomes":{"won":25},"parts_lost_mean":0.0,"runs":25,"win_rate":1.0,"wins":25}
+{"boss_median_s":19.7500000000002,"bot":"random","level":5,"monster_share":0.96,"outcomes":{"won":25},"parts_lost_mean":0.0,"runs":25,"win_rate":1.0,"wins":25}
+{"boss_median_s":18.1833333333336,"bot":"no_dodge","level":5,"monster_share":0.36,"outcomes":{"bruiser":1,"laser_sweep":1,"rocket_barrage":1,"won":22},"parts_lost_mean":1.44,"runs":25,"win_rate":0.88,"wins":22}

@@ -1,0 +1,1383 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+WARNING: Detected another project.godot at res://android/build/src/instrumented/assets. The folder will be ignored.
+     at: _should_skip_directory (editor/file_system/editor_file_system.cpp:3497)
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+WARNING: UID duplicate detected between res://icon.svg and res://android/build/assetPackInstallTime/src/main/assets/icon.svg.
+     at: _process_file_system (editor/file_system/editor_file_system.cpp:1405)
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (303 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  99% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  99% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Started Scanning actions... (15 steps)[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | icon.svg[39m[0m
+[   6% ] [90m[1m_update_scan_actions[22m | icon.svg[39m[0m
+[  12% ] [90m[1m_update_scan_actions[22m | splash_icon.webp[39m[0m
+[  18% ] [90m[1m_update_scan_actions[22m | icon.webp[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | icon_foreground.webp[39m[0m
+[  31% ] [90m[1m_update_scan_actions[22m | icon.webp[39m[0m
+[  37% ] [90m[1m_update_scan_actions[22m | icon_foreground.webp[39m[0m
+[  43% ] [90m[1m_update_scan_actions[22m | icon.webp[39m[0m
+[  50% ] [90m[1m_update_scan_actions[22m | icon_foreground.webp[39m[0m
+[  56% ] [90m[1m_update_scan_actions[22m | icon.webp[39m[0m
+[  62% ] [90m[1m_update_scan_actions[22m | icon_foreground.webp[39m[0m
+[  68% ] [90m[1m_update_scan_actions[22m | icon.webp[39m[0m
+[  75% ] [90m[1m_update_scan_actions[22m | icon_foreground.webp[39m[0m
+[  81% ] [90m[1m_update_scan_actions[22m | icon.webp[39m[0m
+[  87% ] [90m[1m_update_scan_actions[22m | icon_foreground.webp[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (15 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   6% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  12% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  18% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  25% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  31% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  37% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  43% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  50% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  56% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  62% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  68% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  75% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  81% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  87% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing pre-reimport operations...[39m[0m
+[   0% ] [90m[1mreimport[22m | icon.svg[39m[0m
+ERROR: Error loading image: 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/icon.svg'.
+   at: load_image (core/io/image_loader.cpp:102)
+ERROR: Error importing 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/icon.svg'.
+   at: _reimport_file (editor/file_system/editor_file_system.cpp:3093)
+[   6% ] [90m[1mreimport[22m | icon.svg[39m[0m
+[  12% ] [90m[1mreimport[22m | splash_icon.webp[39m[0m
+[  18% ] [90m[1mreimport[22m | icon.webp[39m[0m
+[  25% ] [90m[1mreimport[22m | icon_foreground.webp[39m[0m
+[  31% ] [90m[1mreimport[22m | icon.webp[39m[0m
+[  37% ] [90m[1mreimport[22m | icon_foreground.webp[39m[0m
+[  43% ] [90m[1mreimport[22m | icon.webp[39m[0m
+[  50% ] [90m[1mreimport[22m | icon_foreground.webp[39m[0m
+[  56% ] [90m[1mreimport[22m | icon.webp[39m[0m
+[  62% ] [90m[1mreimport[22m | icon_foreground.webp[39m[0m
+[  68% ] [90m[1mreimport[22m | icon.webp[39m[0m
+[  75% ] [90m[1mreimport[22m | icon_foreground.webp[39m[0m
+[  81% ] [90m[1mreimport[22m | icon.webp[39m[0m
+[  87% ] [90m[1mreimport[22m | icon_foreground.webp[39m[0m
+[  93% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (15 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mexport[22m | Started Exporting for Android (105 steps)[39m[0m
+0 param: --xr_mode_regular
+1 param: --xr-mode
+2 param: off
+3 param: --fullscreen
+4 param: --background_color
+5 param: #000000
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/android/bin/ads/poing_godot_admob_ads.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/android/bin/package.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/AdapterResponseInfo.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/AdapterStatus.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/AdChoicesPlacement.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/AdError.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/AdPosition.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/AdRequest.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/AdSize.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/AdValue.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/AdVideoController.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/LoadAdError.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/MediaContent.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/NativeAdOptions.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/NativeMediaAspectRatio.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/NativeTemplateFontStyle.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/NativeTemplateStyle.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/NativeTemplateTextStyle.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/RequestConfiguration.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/ResponseInfo.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/RewardedItem.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/ServerSideVerificationOptions.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/core/VideoOptions.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/listeners/AdInspectorClosedListener.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/listeners/AdListener.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/listeners/AppOpenAdLoadCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/listeners/FullScreenContentCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/listeners/InterstitialAdLoadCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/listeners/OnInitializationCompleteListener.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/listeners/OnUserEarnedRewardListener.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/listeners/RewardedAdLoadCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/listeners/RewardedInterstitialAdLoadCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/listeners/VideoLifecycleCallbacks.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/AdView.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/AppOpenAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/AppOpenAdLoader.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/InitializationStatus.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/InterstitialAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/InterstitialAdLoader.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/MobileAds.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/NativeOverlayAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/RewardedAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/RewardedAdLoader.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/RewardedInterstitialAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/api/RewardedInterstitialAdLoader.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/core/MobileSingletonPlugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/applovin/AppLovin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/bidmachine/BidMachine.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/chartboost/Chartboost.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/dtexchange/DTExchange.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/imobile/IMobile.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/inmobi/InMobi.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/ironsource/IronSource.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/line/LineAds.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/line/LineMediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/meta/FBAdSettings.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/unity_ads/UnityAds.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/vungle/Vungle.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/vungle/VungleInterstitialMediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/vungle/VungleMediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/extras/vungle/VungleRewardedMediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/mediation/MediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/ump/api/ConsentForm.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/ump/api/ConsentInformation.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/ump/api/UserMessagingPlatform.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/ump/core/ConsentDebugSettings.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/ump/core/ConsentRequestParameters.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/ump/core/DebugGeography.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/gdscript/src/ump/core/FormError.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/internal/mock/mock_admob_factory.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/internal/mock/mock_ad_size_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/internal/mock/mock_ad_view_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/internal/mock/mock_app_open_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/internal/mock/mock_interstitial_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/internal/mock/mock_mobile_ads_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/internal/mock/mock_native_overlay_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/internal/mock/mock_rewarded_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/internal/mock/mock_rewarded_interstitial_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/admob/internal/version/plugin_version.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/scrap_ads_export/plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/addons/scrap_ads_export/test_ads_export.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/annotation_processor_list/standardDebug/javaPreCompileStandardDebug/annotationProcessors.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/android/bin/ads/poing_godot_admob_ads.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/android/bin/package.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/AdapterResponseInfo.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/AdapterStatus.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/AdChoicesPlacement.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/AdError.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/AdPosition.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/AdRequest.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/AdSize.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/AdValue.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/AdVideoController.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/LoadAdError.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/MediaContent.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/NativeAdOptions.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/NativeMediaAspectRatio.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/NativeTemplateFontStyle.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/NativeTemplateStyle.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/NativeTemplateTextStyle.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/RequestConfiguration.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/ResponseInfo.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/RewardedItem.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/ServerSideVerificationOptions.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/core/VideoOptions.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/listeners/AdInspectorClosedListener.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/listeners/AdListener.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/listeners/AppOpenAdLoadCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/listeners/FullScreenContentCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/listeners/InterstitialAdLoadCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/listeners/OnInitializationCompleteListener.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/listeners/OnUserEarnedRewardListener.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/listeners/RewardedAdLoadCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/listeners/RewardedInterstitialAdLoadCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/listeners/VideoLifecycleCallbacks.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/AdView.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/AppOpenAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/AppOpenAdLoader.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/InitializationStatus.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/InterstitialAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/InterstitialAdLoader.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/MobileAds.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/NativeOverlayAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/RewardedAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/RewardedAdLoader.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/RewardedInterstitialAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/api/RewardedInterstitialAdLoader.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/core/MobileSingletonPlugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/applovin/AppLovin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/bidmachine/BidMachine.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/chartboost/Chartboost.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/dtexchange/DTExchange.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/imobile/IMobile.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/inmobi/InMobi.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/ironsource/IronSource.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/line/LineAds.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/line/LineMediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/meta/FBAdSettings.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/unity_ads/UnityAds.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/vungle/Vungle.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/vungle/VungleInterstitialMediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/vungle/VungleMediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/extras/vungle/VungleRewardedMediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/mediation/MediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/ump/api/ConsentForm.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/ump/api/ConsentInformation.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/ump/api/UserMessagingPlatform.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/ump/core/ConsentDebugSettings.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/ump/core/ConsentRequestParameters.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/ump/core/DebugGeography.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/gdscript/src/ump/core/FormError.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/internal/mock/mock_admob_factory.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/internal/mock/mock_ad_size_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/internal/mock/mock_ad_view_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/internal/mock/mock_app_open_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/internal/mock/mock_interstitial_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/internal/mock/mock_mobile_ads_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/internal/mock/mock_native_overlay_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/internal/mock/mock_rewarded_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/internal/mock/mock_rewarded_interstitial_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/admob/internal/version/plugin_version.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/scrap_ads_export/plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/addons/scrap_ads_export/test_ads_export.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/assets/parts/part_view.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/data/boss_scrap_titan.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/data/bot_models.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/data/combos.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/data/constants.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/data/economy.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/data/enemies.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/data/gates_level1.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/data/level_generator.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/data/parts.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/data/tradeoffs.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/data/zones.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/core/game_data.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/core/rng_streams.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/services/admob_provider.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/services/ads.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/services/audio.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/services/haptics.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/services/perf_log.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/services/save_store.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/services/telemetry.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/sim/boss_sim.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/sim/economy.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/sim/gate_gen.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/sim/robot_state.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/sim/run_sim.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/sim/stat_calc.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/view/mesh_factory.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/view/robot_builder.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/view/run_view.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/assets/standardDebug/mergeStandardDebugAssets/src/view/world_view.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/compatible_screen_manifest/standardDebug/createStandardDebugCompatibleScreenManifests/output-metadata.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/linked_resources_binary_format/standardDebug/processStandardDebugResources/output-metadata.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_manifests/standardDebug/processStandardDebugManifest/output-metadata.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/mergeStandardDebugResources.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-af.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-am.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ar.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-as.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-az.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-b+sr+Latn.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-be.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-bg.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-bn.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-bs.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ca.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-cs.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-da.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-de.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-el.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-en-rAU.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-en-rCA.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-en-rGB.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-en-rIN.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-en-rXC.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-en.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-es-rES.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-es-rUS.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-es.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-et.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-eu.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-fa.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-fi.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-fr-rCA.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-fr.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-gl.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-gu.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-h720dp-v13.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-hdpi-v4.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-hi.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-hr.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-hu.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-hy.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-in.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-is.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-it.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-iw.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ja.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ka.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-kk.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-km.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-kn.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ko.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ky.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-land.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-large-v4.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ldltr-v21.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-lo.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-lt.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-lv.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-mk.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ml.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-mn.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-mr.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ms.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-my.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-nb.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ne.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-night-v8.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-nl.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-or.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-pa.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-pl.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-port.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-pt-rBR.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-pt-rPT.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-pt.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ro.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ru.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-si.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-sk.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-sl.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-sq.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-sr.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-sv.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-sw600dp-v13.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-sw.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ta.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-te.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-th.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-tl.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-tr.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-uk.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-ur.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-uz.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v16.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v17.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v18.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v21.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v22.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v23.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v24.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v25.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v26.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v27.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v28.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v29.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-v31.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-vi.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-watch-v20.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-watch-v21.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-xlarge-v4.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-zh-rCN.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-zh-rHK.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-zh-rTW.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-zh.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values-zu.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/multi-v2/values.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/merged_res_blame_folder/standardDebug/mergeStandardDebugResources/out/single/mergeStandardDebugResources.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/navigation_json/standardDebug/extractDeepLinksStandardDebug/navigation.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/packaged_manifests/standardDebug/processStandardDebugManifestForPackage/output-metadata.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/intermediates/signing_config_versions/standardDebug/writeStandardDebugSigningConfigVersions/signing-config-versions.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/build/outputs/apk/standard/debug/output-metadata.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/android/bin/ads/poing_godot_admob_ads.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/android/bin/package.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/AdapterResponseInfo.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/AdapterStatus.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/AdChoicesPlacement.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/AdError.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/AdPosition.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/AdRequest.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/AdSize.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/AdValue.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/AdVideoController.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/LoadAdError.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/MediaContent.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/NativeAdOptions.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/NativeMediaAspectRatio.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/NativeTemplateFontStyle.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/NativeTemplateStyle.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/NativeTemplateTextStyle.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/RequestConfiguration.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/ResponseInfo.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/RewardedItem.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/ServerSideVerificationOptions.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/core/VideoOptions.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/listeners/AdInspectorClosedListener.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/listeners/AdListener.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/listeners/AppOpenAdLoadCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/listeners/FullScreenContentCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/listeners/InterstitialAdLoadCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/listeners/OnInitializationCompleteListener.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/listeners/OnUserEarnedRewardListener.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/listeners/RewardedAdLoadCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/listeners/RewardedInterstitialAdLoadCallback.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/listeners/VideoLifecycleCallbacks.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/AdView.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/AppOpenAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/AppOpenAdLoader.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/InitializationStatus.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/InterstitialAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/InterstitialAdLoader.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/MobileAds.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/NativeOverlayAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/RewardedAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/RewardedAdLoader.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/RewardedInterstitialAd.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/api/RewardedInterstitialAdLoader.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/core/MobileSingletonPlugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/applovin/AppLovin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/bidmachine/BidMachine.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/chartboost/Chartboost.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/dtexchange/DTExchange.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/imobile/IMobile.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/inmobi/InMobi.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/ironsource/IronSource.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/line/LineAds.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/line/LineMediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/meta/FBAdSettings.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/unity_ads/UnityAds.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/vungle/Vungle.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/vungle/VungleInterstitialMediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/vungle/VungleMediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/extras/vungle/VungleRewardedMediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/mediation/MediationExtras.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/ump/api/ConsentForm.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/ump/api/ConsentInformation.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/ump/api/UserMessagingPlatform.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/ump/core/ConsentDebugSettings.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/ump/core/ConsentRequestParameters.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/ump/core/DebugGeography.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/gdscript/src/ump/core/FormError.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/internal/mock/mock_admob_factory.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/internal/mock/mock_ad_size_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/internal/mock/mock_ad_view_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/internal/mock/mock_app_open_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/internal/mock/mock_interstitial_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/internal/mock/mock_mobile_ads_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/internal/mock/mock_native_overlay_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/internal/mock/mock_rewarded_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/internal/mock/mock_rewarded_interstitial_ad_plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/admob/internal/version/plugin_version.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/scrap_ads_export/plugin.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/addons/scrap_ads_export/test_ads_export.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/assets/parts/part_view.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/data/boss_scrap_titan.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/data/bot_models.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/data/combos.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/data/constants.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/data/economy.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/data/enemies.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/data/gates_level1.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/data/level_generator.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/data/parts.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/data/tradeoffs.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/data/zones.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/core/game_data.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/core/rng_streams.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/services/admob_provider.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/services/ads.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/services/audio.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/services/haptics.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/services/perf_log.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/services/save_store.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/services/telemetry.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/sim/boss_sim.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/sim/economy.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/sim/gate_gen.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/sim/robot_state.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/sim/run_sim.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/sim/stat_calc.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/view/mesh_factory.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/view/robot_builder.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/view/run_view.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/src/view/world_view.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/android/build/src/main/assets/icon.svg'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/assets/parts/part_view.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/data/boss_scrap_titan.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/data/bot_models.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/data/combos.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/data/constants.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/data/economy.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/data/enemies.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/data/gates_level1.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/data/level_generator.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/data/parts.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/data/tradeoffs.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/data/zones.json'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/core/game_data.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/core/rng_streams.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/services/admob_provider.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/services/ads.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/services/audio.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/services/haptics.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/services/perf_log.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/services/save_store.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/services/telemetry.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/sim/boss_sim.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/sim/economy.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/sim/gate_gen.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/sim/robot_state.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/sim/run_sim.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/sim/stat_calc.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/view/mesh_factory.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/view/robot_builder.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/view/run_view.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/src/view/world_view.gdc'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Can't open file from path 'res://android/build/assetPackInstallTime/src/main/assets/icon.svg'.
+   at: get_file_as_bytes (core/io/file_access.cpp:907)
+ERROR: Export: Building of Android project failed, check output for the error:
+
+
+> Configure project :
+WARNING: The option setting 'android.overridePathCheck=true' is experimental.
+The current default is 'false'.
+WARNING: We recommend using a newer Android Gradle plugin to use compileSdk = 36
+
+This Android Gradle plugin (8.6.1) was tested up to compileSdk = 35.
+
+You are strongly encouraged to update your project to use a newer
+Android Gradle plugin that has been tested with compileSdk = 36.
+
+If you are already using the latest version of the Android Gradle plugin,
+you may need to wait until a newer version with support for compileSdk = 36 is available.
+
+For more information refer to the compatibility table:
+https://d.android.com/r/tools/api-level-support
+
+To suppress this warning, add/update
+    android.suppressUnsupportedCompileSdk=36
+to this project's gradle.properties.
+
+> Task :validateJavaVersion UP-TO-DATE
+> Task :clean
+> Task :assetPackInstallTime:clean
+> Task :preBuild UP-TO-DATE
+> Task :preStandardDebugBuild UP-TO-DATE
+> Task :mergeStandardDebugNativeDebugMetadata NO-SOURCE
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :generateStandardDebugBuildConfig
+> Task :generateStandardDebugResValues
+> Task :checkStandardDebugAarMetadata
+> Task :mapStandardDebugSourceSetPaths
+> Task :generateStandardDebugResources
+
+> Task :mergeStandardDebugResources FAILED
+ERROR: /Users/aryankinha/Downloads/junk-bot/android/build/res/mipmap-xxxhdpi-v4/icon_foreground.webp.import: Resource and asset merger: The file name must end with .xml or .png
+ERROR: /Users/aryankinha/Downloads/junk-bot/android/build/res/drawable/splash_icon.webp.import: Resource and asset merger: The file name must end with .xml or .png
+ERROR: /Users/aryankinha/Downloads/junk-bot/android/build/res/mipmap-hdpi-v4/icon_foreground.webp.import: Resource and asset merger: The file name must end with .xml or .png
+ERROR: /Users/aryankinha/Downloads/junk-bot/android/build/res/mipmap-xhdpi-v4/icon_foreground.webp.import: Resource and asset merger: The file name must end with .xml or .png
+ERROR: /Users/aryankinha/Downloads/junk-bot/android/build/res/mipmap-mdpi-v4/icon_foreground.webp.import: Resource and asset merger: The file name must end with .xml or .png
+ERROR: /Users/aryankinha/Downloads/junk-bot/android/build/res/mipmap/icon_foreground.webp.import: Resource and asset merger: The file name must end with .xml or .png
+ERROR: /Users/aryankinha/Downloads/junk-bot/android/build/res/mipmap-xxhdpi-v4/icon_foreground.webp.import: Resource and asset merger: The file name must end with .xml or .png
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':mergeStandardDebugResources'.
+> /Users/aryankinha/Downloads/junk-bot/android/build/res/mipmap-xxxhdpi-v4/icon_foreground.webp.import: Error: The file name must end with .xml or .png
+  /Users/aryankinha/Downloads/junk-bot/android/build/res/drawable/splash_icon.webp.import: Error: The file name must end with .xml or .png
+  /Users/aryankinha/Downloads/junk-bot/android/build/res/mipmap-hdpi-v4/icon_foreground.webp.import: Error: The file name must end with .xml or .png
+  /Users/aryankinha/Downloads/junk-bot/android/build/res/mipmap-xhdpi-v4/icon_foreground.webp.import: Error: The file name must end with .xml or .png
+  /Users/aryankinha/Downloads/junk-bot/android/build/res/mipmap-mdpi-v4/icon_foreground.webp.import: Error: The file name must end with .xml or .png
+  /Users/aryankinha/Downloads/junk-bot/android/build/res/mipmap/icon_foreground.webp.import: Error: The file name must end with .xml or .png
+  /Users/aryankinha/Downloads/junk-bot/android/build/res/mipmap-xxhdpi-v4/icon_foreground.webp.import: Error: The file name must end with .xml or .png
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 574ms
+8 actionable tasks: 8 executed
+
+   at: add_message (editor/export/editor_export_platform.h:270)
+[92m[ DONE ][39m [1mexport[22m
+[0m
+ERROR: Project export for preset "Android Test Ads" failed.
+   at: _fs_changed (editor/editor_node.cpp:1417)
+cannot connect to daemon at tcp:5037: Connection refused

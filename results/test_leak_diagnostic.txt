@@ -1,0 +1,94 @@
+WorkerThreadPool: 8 threads, 2 max low-priority.
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+TextServer: Added interface "Dummy"
+TextServer: Added interface "ICU / HarfBuzz / Graphite (Built-in)"
+SDL: Init OK!
+Using "default" pen tablet driver...
+
+TextServer: Primary interface set to: "ICU / HarfBuzz / Graphite (Built-in)".
+CORE API HASH: 2004498165
+EDITOR API HASH: 1696660745
+Loading resource: res://tests/run_all.gd remapped: res://tests/run_all.gd
+Completed load for: 'res://tests/run_all.gd' remapped 'res://tests/run_all.gd' at thread -1
+SceneTreeFTI: traversal method DEFAULT
+Loaded system CA certificates
+Loading resource: res://tests/integration_suite.gd remapped: res://tests/integration_suite.gd
+Completed load for: 'res://tests/integration_suite.gd' remapped 'res://tests/integration_suite.gd' at thread -1
+Loading resource: res://src/view/Boot.tscn remapped: res://src/view/Boot.tscn
+Loading resource: res://src/view/run_view.gd remapped: res://src/view/run_view.gd
+Completed load for: 'res://src/view/run_view.gd' remapped 'res://src/view/run_view.gd' at thread -1
+Completed load for: 'res://src/view/Boot.tscn' remapped 'res://src/view/Boot.tscn' at thread -1
+Loading resource: res://assets/audio/attach.wav remapped: res://assets/audio/attach.wav
+Loading resource: res://.godot/imported/attach.wav-c6488f481c18cf3f085bcd4c40270898.sample remapped: res://.godot/imported/attach.wav-c6488f481c18cf3f085bcd4c40270898.sample
+Completed load for: 'res://assets/audio/attach.wav' remapped 'res://assets/audio/attach.wav' at thread -1
+Loading resource: res://assets/audio/upgrade.wav remapped: res://assets/audio/upgrade.wav
+Loading resource: res://.godot/imported/upgrade.wav-6853b7f856a19267cd7715d3e916de87.sample remapped: res://.godot/imported/upgrade.wav-6853b7f856a19267cd7715d3e916de87.sample
+Completed load for: 'res://assets/audio/upgrade.wav' remapped 'res://assets/audio/upgrade.wav' at thread -1
+Loading resource: res://assets/audio/stage.wav remapped: res://assets/audio/stage.wav
+Loading resource: res://.godot/imported/stage.wav-1fc25a89e98d87fc2281423d233b0140.sample remapped: res://.godot/imported/stage.wav-1fc25a89e98d87fc2281423d233b0140.sample
+Completed load for: 'res://assets/audio/stage.wav' remapped 'res://assets/audio/stage.wav' at thread -1
+Loading resource: res://assets/audio/scrap.wav remapped: res://assets/audio/scrap.wav
+Loading resource: res://.godot/imported/scrap.wav-93d7c474a1e340102f3ca639efd1ddbe.sample remapped: res://.godot/imported/scrap.wav-93d7c474a1e340102f3ca639efd1ddbe.sample
+Completed load for: 'res://assets/audio/scrap.wav' remapped 'res://assets/audio/scrap.wav' at thread -1
+Loading resource: res://assets/audio/fire.wav remapped: res://assets/audio/fire.wav
+Loading resource: res://.godot/imported/fire.wav-db81e8e0e860cb4dd4a93b1ef835abf8.sample remapped: res://.godot/imported/fire.wav-db81e8e0e860cb4dd4a93b1ef835abf8.sample
+Completed load for: 'res://assets/audio/fire.wav' remapped 'res://assets/audio/fire.wav' at thread -1
+Loading resource: res://assets/audio/hit.wav remapped: res://assets/audio/hit.wav
+Loading resource: res://.godot/imported/hit.wav-96dc477cdf4a42f381370dba6e3f75ce.sample remapped: res://.godot/imported/hit.wav-96dc477cdf4a42f381370dba6e3f75ce.sample
+Completed load for: 'res://assets/audio/hit.wav' remapped 'res://assets/audio/hit.wav' at thread -1
+Loading resource: res://assets/audio/break.wav remapped: res://assets/audio/break.wav
+Loading resource: res://.godot/imported/break.wav-2cc0703d53961e3d510ac24f4ac1b9df.sample remapped: res://.godot/imported/break.wav-2cc0703d53961e3d510ac24f4ac1b9df.sample
+Completed load for: 'res://assets/audio/break.wav' remapped 'res://assets/audio/break.wav' at thread -1
+Loading resource: res://assets/audio/warning.wav remapped: res://assets/audio/warning.wav
+Loading resource: res://.godot/imported/warning.wav-bbd467b4b8c964daf182674a45c0d6f0.sample remapped: res://.godot/imported/warning.wav-bbd467b4b8c964daf182674a45c0d6f0.sample
+Completed load for: 'res://assets/audio/warning.wav' remapped 'res://assets/audio/warning.wav' at thread -1
+Loading resource: res://assets/audio/special.wav remapped: res://assets/audio/special.wav
+Loading resource: res://.godot/imported/special.wav-41b17eb637aa6c9fc2ec4780bda79129.sample remapped: res://.godot/imported/special.wav-41b17eb637aa6c9fc2ec4780bda79129.sample
+Completed load for: 'res://assets/audio/special.wav' remapped 'res://assets/audio/special.wav' at thread -1
+Loading resource: res://assets/audio/victory.wav remapped: res://assets/audio/victory.wav
+Loading resource: res://.godot/imported/victory.wav-d893d32ad919f27e15cf04d35e288b78.sample remapped: res://.godot/imported/victory.wav-d893d32ad919f27e15cf04d35e288b78.sample
+Completed load for: 'res://assets/audio/victory.wav' remapped 'res://assets/audio/victory.wav' at thread -1
+Loading resource: res://assets/audio/defeat.wav remapped: res://assets/audio/defeat.wav
+Loading resource: res://.godot/imported/defeat.wav-2c373cdad262b5fb9203b05423989caa.sample remapped: res://.godot/imported/defeat.wav-2c373cdad262b5fb9203b05423989caa.sample
+Completed load for: 'res://assets/audio/defeat.wav' remapped 'res://assets/audio/defeat.wav' at thread -1
+Loading resource: res://assets/audio/click.wav remapped: res://assets/audio/click.wav
+Loading resource: res://.godot/imported/click.wav-726094e36c7052fadb6392aaf7409595.sample remapped: res://.godot/imported/click.wav-726094e36c7052fadb6392aaf7409595.sample
+Completed load for: 'res://assets/audio/click.wav' remapped 'res://assets/audio/click.wav' at thread -1
+Loading resource: res://assets/audio/explosion.wav remapped: res://assets/audio/explosion.wav
+Loading resource: res://.godot/imported/explosion.wav-4dcccbd27187cfdac205309f792899a7.sample remapped: res://.godot/imported/explosion.wav-4dcccbd27187cfdac205309f792899a7.sample
+Completed load for: 'res://assets/audio/explosion.wav' remapped 'res://assets/audio/explosion.wav' at thread -1
+Loading resource: res://assets/audio/dodge.wav remapped: res://assets/audio/dodge.wav
+Loading resource: res://.godot/imported/dodge.wav-9186ee525247cf03bb2e8ec8df89e2e2.sample remapped: res://.godot/imported/dodge.wav-9186ee525247cf03bb2e8ec8df89e2e2.sample
+Completed load for: 'res://assets/audio/dodge.wav' remapped 'res://assets/audio/dodge.wav' at thread -1
+Loading resource: res://assets/audio/run_music.ogg remapped: res://assets/audio/run_music.ogg
+Loading resource: res://.godot/imported/run_music.ogg-2d5e9434b02c4337206d39302951403c.oggvorbisstr remapped: res://.godot/imported/run_music.ogg-2d5e9434b02c4337206d39302951403c.oggvorbisstr
+Completed load for: 'res://assets/audio/run_music.ogg' remapped 'res://assets/audio/run_music.ogg' at thread -1
+Loading resource: res://assets/audio/hangar_music.ogg remapped: res://assets/audio/hangar_music.ogg
+Loading resource: res://.godot/imported/hangar_music.ogg-afb840e94848fb5c83f3d9a99b59216e.oggvorbisstr remapped: res://.godot/imported/hangar_music.ogg-afb840e94848fb5c83f3d9a99b59216e.oggvorbisstr
+Completed load for: 'res://assets/audio/hangar_music.ogg' remapped 'res://assets/audio/hangar_music.ogg' at thread -1
+INTEGRATION: 51 checks; 0 failures
+25119 checks; 0 failures
+WARNING: 10 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 4 resources still in use at exit.
+   at: clear (core/io/resource.cpp:817)
+XR: Clearing primary interface
+XR: Removed interface "Native mobile"
+XR: Removed interface "OpenXR"
+Leaked instance: OggPacketSequence:9223372121479054899 - Reference count: 5
+Leaked instance: AudioStreamOggVorbis:9223372121495832116 - Reference count: 2
+Leaked instance: OggPacketSequence:9223372121680381493 - Reference count: 3
+Leaked instance: AudioStreamOggVorbis:9223372121697158710 - Reference count: 1
+Leaked instance: AudioStreamPlaybackOggVorbis:9223372126679992058 - Reference count: 1
+Leaked instance: OggPacketSequencePlayback:9223372126696769275 - Reference count: 1
+Leaked instance: AudioStreamPlaybackOggVorbis:9223372140588304125 - Reference count: 1
+Leaked instance: OggPacketSequencePlayback:9223372140605081345 - Reference count: 1
+Leaked instance: AudioStreamPlaybackOggVorbis:9223372130723301226 - Reference count: 1
+Leaked instance: OggPacketSequencePlayback:9223372130740078443 - Reference count: 1
+Hint: Leaked instances typically happen when nodes are removed from the scene tree (with `remove_child()`) but not freed (with `free()` or `queue_free()`).
+Resource still in use: res://assets/audio/run_music.ogg::OggPacketSequence_rd26y (OggPacketSequence)
+Resource still in use: res://assets/audio/run_music.ogg (AudioStreamOggVorbis)
+Resource still in use: res://assets/audio/hangar_music.ogg::OggPacketSequence_e57at (OggPacketSequence)
+Resource still in use: res://assets/audio/hangar_music.ogg (AudioStreamOggVorbis)
+Orphan StringName: Music (static: 0, total: 4)
+StringName: 1 unclaimed string names at exit.

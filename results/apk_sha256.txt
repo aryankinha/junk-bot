@@ -1,0 +1,1 @@
+65d3b507c2d4a99f9028f9deacc007b1ed86e6658274383b9d0b8013f8bdb2a9  build/scrap_dragon_debug.apk

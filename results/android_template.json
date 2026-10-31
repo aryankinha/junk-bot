@@ -1,0 +1,6 @@
+{
+  "source": "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_export_templates.tpz",
+  "file": "templates/android_source.zip",
+  "sha256": "a15416b528efb0a19a7d187e4d9f4e5336d0689144b111329fb4bd12c4447ad3",
+  "bytes": 214418211
+}

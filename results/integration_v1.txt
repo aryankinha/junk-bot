@@ -1,0 +1,67 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: String formatting error: unsupported format character.
+   at: validated_evaluate (core/variant/variant_op.h:829)
+   GDScript backtrace (most recent call first):
+       [0] show_hangar (res://src/view/run_view.gd:612)
+       [1] run (res://tests/test_integration.gd:38)
+ERROR: String formatting error: unsupported format character.
+   at: validated_evaluate (core/variant/variant_op.h:829)
+   GDScript backtrace (most recent call first):
+       [0] show_hangar (res://src/view/run_view.gd:612)
+       [1] run (res://tests/test_integration.gd:38)
+ERROR: String formatting error: unsupported format character.
+   at: validated_evaluate (core/variant/variant_op.h:829)
+   GDScript backtrace (most recent call first):
+       [0] show_hangar (res://src/view/run_view.gd:612)
+       [1] run (res://tests/test_integration.gd:38)
+ERROR: String formatting error: unsupported format character.
+   at: validated_evaluate (core/variant/variant_op.h:829)
+   GDScript backtrace (most recent call first):
+       [0] show_hangar (res://src/view/run_view.gd:612)
+       [1] run (res://tests/test_integration.gd:38)
+ERROR: String formatting error: unsupported format character.
+   at: validated_evaluate (core/variant/variant_op.h:829)
+   GDScript backtrace (most recent call first):
+       [0] show_hangar (res://src/view/run_view.gd:612)
+       [1] run (res://tests/test_integration.gd:38)
+ERROR: String formatting error: unsupported format character.
+   at: validated_evaluate (core/variant/variant_op.h:829)
+   GDScript backtrace (most recent call first):
+       [0] show_hangar (res://src/view/run_view.gd:612)
+       [1] run (res://tests/test_integration.gd:38)
+ERROR: String formatting error: unsupported format character.
+   at: validated_evaluate (core/variant/variant_op.h:829)
+   GDScript backtrace (most recent call first):
+       [0] show_hangar (res://src/view/run_view.gd:612)
+       [1] run (res://tests/test_integration.gd:38)
+ERROR: String formatting error: unsupported format character.
+   at: validated_evaluate (core/variant/variant_op.h:829)
+   GDScript backtrace (most recent call first):
+       [0] show_hangar (res://src/view/run_view.gd:612)
+       [1] run (res://tests/test_integration.gd:38)
+ERROR: String formatting error: unsupported format character.
+   at: validated_evaluate (core/variant/variant_op.h:829)
+   GDScript backtrace (most recent call first):
+       [0] show_hangar (res://src/view/run_view.gd:612)
+       [1] run (res://tests/test_integration.gd:38)
+ERROR: Parse JSON failed. Error at line 0: Expected key
+   at: parse_string (core/io/json.cpp:629)
+   GDScript backtrace (most recent call first):
+       [0] load_save (res://src/services/save_store.gd:15)
+       [1] run (res://tests/test_integration.gd:56)
+ERROR: Parameter "t" is null.
+   at: texture_2d_get (./servers/rendering/dummy/storage/texture_storage.h:110)
+   GDScript backtrace (most recent call first):
+       [0] _finish_run (res://src/view/run_view.gd:520)
+       [1] run (res://tests/test_integration.gd:64)
+ERROR: Invalid image: null
+   at: create_from_image (scene/resources/image_texture.cpp:59)
+   GDScript backtrace (most recent call first):
+       [0] _finish_run (res://src/view/run_view.gd:520)
+       [1] run (res://tests/test_integration.gd:64)
+INTEGRATION: 51 checks; 0 failures
+WARNING: 5 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 2 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

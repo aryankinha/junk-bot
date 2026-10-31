@@ -1,0 +1,33 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+# Gate pair audit
+
+Both fixed choices tested through the complete sim with a perfect-dodge bot. Category checks do not establish equivalent value.
+
+| Gate z | Side | Runs | Win rate |
+|---|---|---|---|
+| 80 | 0 | 12 | 100.0% |
+| 80 | 1 | 12 | 100.0% |
+| 180 | 0 | 12 | 100.0% |
+| 180 | 1 | 12 | 100.0% |
+| 290 | 0 | 12 | 100.0% |
+| 290 | 1 | 12 | 100.0% |
+| 400 | 0 | 12 | 100.0% |
+| 400 | 1 | 12 | 100.0% |
+| 520 | 0 | 12 | 100.0% |
+| 520 | 1 | 12 | 100.0% |
+
+## Build profiles
+
+| Profile | Level | Runs | Win rate |
+|---|---|---|---|
+| speed_gunner | 1 | 10 | 100.0% |
+| speed_gunner | 2 | 10 | 100.0% |
+| speed_gunner | 3 | 10 | 100.0% |
+| rocket_tank | 1 | 10 | 100.0% |
+| rocket_tank | 2 | 10 | 100.0% |
+| rocket_tank | 3 | 10 | 100.0% |
+| collector | 1 | 10 | 100.0% |
+| collector | 2 | 10 | 100.0% |
+| collector | 3 | 10 | 90.0% |
+

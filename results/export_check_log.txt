@@ -1,0 +1,85 @@
+[
+  {
+    "file": "build/scrap_dragon_debug.apk",
+    "bytes": 29028354,
+    "sha256": "95834031c55e4606e5be5e5c12d724f9d32c3cd212f4370cad7465d4b39e01a9",
+    "debug_signed": true,
+    "native_libraries": [
+      {
+        "name": "lib/arm64-v8a/libc++_shared.so",
+        "load_segment_alignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "supports_16k_pages": true
+      },
+      {
+        "name": "lib/arm64-v8a/libgodot_android.so",
+        "load_segment_alignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "supports_16k_pages": true
+      }
+    ],
+    "development_files_in_package": [],
+    "zipalign_16k_ok": true
+  },
+  {
+    "file": "build/scrap_dragon_pipeline_debug.aab",
+    "bytes": 28910090,
+    "sha256": "52a1e9239b55043e8263a45b688cd91c40bceac7cb1166942b1a949dd111069a",
+    "debug_signed": true,
+    "native_libraries": [
+      {
+        "name": "base/lib/arm64-v8a/libc++_shared.so",
+        "load_segment_alignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "supports_16k_pages": true
+      },
+      {
+        "name": "base/lib/arm64-v8a/libgodot_android.so",
+        "load_segment_alignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "supports_16k_pages": true
+      }
+    ],
+    "development_files_in_package": []
+  },
+  {
+    "file": "build/scrap_dragon_test_ads.apk",
+    "bytes": 39473138,
+    "sha256": "4d2614cef1038a902403cdbbee25166aeab7c3633c7008703d7f2a0e1d2eff1f",
+    "debug_signed": true,
+    "native_libraries": [
+      {
+        "name": "lib/arm64-v8a/libc++_shared.so",
+        "load_segment_alignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "supports_16k_pages": true
+      },
+      {
+        "name": "lib/arm64-v8a/libgodot_android.so",
+        "load_segment_alignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "supports_16k_pages": true
+      }
+    ],
+    "development_files_in_package": [],
+    "zipalign_16k_ok": true
+  }
+]

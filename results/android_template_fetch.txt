@@ -1,0 +1,2 @@
+Fetching only templates/android_source.zip compressed bytes 214421853
+Installed matching Gradle template 214418211 bytes

@@ -1,0 +1,30 @@
+[
+  {
+    "file": "assets/fonts/rajdhani_Rajdhani-Bold.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/rajdhani/Rajdhani-Bold.ttf",
+    "license": "SIL OFL 1.1",
+    "downloaded": "2026-10-31",
+    "sha256": "691470dd3286a14e9677940d0bf75796179841ba5215cbda1a2c8910a3226afd"
+  },
+  {
+    "file": "assets/fonts/rajdhani_OFL.txt",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/rajdhani/OFL.txt",
+    "license": "SIL OFL 1.1",
+    "downloaded": "2026-10-31",
+    "sha256": "f62ef357d3a1c3d27edd35a6e1ba350e8a8d13499797964eeadefbf0b3b15d1f"
+  },
+  {
+    "file": "assets/fonts/barlow_Barlow-SemiBold.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/barlow/Barlow-SemiBold.ttf",
+    "license": "SIL OFL 1.1",
+    "downloaded": "2026-10-31",
+    "sha256": "86577cb32f8abe3673db53ca0f4221e6856751a4f6730c867e00f720f8bb1fc5"
+  },
+  {
+    "file": "assets/fonts/barlow_OFL.txt",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/barlow/OFL.txt",
+    "license": "SIL OFL 1.1",
+    "downloaded": "2026-10-31",
+    "sha256": "186d750eb496a4c17a76385f82be6aea2ac1cf2de074a811d63786cf374ea73f"
+  }
+]

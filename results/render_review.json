@@ -1,0 +1,47 @@
+{
+  "battle": {
+    "draw_calls": 36,
+    "primitives": 7438
+  },
+  "boss_enraged": {
+    "draw_calls": 31,
+    "primitives": 7060
+  },
+  "boss_grabber": {
+    "draw_calls": 31,
+    "primitives": 7060
+  },
+  "boss_plated": {
+    "draw_calls": 30,
+    "primitives": 7100
+  },
+  "codex": {
+    "draw_calls": 41,
+    "primitives": 9406
+  },
+  "first_attach": {
+    "draw_calls": 41,
+    "primitives": 9390
+  },
+  "hangar": {
+    "draw_calls": 51,
+    "primitives": 10296
+  },
+  "monster": {
+    "draw_calls": 29,
+    "primitives": 7956
+  },
+  "monster_reached": true,
+  "result": {
+    "draw_calls": 24,
+    "primitives": 6320
+  },
+  "settings": {
+    "draw_calls": 30,
+    "primitives": 7022
+  },
+  "stress": {
+    "draw_calls": 56,
+    "primitives": 19136
+  }
+}

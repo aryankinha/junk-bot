@@ -1,0 +1,62 @@
+[
+  {
+    "gate_z": 80,
+    "runs": 12,
+    "side": 0,
+    "wins": 12
+  },
+  {
+    "gate_z": 80,
+    "runs": 12,
+    "side": 1,
+    "wins": 12
+  },
+  {
+    "gate_z": 180,
+    "runs": 12,
+    "side": 0,
+    "wins": 12
+  },
+  {
+    "gate_z": 180,
+    "runs": 12,
+    "side": 1,
+    "wins": 12
+  },
+  {
+    "gate_z": 290,
+    "runs": 12,
+    "side": 0,
+    "wins": 12
+  },
+  {
+    "gate_z": 290,
+    "runs": 12,
+    "side": 1,
+    "wins": 12
+  },
+  {
+    "gate_z": 400,
+    "runs": 12,
+    "side": 0,
+    "wins": 12
+  },
+  {
+    "gate_z": 400,
+    "runs": 12,
+    "side": 1,
+    "wins": 12
+  },
+  {
+    "gate_z": 520,
+    "runs": 12,
+    "side": 0,
+    "wins": 12
+  },
+  {
+    "gate_z": 520,
+    "runs": 12,
+    "side": 1,
+    "wins": 12
+  }
+]
