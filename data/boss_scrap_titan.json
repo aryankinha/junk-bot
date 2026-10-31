@@ -1,0 +1,137 @@
+{
+  "id": "scrap_titan",
+  "base_hp": 1500,
+  "hp_scale_per_level": 0.2,
+  "assist": {
+    "per_loss_hp_cut": 0.1,
+    "max_cut": 0.3,
+    "after_losses": 2
+  },
+  "plate": {
+    "reduction": 0.5,
+    "ignored_by": [
+      "rocket",
+      "shock"
+    ]
+  },
+  "core_multiplier_phase3": 1.5,
+  "weak_points": {
+    "core": {
+      "damage_mult": 1.0
+    },
+    "arm": {
+      "hp": 250
+    }
+  },
+  "phases": [
+    {
+      "id": 1,
+      "from": 1.0,
+      "to": 0.66,
+      "attacks": [
+        "ground_slam",
+        "rocket_barrage"
+      ],
+      "gap_s": [
+        2.0,
+        3.0
+      ],
+      "end_roar_s": 1.5
+    },
+    {
+      "id": 2,
+      "from": 0.66,
+      "to": 0.33,
+      "attacks": [
+        "ground_slam",
+        "rocket_barrage",
+        "grabber_arm",
+        "laser_sweep"
+      ],
+      "gap_s": [
+        1.8,
+        2.6
+      ],
+      "end_roar_s": 1.5
+    },
+    {
+      "id": 3,
+      "from": 0.33,
+      "to": 0.0,
+      "attacks": [
+        "double_slam",
+        "rocket_barrage",
+        "laser_sweep",
+        "call_scrappers"
+      ],
+      "gap_s": [
+        1.2,
+        1.9
+      ],
+      "end_roar_s": 0.0
+    }
+  ],
+  "attacks": {
+    "ground_slam": {
+      "telegraph_s": 1.2,
+      "shape": "circle",
+      "radius": 2.6,
+      "damage": 30,
+      "knockback": 5.0
+    },
+    "double_slam": {
+      "telegraph_s": 1.0,
+      "shape": "circle",
+      "radius": 2.6,
+      "damage": 30,
+      "repeat": 2,
+      "repeat_gap_s": 0.7
+    },
+    "rocket_barrage": {
+      "telegraph_s": 1.0,
+      "shape": "lanes",
+      "lane_count": 3,
+      "lane_width": 1.8,
+      "rockets": 5,
+      "duration_s": 2.0,
+      "damage": 14
+    },
+    "laser_sweep": {
+      "telegraph_s": 1.2,
+      "shape": "sweep",
+      "duration_s": 2.4,
+      "safe_gap": 2.2,
+      "damage": 25
+    },
+    "grabber_arm": {
+      "telegraph_s": 1.5,
+      "arm_hp": 250,
+      "recover_window_s": 5.0,
+      "steals": "highest_level_part"
+    },
+    "call_scrappers": {
+      "telegraph_s": 0.8,
+      "spawn": 6
+    }
+  },
+  "overdrive": {
+    "max": 100,
+    "per_sustained_fire_half_second": 1,
+    "per_clean_dodge": 15,
+    "no_combo_effect": {
+      "fire_rate_mult": 2.0,
+      "duration_s": 4.0
+    },
+    "combo_power_mult": 1.5
+  },
+  "kill": {
+    "slowmo_scale": 0.25,
+    "slowmo_s": 1.2,
+    "debris_pieces": 24,
+    "rare_part_drop": true
+  },
+  "level_extra_attacks": {
+    "3": "double_slam_in_phase_1",
+    "5": "laser_sweep_in_phase_1"
+  }
+}

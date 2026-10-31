@@ -1,0 +1,75 @@
+{
+  "burst_volley": {
+    "name": "Burst Volley",
+    "needs": [
+      "cannon",
+      "rocket"
+    ],
+    "special": {
+      "type": "burst",
+      "duration_s": 3.0,
+      "homing_rockets": 8,
+      "fire_rate_mult": 2.0
+    },
+    "cooldown_s": 10.0
+  },
+  "ram_charge": {
+    "name": "Ram Charge",
+    "needs": [
+      "tracks",
+      "armour"
+    ],
+    "special": {
+      "type": "dash",
+      "duration_s": 2.0,
+      "invulnerable": true,
+      "damage": 60,
+      "knockback": 6.0
+    },
+    "cooldown_s": 12.0
+  },
+  "vacuum": {
+    "name": "Vacuum",
+    "needs": [
+      "magnet",
+      "storage"
+    ],
+    "passive": {
+      "magnet_mult": 3.0,
+      "scrap_mult": 1.5
+    },
+    "special": {
+      "type": "pull_all_scrap"
+    },
+    "cooldown_s": 15.0
+  },
+  "strafe_run": {
+    "name": "Strafe Run",
+    "needs": [
+      "wheels",
+      "cannon"
+    ],
+    "stretch": true,
+    "special": {
+      "type": "lateral_dash_spread",
+      "duration_s": 1.2,
+      "shots": 12
+    },
+    "cooldown_s": 9.0
+  },
+  "inferno_aura": {
+    "name": "Inferno Aura",
+    "needs": [
+      "flame",
+      "armour"
+    ],
+    "stretch": true,
+    "special": {
+      "type": "flame_ring",
+      "duration_s": 3.0,
+      "dps": 80,
+      "radius": 3.0
+    },
+    "cooldown_s": 12.0
+  }
+}

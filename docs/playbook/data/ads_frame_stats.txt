@@ -1,0 +1,5 @@
+Derived from godot_lab/results/phone3_20261028-150837_b_c/ads_frames.csv by tools/build_findings.py
+frames_total=2545 p99=19.07 worst=32.88
+banner_visible_no_fullscreen frames=386 p99=19.12 over20ms_pct=0.26 worst=32.88
+fullscreen_open frames=710 p99=18.04 worst=19.57
+frames_over_250ms=0

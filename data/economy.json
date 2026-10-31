@@ -1,0 +1,39 @@
+{
+  "cogs": {
+    "per_scrap": 1.0,
+    "boss_bonus_per_level": 50,
+    "streak_bonus_per_step": 0.1,
+    "streak_bonus_max": 0.3
+  },
+  "repair_bay": {
+    "repair_cost": 20,
+    "buy_part_cost": 35,
+    "repair_heal_pct": 0.4
+  },
+  "upgrade_costs": [
+    120,
+    260,
+    520,
+    1000
+  ],
+  "upgrade_stat_gain_per_tier": 0.08,
+  "visual_variant_tiers": [
+    3,
+    5
+  ],
+  "unlock_costs": {
+    "tracks": 0,
+    "flame": 150,
+    "shield": 250,
+    "storage": 250
+  },
+  "streak": {
+    "wins_for_weakpoint_outline": 3
+  },
+  "ads": {
+    "interstitial_first_after_runs": 4,
+    "interstitial_first_after_minutes": 10,
+    "interstitial_every_n_runs": 2,
+    "interstitial_min_gap_s": 120
+  }
+}

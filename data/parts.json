@@ -1,0 +1,349 @@
+{
+  "wheels": {
+    "name": "Extra Wheels",
+    "category": "movement",
+    "slots": [
+      "wheel_fl",
+      "wheel_fr",
+      "wheel_bl",
+      "wheel_br",
+      "wheel_ml",
+      "wheel_mr"
+    ],
+    "unlock_level": 1,
+    "weight": 10,
+    "levels": [
+      {
+        "name": "Extra Wheels",
+        "stats": {
+          "fwd_speed_pct": 6,
+          "steer_pct": 12,
+          "hp_flat": 10
+        }
+      },
+      {
+        "name": "Big Wheels",
+        "stats": {
+          "fwd_speed_pct": 10,
+          "steer_pct": 20,
+          "hp_flat": 15
+        }
+      },
+      {
+        "name": "Monster Wheels",
+        "stats": {
+          "fwd_speed_pct": 14,
+          "steer_pct": 28,
+          "hp_flat": 20
+        }
+      }
+    ]
+  },
+  "tracks": {
+    "name": "Tank Tracks",
+    "category": "movement",
+    "slots": [
+      "wheel_fl",
+      "wheel_fr",
+      "wheel_bl",
+      "wheel_br"
+    ],
+    "unlock_level": 2,
+    "weight": 8,
+    "replaces": [
+      "wheels"
+    ],
+    "levels": [
+      {
+        "name": "Tank Tracks",
+        "stats": {
+          "steer_pct": -8,
+          "hp_flat": 40,
+          "knockback_resist": 0.4,
+          "oil_immune": true
+        }
+      },
+      {
+        "name": "Heavy Tracks",
+        "stats": {
+          "steer_pct": -5,
+          "hp_flat": 70,
+          "knockback_resist": 0.6,
+          "oil_immune": true
+        }
+      },
+      {
+        "name": "Siege Tracks",
+        "stats": {
+          "steer_pct": -2,
+          "hp_flat": 100,
+          "knockback_resist": 0.8,
+          "oil_immune": true
+        }
+      }
+    ]
+  },
+  "cannon": {
+    "name": "Cannon",
+    "category": "weapon",
+    "slots": [
+      "top_c",
+      "top_l",
+      "top_r",
+      "side_l",
+      "side_r"
+    ],
+    "unlock_level": 1,
+    "weight": 12,
+    "levels": [
+      {
+        "name": "Cannon",
+        "weapon": {
+          "type": "projectile",
+          "damage": 14,
+          "rate": 1.4,
+          "barrels": 1,
+          "speed": 36
+        }
+      },
+      {
+        "name": "Twin Cannons",
+        "weapon": {
+          "type": "projectile",
+          "damage": 14,
+          "rate": 1.4,
+          "barrels": 2,
+          "speed": 36
+        }
+      },
+      {
+        "name": "Gatling",
+        "weapon": {
+          "type": "projectile",
+          "damage": 9,
+          "rate": 7.0,
+          "barrels": 1,
+          "speed": 40
+        }
+      }
+    ]
+  },
+  "rocket": {
+    "name": "Rocket Launcher",
+    "category": "weapon",
+    "slots": [
+      "back_c",
+      "side_l",
+      "side_r"
+    ],
+    "unlock_level": 1,
+    "weight": 9,
+    "levels": [
+      {
+        "name": "Rocket Launcher",
+        "weapon": {
+          "type": "rocket",
+          "damage": 40,
+          "rate": 0.55,
+          "area_radius": 2.4,
+          "speed": 26,
+          "ignores_plate": true
+        }
+      },
+      {
+        "name": "Dual Pod",
+        "weapon": {
+          "type": "rocket",
+          "damage": 40,
+          "rate": 0.85,
+          "area_radius": 2.6,
+          "speed": 26,
+          "ignores_plate": true
+        }
+      },
+      {
+        "name": "Missile Rack",
+        "weapon": {
+          "type": "rocket",
+          "damage": 40,
+          "rate": 1.1,
+          "area_radius": 2.8,
+          "speed": 28,
+          "ignores_plate": true
+        }
+      }
+    ]
+  },
+  "flame": {
+    "name": "Flamethrower",
+    "category": "weapon",
+    "slots": [
+      "front_c",
+      "side_l",
+      "side_r"
+    ],
+    "unlock_level": 2,
+    "weight": 7,
+    "levels": [
+      {
+        "name": "Flamethrower",
+        "weapon": {
+          "type": "cone",
+          "dps": 45,
+          "range": 6.0,
+          "burn_dps": 10,
+          "burn_s": 2.0
+        }
+      },
+      {
+        "name": "Flame Jet",
+        "weapon": {
+          "type": "cone",
+          "dps": 70,
+          "range": 7.0,
+          "burn_dps": 14,
+          "burn_s": 2.5
+        }
+      },
+      {
+        "name": "Inferno",
+        "weapon": {
+          "type": "cone",
+          "dps": 100,
+          "range": 8.0,
+          "burn_dps": 20,
+          "burn_s": 3.0
+        }
+      }
+    ]
+  },
+  "armour": {
+    "name": "Heavy Armour",
+    "category": "defence",
+    "slots": [
+      "front_c",
+      "shoulder_l",
+      "shoulder_r"
+    ],
+    "unlock_level": 1,
+    "weight": 10,
+    "levels": [
+      {
+        "name": "Armour Plates",
+        "stats": {
+          "armor_pct": 8,
+          "hp_flat": 30,
+          "steer_pct": -3
+        }
+      },
+      {
+        "name": "Heavy Plating",
+        "stats": {
+          "armor_pct": 14,
+          "hp_flat": 55,
+          "steer_pct": -5
+        }
+      },
+      {
+        "name": "Fortress Plating",
+        "stats": {
+          "armor_pct": 20,
+          "hp_flat": 80,
+          "steer_pct": -8
+        }
+      }
+    ]
+  },
+  "shield": {
+    "name": "Energy Shield",
+    "category": "defence",
+    "slots": [
+      "head",
+      "back_c"
+    ],
+    "unlock_level": 3,
+    "weight": 7,
+    "levels": [
+      {
+        "name": "Energy Shield",
+        "stats": {
+          "shield_charges": 1,
+          "shield_recharge_s": 8.0
+        }
+      },
+      {
+        "name": "Barrier",
+        "stats": {
+          "shield_charges": 1,
+          "shield_recharge_s": 6.0
+        }
+      },
+      {
+        "name": "Aegis",
+        "stats": {
+          "shield_charges": 2,
+          "shield_recharge_s": 4.5
+        }
+      }
+    ]
+  },
+  "magnet": {
+    "name": "Scrap Magnet",
+    "category": "collection",
+    "slots": [
+      "back_c",
+      "top_c"
+    ],
+    "unlock_level": 1,
+    "weight": 8,
+    "levels": [
+      {
+        "name": "Scrap Magnet",
+        "stats": {
+          "magnet_mult": 1.8
+        }
+      },
+      {
+        "name": "Strong Magnet",
+        "stats": {
+          "magnet_mult": 2.5
+        }
+      },
+      {
+        "name": "Mega Magnet",
+        "stats": {
+          "magnet_mult": 3.2
+        }
+      }
+    ]
+  },
+  "storage": {
+    "name": "Storage Pack",
+    "category": "collection",
+    "slots": [
+      "back_c"
+    ],
+    "unlock_level": 3,
+    "weight": 6,
+    "levels": [
+      {
+        "name": "Storage Pack",
+        "stats": {
+          "scrap_mult": 1.25
+        }
+      },
+      {
+        "name": "Cargo Rack",
+        "stats": {
+          "scrap_mult": 1.5
+        }
+      },
+      {
+        "name": "Vault",
+        "stats": {
+          "scrap_mult": 1.8
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+Derived from godot_lab/builds/lab_s4_2k_debug.apk (compressed bytes of the imported .fontdata entries)
+Bungee-Regular.ttf compressed_bytes=64483
+NotoSansDevanagari-VF.ttf compressed_bytes=416490
+NotoSansArabic-VF.ttf compressed_bytes=519794
+total_compressed_bytes=1000767

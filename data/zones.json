@@ -1,0 +1,44 @@
+{
+  "junkyard": {
+    "levels": [
+      1,
+      5
+    ],
+    "sky": "junkyard_sky",
+    "fog_color": "#E9C98F",
+    "modifiers": []
+  },
+  "desert": {
+    "levels": [
+      6,
+      10
+    ],
+    "sky": "desert_sky",
+    "fog_color": "#F2B36B",
+    "modifiers": [
+      "deep_sand_patches"
+    ]
+  },
+  "factory": {
+    "levels": [
+      11,
+      15
+    ],
+    "sky": "factory_sky",
+    "fog_color": "#8A8F9C",
+    "modifiers": [
+      "conveyor_lanes"
+    ]
+  },
+  "snow": {
+    "levels": [
+      16,
+      20
+    ],
+    "sky": "snow_sky",
+    "fog_color": "#DDE8F5",
+    "modifiers": [
+      "ice_grip"
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "gate_count": "min(10, 5 + level)",
+  "gate_spacing": [
+    85,
+    110
+  ],
+  "category_rules": [
+    "no_two_same_category_in_pair",
+    "weapon_by_gate_3_if_none_owned",
+    "no_part_at_lv3_offered"
+  ],
+  "special_beats": {
+    "miniboss_at_fraction": 0.5,
+    "repair_bay_at_fraction": 0.7,
+    "final_choice_before_boss": true
+  },
+  "tradeoff_gate_chance": 0.2,
+  "gamble_gate_chance": 0.15,
+  "enemy_budget_per_100m": "6 + level * 1.5",
+  "run_target_seconds": "min(150, 90 + 8 * (level - 1))"
+}

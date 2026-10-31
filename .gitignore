@@ -1,0 +1,8 @@
+.godot/
+/android/
+/build/
+/third_party/
+*.jks
+*.keystore
+*.idsig
+.DS_Store

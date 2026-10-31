@@ -1,0 +1,60 @@
+{
+  "scrapper": {
+    "hp": 18,
+    "speed": 3.5,
+    "contact_damage": 6,
+    "telegraph_s": 0.0,
+    "scrap": 2,
+    "pack": [
+      4,
+      8
+    ]
+  },
+  "gunner": {
+    "hp": 40,
+    "speed": 0.0,
+    "bolt_damage": 8,
+    "fire_interval_s": 2.2,
+    "telegraph_s": 0.6,
+    "bolt_speed": 18,
+    "scrap": 5
+  },
+  "bruiser": {
+    "hp": 120,
+    "speed": 2.0,
+    "charge_damage": 20,
+    "windup_s": 1.0,
+    "charge_speed": 14,
+    "charge_cooldown_s": 3.0,
+    "knockback": 4.0,
+    "scrap": 12,
+    "rare_drop_chance": 0.15
+  },
+  "elite_bruiser": {
+    "hp": 400,
+    "speed": 2.2,
+    "charge_damage": 28,
+    "windup_s": 0.9,
+    "charge_speed": 15,
+    "double_charge": true,
+    "knockback": 5.0,
+    "scrap": 40,
+    "guaranteed_rare_drop": true
+  },
+  "saw": {
+    "damage": 15,
+    "rail_speed": 4.0,
+    "radius": 0.9
+  },
+  "oil": {
+    "slow_pct": 40,
+    "duration_s": 1.5,
+    "radius": 1.8
+  },
+  "barrel": {
+    "hp": 10,
+    "blast_radius": 2.5,
+    "blast_damage_enemy": 40,
+    "blast_damage_player": 25
+  }
+}
