@@ -1,0 +1,10 @@
+{
+  "random": {
+    "reaction_delay_s": 0.25,
+    "miss_telegraph_probability": 0.28
+  },
+  "perfect": {
+    "reaction_delay_s": 0,
+    "miss_telegraph_probability": 0
+  }
+}

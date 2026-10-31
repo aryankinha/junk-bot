@@ -78,6 +78,12 @@
       "lane": "left"
     },
     {
+      "z": 365,
+      "type": "hazard",
+      "kind": "oil",
+      "lane": "left"
+    },
+    {
       "z": 380,
       "type": "hazard",
       "kind": "barrel",
@@ -132,5 +138,11 @@
       "type": "final_choice",
       "pool_size": 3
     }
-  ]
+  ],
+  "miniboss_rare_reward": {
+    "id": "wheels",
+    "level": 2
+  },
+  "final_choice_grant_levels": 3,
+  "final_choice_bonus_merges": 1
 }

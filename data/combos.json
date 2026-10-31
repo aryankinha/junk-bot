@@ -24,7 +24,8 @@
       "duration_s": 2.0,
       "invulnerable": true,
       "damage": 60,
-      "knockback": 6.0
+      "knockback": 6.0,
+      "speed_mult": 2.0
     },
     "cooldown_s": 12.0
   },

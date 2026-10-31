@@ -1,0 +1,5 @@
+Original procedural meshes, SVG icon and synthesized audio: CC0 1.0 Universal.
+https://creativecommons.org/publicdomain/zero/1.0/
+Font files are separately licensed under SIL OFL 1.1; see their accompanying OFL files.
+AdMob runtime: MIT; see addons/admob/LICENSE.
+Godot Engine and its built-in components retain their respective licences.
