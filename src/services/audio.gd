@@ -6,6 +6,9 @@ var music_player: AudioStreamPlayer
 var streams: Dictionary = {}
 var last_played: Dictionary = {}
 var music_name := ""
+var sfx_volume := 1.0
+var music_volume := 1.0
+var ducked := false
 func _ready() -> void:
 	for bus_name in ["Music", "SFX", "UI"]:
 		if AudioServer.get_bus_index(bus_name) < 0:
@@ -64,7 +67,18 @@ func music(id: String) -> void:
 		music_player.stream = streams[id]
 		music_player.play()
 func duck(active: bool) -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), -10 if active else -6)
+	ducked = active
+	apply_volumes(sfx_volume, music_volume)
+
+func apply_volumes(sfx: float, music_level: float) -> void:
+	sfx_volume = clampf(sfx, 0, 1)
+	music_volume = clampf(music_level, 0, 1)
+	for bus in ["SFX", "UI", "Music"]:
+		var index := AudioServer.get_bus_index(bus)
+		if index < 0: continue
+		var volume := music_volume if bus == "Music" else sfx_volume
+		AudioServer.set_bus_mute(index, volume <= 0)
+		AudioServer.set_bus_volume_db(index, (-10.0 if ducked else -6.0) + linear_to_db(maxf(0.001, volume)) if bus == "Music" else linear_to_db(maxf(0.001, volume)))
 
 func _exit_tree() -> void:
 	if music_player != null:

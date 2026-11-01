@@ -1,4 +1,7 @@
 extends Node3D
+const UiV2Script = preload("res://src/ui/ui_v2.gd")
+var ui_v2_enabled := false
+var ui_v2
 const NAVY = Color("34433f")
 const CREAM = Color("34433f")
 const MUTED = Color("68746b")
@@ -129,6 +132,8 @@ func _ready() -> void:
 		save.data = save.defaults()
 		flag_overrides["mob_stream"] = playtest_variant == "b"
 		flag_overrides["engagement_metrics"] = true
+	ui_v2_enabled = bool(flag_overrides.get("ui_v2", GameData.flags().get("ui_v2", false)))
+	if ui_v2_enabled: display_font = load("res://assets/fonts/rajdhani_Rajdhani-Bold.ttf")
 	if OS.has_feature("macos") and DisplayServer.get_name() != "headless" and not OS.get_cmdline_args().has("--resolution") and not OS.get_cmdline_args().has("--write-movie"):
 		var available := DisplayServer.screen_get_usable_rect().size
 		var height := mini(1152, int(available.y * 0.86))
@@ -213,6 +218,10 @@ func _ready() -> void:
 		show_hangar()
 
 func style(color: Color, border := Color.TRANSPARENT, radius := 26, lip := 8) -> StyleBoxFlat:
+	if ui_v2_enabled:
+		radius = 6
+		lip = 0
+		if border.a <= 0: border = Color("66746d")
 	var box := StyleBoxFlat.new()
 	box.bg_color = color
 	box.border_color = border if border.a > 0 else Color("d9dfd5")
@@ -262,9 +271,11 @@ func make_button(value: String, action: Callable, primary := false, tone := "") 
 		haptics.tap(10, 0.2)
 		action.call())
 	button.button_down.connect(func():
+		if ui_v2_enabled and bool(save.data.settings.reduce_motion): return
 		button.pivot_offset = button.size / 2
 		button.create_tween().tween_property(button, "scale", Vector2.ONE * 0.95, 0.06))
 	button.button_up.connect(func():
+		if ui_v2_enabled and bool(save.data.settings.reduce_motion): return
 		button.create_tween().tween_property(button, "scale", Vector2.ONE, 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT))
 	return button
 
@@ -318,6 +329,10 @@ func bar(color: Color, height := 22) -> ProgressBar:
 	return node
 
 func _build_hud() -> void:
+	if ui_v2_enabled:
+		ui_v2 = UiV2Script.new()
+		ui_v2.build(self)
+		return
 	var canvas := CanvasLayer.new()
 	add_child(canvas)
 	hud = Control.new()
@@ -583,6 +598,7 @@ func spacer(parent: Control) -> void:
 	parent.add_child(space)
 
 func start_run(is_daily := false) -> void:
+	_configure_ui_v2(bool(flag_overrides.get("ui_v2", GameData.flags().get("ui_v2", false))))
 	daily = is_daily
 	daily_key = Time.get_date_string_from_system(true)
 	var seed_arg := int(daily_key.replace("-", "")) if daily else int(Time.get_unix_time_from_system())
@@ -637,6 +653,19 @@ func start_run(is_daily := false) -> void:
 	world.reset_run_feedback()
 	audio.music("run_music")
 	world.sync(sim, 0)
+	if ui_v2_enabled: ui_v2.reset(self)
+
+func _configure_ui_v2(enabled: bool) -> void:
+	if enabled != ui_v2_enabled:
+		var old_canvas = hud.get_parent()
+		remove_child(old_canvas)
+		old_canvas.queue_free()
+		ui_v2_enabled = enabled
+		display_font = load("res://assets/fonts/rajdhani_Rajdhani-Bold.ttf" if enabled else "res://assets/fonts/lilita_LilitaOne-Regular.ttf")
+		ui_v2 = null
+		_build_hud()
+	world.ui_v2_enabled = enabled
+	world.popup_limit = 3 if enabled else 10
 
 # One camera update owns the transform. Rewards never change projection, offsets or simulation timing.
 func _reset_camera() -> void:
@@ -658,6 +687,9 @@ func _update_camera(delta: float) -> void:
 	camera.v_offset = 0.0
 
 func toast(value: String) -> void:
+	if ui_v2_enabled:
+		ui_v2.hero(self, value, 30, GREEN)
+		return
 	toast_label.text = value
 	toast_timer = 1.8
 	toast_label.pivot_offset = toast_label.size / 2
@@ -676,6 +708,9 @@ func _events() -> void:
 	for event in sim.events:
 		if event.t not in ["scrap", "weapon_fire", "gate_charge_tick", "wave_spawn", "cluster_burst", "mob_gate_pass"]:
 			TelemetryLog.log_event(event)
+		if ui_v2_enabled and event.t not in ["combo_active", "buy_offer", "station_unavailable"]:
+			ui_v2.on_event(self, event)
+			continue
 		match str(event.t):
 			"part_attached", "part_upgraded":
 				var id: String = event.id
@@ -887,7 +922,7 @@ func _process(delta: float) -> void:
 		pickup_glow = maxf(0.0, pickup_glow - delta)
 		scrap_label.modulate = Color.WHITE.lerp(Color(1.0, 0.85, 0.5), pickup_glow / 0.18)
 		ui_tick += delta
-		if ui_tick > 0.1:
+		if ui_tick > (0.05 if ui_v2_enabled else 0.1):
 			_update_hud()
 			ui_tick = 0
 		if sim.state in ["won", "lost"]:
@@ -913,6 +948,7 @@ func _process(delta: float) -> void:
 		await RenderingServer.frame_post_draw
 		if not snapshot_path.is_empty():
 			get_viewport().get_texture().get_image().save_png(snapshot_path)
+	if ui_v2_enabled: ui_v2.tick(self, delta)
 	if exit_after > 0 and runtime >= exit_after:
 		perf.write()
 		perf.write(perf_output)
@@ -928,6 +964,9 @@ func chip_style(category: String) -> StyleBoxFlat:
 	return box
 
 func _update_hud() -> void:
+	if ui_v2_enabled:
+		ui_v2.sync_hud(self)
+		return
 	level_label.text = "DAILY" if daily else "LEVEL %d" % sim.level
 	scrap_label.text = "%d" % sim.robot.scrap
 	if paused or screen != "run":
@@ -1334,7 +1373,7 @@ func _hangar_page(tab: String) -> void:
 						save.unlock(part_id)
 						show_hangar("armoury"), false, "green")
 					buy.disabled = int(save.data.cogs) < cost
-					buy.custom_minimum_size = Vector2(230, 110)
+					buy.custom_minimum_size = Vector2(230, 120 if ui_v2_enabled else 110)
 					card.get_child(0).add_child(buy)
 				list.add_child(card)
 			else:
@@ -1356,9 +1395,9 @@ func _hangar_page(tab: String) -> void:
 							audio.play("upgrade")
 						show_hangar("upgrades"), highlight, "green" if affordable else "grey")
 					buy.disabled = not affordable
-					buy.custom_minimum_size = Vector2(230, 110)
+					buy.custom_minimum_size = Vector2(230, 120 if ui_v2_enabled else 110)
 					card.get_child(0).add_child(buy)
-					if highlight:
+					if highlight and not ui_v2_enabled:
 						var pulse := buy.create_tween().set_loops()
 						pulse.tween_property(buy, "modulate", Color(1.15, 1.15, 1.15), 0.55)
 						pulse.tween_property(buy, "modulate", Color.WHITE, 0.55)
@@ -1467,7 +1506,10 @@ func resume_run() -> void:
 func show_settings() -> void:
 	screen = "settings"
 	var column := menu("SETTINGS", "")
+	if ui_v2_enabled:
+		ui_v2.settings_ui(self, column)
 	for id in ["sound", "music", "haptics", "reduce_motion"]:
+		if ui_v2_enabled: break
 		var key: String = id
 		var enabled: bool = bool(save.data.settings.get(id, false))
 		column.add_child(make_button("%s   %s" % [id.replace("_", " ").to_upper(), "ON" if enabled else "OFF"], func():
@@ -1503,6 +1545,8 @@ func _apply_settings() -> void:
 	audio.enabled = bool(save.data.settings.sound)
 	audio.music_enabled = bool(save.data.settings.music)
 	haptics.enabled = bool(save.data.settings.haptics)
+	audio.apply_volumes(float(save.data.settings.get("sfx_volume", 1.0)) if ui_v2_enabled else 1.0, float(save.data.settings.get("music_volume", 1.0)) if ui_v2_enabled else 1.0)
+	if ui_v2_enabled and ui_v2 != null: ui_v2.layout(self)
 	if audio.music_player != null:
 		if not audio.music_enabled:
 			audio.music_player.stop()

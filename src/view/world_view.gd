@@ -1,4 +1,6 @@
 class_name WorldView extends Node3D
+var ui_v2_enabled := false
+var popup_limit := 10
 var road: MeshInstance3D
 var stripes: MultiMeshInstance3D
 var skids: MultiMeshInstance3D
@@ -535,8 +537,8 @@ func _build_player_fx() -> void:
 
 # Floating world-space text (scrap pickups, damage, kill streaks).
 func popup(text: String, pos: Vector3, color := Color.WHITE, size := 72) -> void:
-	var label := popups[popup_index]
-	popup_index = (popup_index + 1) % popups.size()
+	var label := popups[popup_index % popup_limit]
+	popup_index = (popup_index + 1) % popup_limit
 	label.text = text
 	label.font_size = mini(size, 64)
 	label.modulate = color
