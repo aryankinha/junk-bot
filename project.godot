@@ -12,11 +12,12 @@ config/auto_accept_quit=false
 [display]
 window/size/viewport_width=1080
 window/size/viewport_height=1920
-window/size/window_width_override=432
-window/size/window_height_override=768
+window/size/window_width_override=648
+window/size/window_height_override=1152
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
+window/dpi/allow_hidpi=true
 
 [rendering]
 renderer/rendering_method="gl_compatibility"
@@ -24,7 +25,8 @@ renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
 textures/default_filters/use_nearest_mipmap_filter=false
 environment/defaults/default_clear_color=Color(0.89, 0.77, 0.58, 1)
-anti_aliasing/quality/msaa_3d=0
+anti_aliasing/quality/msaa_3d=2
+anti_aliasing/quality/msaa_3d.mobile=0
 
 [physics]
 common/physics_ticks_per_second=60

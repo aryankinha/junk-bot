@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M3
+
+{"captured_image":"(720, 1280)","checks":"passed","hidpi":true,"portrait":"(1200.0, 1200.0)","preview_msaa":2,"root_msaa":2,"screen_scale":2.0,"surface_after_os_resize":"(480.0, 854.0)"}

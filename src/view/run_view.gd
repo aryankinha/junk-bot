@@ -93,6 +93,7 @@ var reward_label: Label
 
 func _ready() -> void:
 	GameData.load_all()
+	get_viewport().msaa_3d = Viewport.MSAA_DISABLED if OS.has_feature("mobile") else Viewport.MSAA_4X
 	display_font = load("res://assets/fonts/lilita_LilitaOne-Regular.ttf")
 	body_font = load("res://assets/fonts/barlow_Barlow-SemiBold.ttf")
 	save.load_save()
@@ -112,6 +113,10 @@ func _ready() -> void:
 	if capture:
 		save.path = "user://capture_save.json"
 		save.data = save.defaults()
+	if OS.has_feature("macos") and DisplayServer.get_name() != "headless" and not OS.get_cmdline_args().has("--resolution") and not OS.get_cmdline_args().has("--write-movie"):
+		var available := DisplayServer.screen_get_usable_rect().size
+		var height := mini(1152, int(available.y * 0.86))
+		get_window().size = Vector2i(int(height * 9.0 / 16.0), height)
 	audio = GameAudio.new()
 	add_child(audio)
 	ads = AdsService.new()
@@ -1005,7 +1010,8 @@ func _finish_run() -> void:
 
 func capture_build() -> ImageTexture:
 	var viewport := SubViewport.new()
-	viewport.size = Vector2i(600, 600)
+	viewport.size = Vector2i(600, 600) if OS.has_feature("mobile") else Vector2i(1200, 1200)
+	viewport.msaa_3d = Viewport.MSAA_DISABLED if OS.has_feature("mobile") else Viewport.MSAA_4X
 	viewport.own_world_3d = true
 	viewport.transparent_bg = true
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
@@ -1317,6 +1323,7 @@ func _hangar_preview(column: VBoxContainer, height := 290) -> void:
 	column.add_child(container)
 	var viewport := SubViewport.new()
 	viewport.size = Vector2i(900, height)
+	viewport.msaa_3d = Viewport.MSAA_DISABLED if OS.has_feature("mobile") else Viewport.MSAA_4X
 	viewport.own_world_3d = true
 	viewport.transparent_bg = true
 	container.add_child(viewport)

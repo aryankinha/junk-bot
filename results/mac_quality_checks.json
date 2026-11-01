@@ -1,0 +1,10 @@
+{
+  "captured_image": "(720, 1280)",
+  "checks": "passed",
+  "hidpi": true,
+  "portrait": "(1200.0, 1200.0)",
+  "preview_msaa": 2,
+  "root_msaa": 2,
+  "screen_scale": 2.0,
+  "surface_after_os_resize": "(480.0, 854.0)"
+}
