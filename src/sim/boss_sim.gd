@@ -132,6 +132,8 @@ func _finish_attack(sim) -> void:
 	if not attack_hit and attack != "call_scrappers":
 		sim.robot.overdrive = minf(100, sim.robot.overdrive + float(config.overdrive.per_clean_dodge))
 		sim.emit("clean_dodge")
+		sim.exposed_time = 3.0
+		sim.emit("boss_exposed")
 	sweep_active = false
 	zones.clear()
 	attack = ""

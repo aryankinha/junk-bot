@@ -30,17 +30,6 @@
     "scrap": 12,
     "rare_drop_chance": 0.15
   },
-  "elite_bruiser": {
-    "hp": 400,
-    "speed": 2.2,
-    "charge_damage": 28,
-    "windup_s": 0.9,
-    "charge_speed": 15,
-    "double_charge": true,
-    "knockback": 5.0,
-    "scrap": 40,
-    "guaranteed_rare_drop": true
-  },
   "saw": {
     "damage": 15,
     "rail_speed": 4.0,
@@ -56,5 +45,13 @@
     "blast_radius": 2.5,
     "blast_damage_enemy": 40,
     "blast_damage_player": 25
+  },
+  "hauler": {
+    "hp": 380,
+    "speed": 7.0,
+    "scrap": 40,
+    "drop_interval_s": 2.2,
+    "coin_burst": 18,
+    "guaranteed_rare_drop": true
   }
 }

@@ -170,7 +170,7 @@ func run() -> void:
 	check(gunner.robot.hp < gunner.robot.max_hp, "hostile bolt collision deals damage")
 	var charging := RunSim.new()
 	charging.setup(1, 23)
-	charging.spawn_pack("elite_bruiser", 1, 12)
+	charging.spawn_pack("bruiser", 1, 12)
 	charging.enemies[0].x = 0
 	charging.enemies[0].aim_x = 0
 	charging.enemies[0].timer = 0
@@ -182,14 +182,56 @@ func run() -> void:
 		charging.robot.tick(1.0 / 60)
 		charging._combat(1.0 / 60)
 	check(float(charging.enemies[0].z) < initial_charge_z, "charging enemy advances through the lane")
-	var charge_events := 0
-	for tick in 160:
-		charging.robot.tick(1.0 / 60)
-		charging._combat(1.0 / 60)
-	for event in charging.events:
-		if event.t == "player_hit":
-			charge_events += 1
-	check(charge_events == 2, "Elite performs two separately damaging charges")
+	var hauler := RunSim.new()
+	hauler.setup(1, 24)
+	hauler.spawn_pack("hauler", 1, 30)
+	hauler.enemies[0].timer = 0
+	var start_z: float = hauler.enemies[0].z
+	for tick in 300:
+		hauler.t += 1.0 / 60
+		hauler._combat(1.0 / 60)
+	var barrels := 0
+	for enemy in hauler.enemies:
+		if enemy.id == "barrel":
+			barrels += 1
+	var hauler_events: Array = hauler.events.filter(func(e): return e.t == "hauler_spawn")
+	check(float(hauler.enemies[0].z) > start_z and barrels >= 1 and hauler_events.size() == 1, "Scrap Hauler drives off and drops barrels")
+	hauler.enemies[0].hp = 0
+	hauler._combat(0.01)
+	var burst_coins: int = hauler.scrap_nodes.size()
+	check(burst_coins >= 10 and hauler.events.any(func(e): return e.t == "hauler_destroyed"), "Destroyed hauler bursts into coins")
+	check(hauler.robot.parts.has("wheels"), "Destroyed hauler drops a rare part")
+	var missed := RunSim.new()
+	missed.setup(1, 27)
+	missed.spawn_pack("hauler", 1, 10)
+	missed.z = 40
+	missed._combat(0.01)
+	check(missed.events.any(func(e): return e.t == "hauler_missed"), "Passing the hauler counts as a miss")
+	var chain := RunSim.new()
+	chain.setup(1, 25)
+	var first_coin := {"x": 0.0, "z": 1.0, "alive": true}
+	chain.pickup_coin(first_coin)
+	var scrap_one: int = chain.robot.scrap
+	for i in 29:
+		chain.pickup_coin({"x": 0.0, "z": 1.0, "alive": true})
+	check(chain.chain == 30 and chain.robot.scrap - scrap_one > 29, "coin chain raises coin value")
+	chain.robot.take_damage(5, chain)
+	check(chain.chain == 0, "damage breaks the coin chain")
+	var utility := RunSim.new()
+	utility.setup(2, 26)
+	utility.robot.hp = 10
+	utility.apply_option({"kind": "heal", "pct": 0.35})
+	check(utility.robot.hp > 10, "heal gate repairs")
+	utility.apply_option({"kind": "frenzy"})
+	check(utility.frenzy_time > 0, "frenzy gate starts")
+	var three := 0
+	for seed_value in 40:
+		var probe := RunSim.new()
+		probe.setup(3, seed_value)
+		for beat in probe.beats:
+			if beat.has("options") and beat.options.size() == 3:
+				three += 1
+	check(three > 0, "generated levels include three-lane gates")
 	var overdrive_sim := RunSim.new()
 	overdrive_sim.setup(1, 24)
 	overdrive_sim.state = "boss"

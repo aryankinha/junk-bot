@@ -34,6 +34,13 @@ var oil_time := 0.0
 var shot_count := 0
 var entity_counter := 0
 var pending_parts: Array = []
+var chain := 0
+var scrap_frac := 0.0
+var chain_timer := 0.0
+var best_chain := 0
+var coin_index := 0
+var frenzy_time := 0.0
+var exposed_time := 0.0
 
 func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count := 0, early_unlocks: Array = []) -> void:
 	level = level_value
@@ -62,11 +69,11 @@ func _generate_beats() -> void:
 	var gen: Dictionary = GameData.table("level_generator")
 	var distance := 80.0
 	for i in mini(10, 5 + level):
-		beats.append({"z": distance, "type": "gate", "options": GateGen.pair(level, robot, rng.gates, i, unlocked), "generated": true})
+		beats.append({"z": distance, "type": "gate", "options": GateGen.with_extra(GateGen.pair(level, robot, rng.gates, i, unlocked), level, i, rng.gates), "generated": true})
 		beats.append({"z": distance + 40, "type": "enemy_pack", "enemy": ["scrapper", "gunner", "bruiser"][i % 3], "count": 4 if i % 3 == 0 else 1})
 		distance += rng.gates.randf_range(float(gen.gate_spacing[0]), float(gen.gate_spacing[1]))
 	boss_z = distance + 80
-	beats.append({"z": boss_z * 0.5, "type": "miniboss", "enemy": "elite_bruiser"})
+	beats.append({"z": boss_z * 0.5, "type": "miniboss", "enemy": "hauler"})
 	beats.append({"z": boss_z * 0.7, "type": "repair_bay"})
 	beats.append({"z": boss_z - 45, "type": "final_choice"})
 	beats.sort_custom(func(a, b): return a.z < b.z)
@@ -90,7 +97,10 @@ func reroll() -> bool:
 	var gate := next_gate()
 	if gate.is_empty():
 		return false
+	var had_extra: bool = gate.options.size() > 2
 	gate.options = GateGen.pair(level, robot, rng.gates, gate_history.size(), unlocked)
+	if had_extra:
+		gate.options.append(GateGen.utility(rng.gates))
 	free_rerolls -= 1
 	emit("reroll")
 	return true
@@ -139,6 +149,15 @@ func apply_option(option: Dictionary) -> void:
 			else:
 				emit("station_unavailable", {"placement": "repair"})
 		"scrap": collect_scrap(int(option.get("amount", 25)))
+		"heal":
+			robot.hp = minf(robot.max_hp, robot.hp + robot.max_hp * float(option.get("pct", 0.35)))
+			emit("healed")
+		"frenzy":
+			frenzy_time = 12.0
+			emit("frenzy")
+		"surge":
+			robot.overdrive = minf(100.0, robot.overdrive + 50.0)
+			emit("surge")
 
 func choose_purchase(id: String) -> bool:
 	if state != "choosing" or not pending_parts.has(id):
@@ -148,11 +167,40 @@ func choose_purchase(id: String) -> bool:
 	state = "running"
 	return true
 
-func collect_scrap(amount: int) -> void:
-	var value := maxi(1, int(round(amount * float(robot.stats.scrap_mult))))
+func collect_scrap(amount: int, chain_mult := 1.0, extra: Dictionary = {}) -> void:
+	var raw := amount * float(robot.stats.scrap_mult) * chain_mult * (2.0 if frenzy_time > 0 else 1.0)
+	var value := maxi(1, int(round(raw)))
+	if chain_mult > 1.0:
+		# Carry the fraction so a +1.5% chain bonus still pays out over a run.
+		raw += scrap_frac
+		value = maxi(1, int(floor(raw)))
+		scrap_frac = raw - floor(raw)
 	robot.scrap += value
 	robot.collected += value
-	emit("scrap", {"amount": value})
+	emit("scrap", {"amount": value}.merged(extra))
+
+# Picking up coins back to back builds a chain that raises their value (max +60%).
+func pickup_coin(node: Dictionary) -> void:
+	node.alive = false
+	chain += 1
+	best_chain = maxi(best_chain, chain)
+	chain_timer = 1.4
+	var gold: bool = node.get("gold", false)
+	collect_scrap(5 if gold else 1, 1.0 + minf(chain, 40) * 0.015, {"chain": chain, "gold": gold})
+
+# Coin layouts rotate between waves, zigzags and lane lines, and lure toward a gate lane near gates.
+func _coin_x(zc: float) -> float:
+	for beat in beats:
+		if beat.has("options") and not beat.resolved and float(beat.z) - zc < 30 and float(beat.z) - zc > 0:
+			var count: int = beat.options.size()
+			var lane := (int(beat.z) / 7) % count
+			return -3.4 + 6.8 * (lane + 0.5) / count
+	var seg := int(zc / 70.0) % 4
+	match seg:
+		0: return sin(zc * 0.06) * 2.0
+		1: return absf(fposmod(zc, 18.0) - 9.0) / 9.0 * 4.4 - 2.2
+		2: return float(int(zc / 70.0) % 3 - 1) * 2.2
+		_: return sin(zc * 0.11) * 2.8
 
 func spawn_pack(id: String, count: int, at_z: float) -> void:
 	var def: Dictionary = GameData.table("enemies")[id]
@@ -165,7 +213,7 @@ func _spawn_beats() -> void:
 		var beat: Dictionary = beats[next_beat]
 		match str(beat.type):
 			"enemy_pack": spawn_pack(str(beat.enemy), int(beat.count), float(beat.z))
-			"miniboss": spawn_pack("elite_bruiser", 1, float(beat.z))
+			"miniboss": spawn_pack("hauler", 1, float(beat.z))
 			"hazard":
 				if beat.kind == "barrel":
 					spawn_pack("barrel", 1, float(beat.z))
@@ -175,7 +223,9 @@ func _spawn_beats() -> void:
 		next_beat += 1
 	while next_scrap_z < z + 55 and next_scrap_z < boss_z:
 		if scrap_nodes.size() < 400:
-			scrap_nodes.append({"x": sin(next_scrap_z * 0.06) * 2.0, "z": next_scrap_z, "alive": true})
+			if int(next_scrap_z / 2.8) % 20 < 14:
+				coin_index += 1
+				scrap_nodes.append({"x": _coin_x(next_scrap_z), "z": next_scrap_z, "alive": true, "gold": coin_index % 14 == 0})
 		next_scrap_z += 2.8
 
 func _resolve_gates() -> void:
@@ -306,7 +356,7 @@ func _combat(dt: float) -> void:
 				impacted = true
 				break
 		if not impacted and state == "boss" and float(bullet.z) >= z + 14:
-			boss.apply_hit(str(bullet.type), float(bullet.damage), self, "arm" if boss.arm_hp > 0 else "core")
+			boss.apply_hit(str(bullet.type), float(bullet.damage) * (1.5 if exposed_time > 0 else 1.0), self, "arm" if boss.arm_hp > 0 else "core")
 			if boss.roar <= 0:
 				last_boss_hit = t
 			impacted = true
@@ -334,12 +384,22 @@ func _combat(dt: float) -> void:
 					robot.take_damage(float(def.blast_damage_player), self, "barrel")
 			collect_scrap(int(def.get("scrap", 2)))
 			emit("enemy_death", {"x": enemy.x, "z": enemy.z, "id": enemy.id})
-			if enemy.id == "elite_bruiser":
+			if enemy.id == "hauler":
+				# Jackpot: the crate bursts into a spray of coins and drops a rare part.
 				var reward: Dictionary = GameData.table("gates_level1").miniboss_rare_reward
 				robot.add_part(str(reward.id), self, int(reward.level))
+				for k in int(def.get("coin_burst", 18)):
+					scrap_nodes.append({"x": clampf(float(enemy.x) + sin(k * 2.4) * 2.0, -3.0, 3.0), "z": float(enemy.z) + 1.0 + float(k) * 0.55, "alive": true, "gold": k % 6 == 0})
+				emit("hauler_destroyed", {"x": enemy.x, "z": enemy.z})
 			enemies.remove_at(i)
 			continue
 		var gap: float = float(enemy.z) - z
+		if enemy.id == "hauler":
+			_hauler(enemy, def, dt)
+			if gap < -5:
+				emit("hauler_missed")
+				enemies.remove_at(i)
+			continue
 		if gap < 22 and gap > -3:
 			enemy.timer -= dt
 			if enemy.id == "barrel":
@@ -357,8 +417,6 @@ func _combat(dt: float) -> void:
 				if absf(float(enemy.z) - z) < 1.1 and absf(float(enemy.x) - x) < 0.9:
 					robot.take_damage(float(def.get("charge_damage", 20)), self, str(enemy.id))
 				if float(enemy.charge_left) <= 0:
-					if enemy.id == "elite_bruiser":
-						enemy.z = z + 12
 					if int(enemy.charges_remaining) > 0:
 						enemy.warning = true
 						enemy.aim_x = x
@@ -385,6 +443,23 @@ func _combat(dt: float) -> void:
 		if gap < -5:
 			enemies.remove_at(i)
 
+# The Scrap Hauler drives away down the road with a loot crate and drops barrels behind it.
+# Shooting those barrels near the truck hurts it, so the chase rewards aim over reflexes.
+func _hauler(enemy: Dictionary, def: Dictionary, dt: float) -> void:
+	if not enemy.get("seen", false) and float(enemy.z) - z < 40:
+		enemy.seen = true
+		emit("hauler_spawn")
+	if not enemy.get("seen", false):
+		return
+	enemy.z += float(def.speed) * dt
+	enemy.x = sin(t * 1.3 + float(enemy.uid)) * 2.2
+	enemy.timer -= dt
+	if float(enemy.timer) <= 0 and float(enemy.z) - z > 4 and enemies.size() < 20:
+		enemy.timer = float(def.drop_interval_s)
+		spawn_pack("barrel", 1, float(enemy.z) - 3.0)
+		enemies.back().x = enemy.x
+		enemies.back().timer = 99.0
+
 func step(dt: float) -> void:
 	# Subdivision also makes externally supplied long steps safe.
 	var remaining := dt
@@ -401,21 +476,23 @@ func _tick(dt: float) -> void:
 	special_time = maxf(0, special_time - dt)
 	dash_time = maxf(0, dash_time - dt)
 	oil_time = maxf(0, oil_time - dt)
+	frenzy_time = maxf(0, frenzy_time - dt)
+	exposed_time = maxf(0, exposed_time - dt)
+	if chain_timer > 0:
+		chain_timer -= dt
+		if chain_timer <= 0:
+			chain = 0
 	x = lerpf(x, target_x, 1 - exp(-float(GameData.constants().lateral_follow_rate) * float(robot.stats.steer_mult) * dt))
 	if state == "running":
 		var speed: float = float(GameData.constants().forward_speed) * float(robot.stats.fwd_mult) * (0.6 if oil_time > 0 else 1.0)
 		if dash_time > 0:
 			speed *= float(GameData.table("combos").ram_charge.special.speed_mult)
-		for enemy in enemies:
-			if enemy.id == "elite_bruiser" and float(enemy.hp) > 0 and float(enemy.z) - z < 18:
-				speed = minf(speed, maxf(0, float(enemy.z) - z - 12) * 2)
 		z += speed * dt
 		_spawn_beats()
 		_resolve_gates()
 		for node in scrap_nodes:
-			if node.alive and Vector2(float(node.x) - x, float(node.z) - z).length() < float(robot.stats.magnet_radius):
-				node.alive = false
-				collect_scrap(1)
+			if node.alive and Vector2(float(node.x) - x, float(node.z) - z).length() < float(robot.stats.magnet_radius) * (1.6 if frenzy_time > 0 else 1.0):
+				pickup_coin(node)
 		for hazard in hazards:
 			if hazard.id == "saw":
 				hazard.x = sin(t * 2.0) * 2.8

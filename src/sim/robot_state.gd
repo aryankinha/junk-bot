@@ -159,6 +159,7 @@ func take_damage(amount: float, sim, cause := "impact") -> void:
 		sim.emit("shield_block")
 		return
 	hp = maxf(0, hp - amount * (1.0 - float(stats.armor)))
+	sim.chain = 0
 	invuln = float(GameData.constants().hit_invuln_s)
 	sim.emit("player_hit", {"amount": amount, "cause": cause})
 	var fraction := hp / max_hp

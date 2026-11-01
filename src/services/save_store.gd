@@ -4,7 +4,7 @@ var data: Dictionary = {}
 var path := PATH
 
 func defaults() -> Dictionary:
-	return {"v": 1, "cogs": 0, "level": 1, "part_tiers": {}, "unlocked_parts": [], "codex": [], "streak": 0, "best_daily": {}, "losses_on_level": 0, "settings": {"sound": true, "music": true, "haptics": true, "reduce_motion": false}, "stats": {"runs": 0, "wins": 0}, "tutorial_done": false}
+	return {"v": 1, "cogs": 0, "level": 1, "part_tiers": {}, "unlocked_parts": [], "codex": [], "streak": 0, "best_daily": {}, "losses_on_level": 0, "settings": {"sound": true, "music": true, "haptics": true, "reduce_motion": false}, "stats": {"runs": 0, "wins": 0, "best_combo": 0, "kills": 0}, "tutorial_done": false, "stars": {}, "last_login": "", "login_streak": 0}
 
 func load_save(file_path := "") -> void:
 	if not file_path.is_empty():
