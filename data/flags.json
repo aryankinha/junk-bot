@@ -11,6 +11,10 @@
   "weapon_evolution": false,
   "tuning": {
     "aim_cone_deg": 12.0,
-    "lane_half_width": 1.2
+    "lane_half_width": 1.2,
+    "charge_range": 30.0,
+    "charge_t1": 1.0,
+    "charge_t2": 2.5,
+    "payoff_distance": 14.0
   }
 }

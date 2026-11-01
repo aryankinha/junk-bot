@@ -348,6 +348,15 @@ static func enemy(id: String) -> ArrayMesh:
 				for dz in [-1.2, 0.4, 1.3]:
 					a.append(cylinder(0.5, 0.42, Vector3(side * 1.0, 0.5, dz), RUBBER, Vector3(0, 0, PI / 2), -1.0, 12))
 					a.append(cylinder(0.28, 0.46, Vector3(side * 1.0, 0.5, dz), RUST, Vector3(0, 0, PI / 2), -1.0, 10))
+		"crate":
+			# Armoured loot crate with a coin emblem on the face that looks at the player.
+			a.append(rbox(Vector3(1.5, 1.2, 1.5), Vector3(0, 0.7, 0), YELLOW, 0.16))
+			for i in 2:
+				a.append(rbox(Vector3(1.56, 0.16, 1.56), Vector3(0, 0.3 + i * 0.8, 0), DARK, 0.05))
+			for side in [-1, 1]:
+				a.append(rbox(Vector3(0.16, 1.26, 1.56), Vector3(side * 0.6, 0.7, 0), DARK, 0.05))
+			a.append(cylinder(0.3, 0.1, Vector3(0, 0.75, -0.78), ORANGE, Vector3(PI / 2, 0, 0), -1.0, 14))
+			a.append(cylinder(0.18, 0.12, Vector3(0, 0.75, -0.8), Color("ffe98a"), Vector3(PI / 2, 0, 0), -1.0, 12))
 		_:
 			# Bruiser / elite: crushed car body with tyre fists and a bumper grin.
 			a.append(rbox(Vector3(1.4, 0.7, 1.3), Vector3(0, 0.8, 0.05), FOE, 0.25))

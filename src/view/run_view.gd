@@ -50,6 +50,7 @@ var result_texture: ImageTexture
 var daily := false
 var daily_key := ""
 var bot: BotController
+var flag_overrides: Dictionary = {}
 var capture := false
 var snapshot_at := -1.0
 var snapshot_path := ""
@@ -104,6 +105,8 @@ func _ready() -> void:
 			capture = true
 		elif arg.begins_with("--perf-output="):
 			perf_output = arg.get_slice("=", 1)
+		elif arg.begins_with("--flags="):
+			flag_overrides = JSON.parse_string(arg.substr(8))
 		elif arg.begins_with("--snapshot-at="):
 			snapshot_at = arg.get_slice("=", 1).to_float()
 		elif arg.begins_with("--snapshot-path="):
@@ -571,6 +574,7 @@ func start_run(is_daily := false) -> void:
 		seed_arg = 20261031
 	var level := 1 if daily else int(save.data.level)
 	sim = RunSim.new()
+	sim.flag_overrides = flag_overrides
 	sim.setup(level, seed_arg, {} if daily else save.data.part_tiers, 0 if daily else int(save.data.losses_on_level), [] if daily else save.data.unlocked_parts)
 	bot = BotController.new(seed_arg, "perfect", 0) if capture else null
 	perf = PerfLog.new()
@@ -626,7 +630,7 @@ func bump_combo() -> void:
 
 func _events() -> void:
 	for event in sim.events:
-		if event.t not in ["scrap", "weapon_fire"]:
+		if event.t not in ["scrap", "weapon_fire", "gate_charge_tick"]:
 			TelemetryLog.log_event(event)
 		match str(event.t):
 			"part_attached", "part_upgraded":
@@ -713,6 +717,23 @@ func _events() -> void:
 				shake = 0.4
 			"hauler_missed":
 				toast("IT GOT AWAY...")
+			"salvage_spawn":
+				toast("SALVAGE!\nBlast the barrel or crack the crate")
+				audio.play("warning")
+			"salvage_looted":
+				toast("LOOT!")
+				audio.play("victory")
+				var crate_pos := Vector3(event.x, 1.2, sim.z - float(event.z))
+				world.burst(crate_pos, 36, MeshFactory.YELLOW, 1.8)
+				world.popup("LOOT!", crate_pos + Vector3(0, 2.0, 0), MeshFactory.YELLOW, 100)
+				fov_kick = 5.0
+				shake = 0.25
+			"gate_level_up":
+				var bonus_text := "LEVEL %d" % (1 + int(event.bonus))
+				audio.play("upgrade")
+				haptics.tap(15, 0.3)
+				world.popup("CHARGED  " + bonus_text, Vector3(sim.x, 3.4, 0), MeshFactory.YELLOW, 70)
+				fov_kick = 3.0
 			"boss_exposed":
 				world.popup("EXPOSED  x1.5", Vector3(0, 5.5, -16), MeshFactory.YELLOW, 90)
 				audio.play("dodge")

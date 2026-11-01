@@ -44,6 +44,9 @@ var exposed_time := 0.0
 var flags: Dictionary = {}
 var flag_overrides: Dictionary = {}
 var engage: EngagementLog
+var aim_target = null
+var payoff_id := ""
+var payoff_paid := false
 
 func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count := 0, early_unlocks: Array = []) -> void:
 	flags = GameData.flags().merged(flag_overrides, true)
@@ -63,8 +66,14 @@ func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count :
 	boss_z = float(GameData.table("gates_level1").boss_z)
 	if level > 1:
 		_generate_beats()
+	if flags.guarded_salvage:
+		_add_salvage_beats()
 	for beat in beats:
 		beat.resolved = false
+		if flags.gate_charge and beat.type == "gate":
+			beat.charge = []
+			for option in beat.options:
+				beat.charge.append(0.0)
 		if beat.type == "repair_bay":
 			beat.options = [{"kind": "repair"}, {"kind": "reroll"}, {"kind": "buy"}]
 		elif beat.type == "final_choice":
@@ -84,6 +93,42 @@ func _generate_beats() -> void:
 	beats.append({"z": boss_z * 0.7, "type": "repair_bay"})
 	beats.append({"z": boss_z - 45, "type": "final_choice"})
 	beats.sort_custom(func(a, b): return a.z < b.z)
+
+# Guarded salvage: two lane-specific targets. One lane holds an explosive barrel between two gunners,
+# the other a loot crate behind a gunner. Where the player steers decides what gets destroyed.
+func _add_salvage_beats() -> void:
+	if level == 1:
+		beats.append({"z": 215.0, "type": "salvage"})
+	else:
+		var gates: Array = beats.filter(func(b): return b.has("options") and b.get("generated", false))
+		for i in gates.size():
+			if i % 2 == 1:
+				beats.append({"z": float(gates[i].z) + 70.0, "type": "salvage"})
+	beats.sort_custom(func(a, b): return a.z < b.z)
+
+func _spawn_salvage(bz: float) -> void:
+	var blast_side := -1.0 if rng.spawns.randf() < 0.5 else 1.0
+	var bx := blast_side * 2.0
+	var lx := -blast_side * 2.0
+	_place("barrel", bx, bz, "blast")
+	_place("gunner", bx - 1.0, bz + 0.5)
+	_place("gunner", bx + 1.0, bz + 0.5)
+	_place("crate", lx, bz + 3.0, "loot")
+	_place("gunner", lx, bz)
+	emit("salvage_spawn", {"blast_x": bx, "loot_x": lx})
+
+func _place(id: String, at_x: float, at_z: float, tag := "") -> void:
+	var before := enemies.size()
+	spawn_pack(id, 1, at_z)
+	if enemies.size() == before:
+		return
+	var enemy: Dictionary = enemies.back()
+	enemy.x = at_x
+	enemy.z = at_z
+	if id == "barrel":
+		enemy.timer = 99.0
+	if not tag.is_empty():
+		enemy.salvage = tag
 
 func emit(type: String, data: Dictionary = {}) -> void:
 	events.append({"t": type, "time": snappedf(t, 0.0001)}.merged(data))
@@ -114,12 +159,12 @@ func reroll() -> bool:
 	emit("reroll")
 	return true
 
-func apply_option(option: Dictionary) -> void:
+func apply_option(option: Dictionary, bonus := 0) -> void:
 	match str(option.kind):
-		"part": robot.add_part(str(option.id), self)
+		"part": robot.add_part(str(option.id), self, 1 + bonus)
 		"upgrade_random_owned":
 			var ids: Array = robot.parts.keys().filter(func(id): return int(robot.parts[id]) < 3)
-			robot.add_part(str(ids[rng.loot.randi_range(0, ids.size() - 1)]) if not ids.is_empty() else "cannon", self)
+			robot.add_part(str(ids[rng.loot.randi_range(0, ids.size() - 1)]) if not ids.is_empty() else "cannon", self, 1 + bonus)
 		"tradeoff":
 			robot.tradeoffs.append(option.id)
 			robot.refresh(true)
@@ -195,6 +240,9 @@ func pickup_coin(node: Dictionary) -> void:
 	best_chain = maxi(best_chain, chain)
 	chain_timer = 1.4
 	var gold: bool = node.get("gold", false)
+	if node.get("bonus", false) and not payoff_paid:
+		payoff_paid = true
+		emit("payoff", {"source": payoff_id})
 	collect_scrap(5 if gold else 1, 1.0 + minf(chain, 40) * 0.015, {"chain": chain, "gold": gold})
 
 # Coin layouts rotate between waves, zigzags and lane lines, and lure toward a gate lane near gates.
@@ -223,6 +271,7 @@ func _spawn_beats() -> void:
 		match str(beat.type):
 			"enemy_pack": spawn_pack(str(beat.enemy), int(beat.count), float(beat.z))
 			"miniboss": spawn_pack("hauler", 1, float(beat.z))
+			"salvage": _spawn_salvage(float(beat.z))
 			"hazard":
 				if beat.kind == "barrel":
 					spawn_pack("barrel", 1, float(beat.z))
@@ -245,7 +294,12 @@ func _resolve_gates() -> void:
 		if beat.has("options"):
 			var opts: Array = beat.options
 			var lane := clampi(int(floor((x + float(GameData.constants().road_half_width)) / (2 * float(GameData.constants().road_half_width)) * opts.size())), 0, opts.size() - 1)
-			apply_option(opts[lane])
+			var bonus := charge_bonus(beat, lane)
+			apply_option(opts[lane], bonus)
+			if bonus > 0:
+				emit("gate_charged", {"lane": lane, "bonus": bonus})
+			if flags.post_gate_payoff and beat.type == "gate" and gate_history.is_empty():
+				_spawn_payoff(opts[lane], float(beat.z))
 			if beat.type == "final_choice":
 				# A rare final reward gives a visible merge and makes stage 3 reachable.
 				if opts[lane].kind == "part":
@@ -257,6 +311,80 @@ func _resolve_gates() -> void:
 						robot.add_part(str(eligible[0]), self)
 			gate_history.append({"z": beat.z, "side": lane, "option": opts[lane]})
 			emit("gate_choice", gate_history.back())
+
+# Gate charge (E2): shots that cross a gate panel charge it; thresholds raise the part level it grants.
+func chargeable(option: Dictionary) -> bool:
+	return option.kind in ["part", "upgrade_random_owned"]
+
+func charge_bonus(beat: Dictionary, lane: int) -> int:
+	if not beat.has("charge") or not chargeable(beat.options[lane]):
+		return 0
+	var amount: float = beat.charge[lane]
+	return int(amount >= float(flags.tuning.charge_t1)) + int(amount >= float(flags.tuning.charge_t2))
+
+func _panel_lane(gate: Dictionary, at_x: float) -> int:
+	var half := float(GameData.constants().road_half_width)
+	var count: int = gate.options.size()
+	return clampi(int(floor((at_x + half) / (2 * half) * count)), 0, count - 1)
+
+func _add_charge(gate: Dictionary, lane: int, amount: float) -> void:
+	var before := charge_bonus(gate, lane)
+	gate.charge[lane] += amount
+	var after := charge_bonus(gate, lane)
+	emit("gate_charge_tick", {"lane": lane, "charge": snappedf(gate.charge[lane], 0.01)})
+	if after > before:
+		emit("gate_level_up", {"lane": lane, "bonus": after})
+
+func _charge_gate(bullet: Dictionary, prev_z: float) -> bool:
+	var gate := next_gate()
+	if gate.is_empty() or not gate.has("charge"):
+		return false
+	var gz := float(gate.z)
+	if prev_z >= gz or float(bullet.z) < gz or gz - z > float(flags.tuning.charge_range):
+		return false
+	var lane := _panel_lane(gate, float(bullet.x))
+	if not chargeable(gate.options[lane]):
+		return false
+	_add_charge(gate, lane, float(bullet.get("charge", 0.0)))
+	return true
+
+func _charge_cone(weapon: Dictionary, dt: float) -> void:
+	var gate := next_gate()
+	if gate.is_empty() or not gate.has("charge"):
+		return
+	var gap := float(gate.z) - z
+	if gap <= 0 or gap > float(weapon.range) or gap > float(flags.tuning.charge_range):
+		return
+	var lane := _panel_lane(gate, x)
+	if chargeable(gate.options[lane]):
+		_add_charge(gate, lane, _bullet_charge(weapon) * dt)
+
+# Right after the first gate, a small formation lets the chosen part show its effect within 1-2 s.
+func _spawn_payoff(option: Dictionary, gate_z: float) -> void:
+	var id := str(option.get("id", ""))
+	var at_z := gate_z + float(flags.tuning.payoff_distance)
+	payoff_id = id
+	var category: String = str(GameData.table("parts")[id].category) if option.kind == "part" else "collection"
+	match category:
+		"weapon":
+			# Tight cluster of scrappers: cannon shreds it, rockets and flame splash through it.
+			for i in 4:
+				_place("scrapper", clampf(x + [-0.9, 0.9, -0.45, 0.45][i], -3.0, 3.0), at_z + float(i / 2) * 0.9, "payoff")
+		"movement":
+			# Bonus route: a swerving golden coin line that rewards the sharper steering.
+			var side := -1.0 if x > 0 else 1.0
+			for i in 14:
+				scrap_nodes.append({"x": clampf(side * 2.3 * sin(float(i) * 0.55) + x * 0.3, -3.0, 3.0), "z": at_z - 6.0 + float(i) * 1.5, "alive": true, "gold": i % 4 == 0, "bonus": true})
+		"defence":
+			_place("gunner", clampf(x - 1.8, -3.0, 3.0), at_z, "payoff")
+			_place("gunner", clampf(x + 1.8, -3.0, 3.0), at_z, "payoff")
+			for e in enemies:
+				if e.get("salvage", "") == "payoff":
+					e.timer = 0.2
+		_:
+			# Collectors: a wide scatter of coins that the bigger magnet or storage clearly pays off.
+			for i in 16:
+				scrap_nodes.append({"x": -2.8 + float(i % 8) * 0.8, "z": at_z - 4.0 + float(i / 8) * 3.0, "alive": true, "gold": i % 5 == 0, "bonus": true})
 
 func tap_special() -> bool:
 	var combos := robot.combos()
@@ -295,24 +423,49 @@ func tap_special() -> bool:
 	emit("special_used", {"id": chosen if not chosen.is_empty() else "overdrive"})
 	return true
 
-func _fire(weapon: Dictionary, offset := 0.0) -> void:
-	if bullets.size() + hostile_bullets.size() >= 64:
-		return
+# Auto-fire target. "nearest" is the legacy rule: closest enemy inside a wide cone.
+# "lane" keeps shots to the lane the robot stands in: closest enemy inside a narrow aim-assist cone.
+func _pick_target():
 	var target = null
 	var distance := float(GameData.constants().auto_fire_range)
-	var cone := deg_to_rad(float(GameData.constants().auto_fire_cone_deg))
+	var lane: bool = flags.aim_mode == "lane"
+	var cone := deg_to_rad(float(flags.tuning.aim_cone_deg) if lane else float(GameData.constants().auto_fire_cone_deg))
 	for enemy in enemies:
 		var dz: float = float(enemy.z) - z
 		var dx: float = float(enemy.x) - x
 		if enemy.hp > 0 and dz > 0 and dz < distance and absf(atan2(dx, dz)) <= cone:
 			distance = dz
 			target = enemy
-	if target == null and state != "boss":
+	return target
+
+# Seconds of full firepower one bullet is worth, so every build charges a gate at about 1.0 per second of focus.
+func _bullet_charge(weapon: Dictionary) -> float:
+	if not flags.gate_charge:
+		return 0.0
+	var nominal := 0.0
+	for w in robot.stats.weapons:
+		if w.type == "cone":
+			nominal += float(w.damage)
+		else:
+			nominal += float(w.damage) * float(w.rate) * float(w.get("barrels", 1))
+	return float(weapon.get("damage", 4)) / maxf(nominal, 1.0)
+
+func _fire(weapon: Dictionary, offset := 0.0) -> void:
+	if bullets.size() + hostile_bullets.size() >= 64:
+		return
+	var target = _pick_target()
+	var straight: bool = (flags.aim_mode == "lane" or flags.gate_charge) and state != "boss"
+	if target == null and state != "boss" and not straight:
 		return
 	shot_count += 1
-	var tx: float = float(target.x) if target != null else 0.0
-	var tz: float = float(target.z) if target != null else z + 16
-	bullets.append({"x": x, "z": z + 0.8 + offset, "tx": tx, "tz": tz, "type": weapon.type, "damage": float(weapon.get("damage", 4)) * float(robot.stats.dps_mult), "wid": weapon.id, "speed": float(weapon.get("speed", 36)), "radius": float(weapon.get("area_radius", 0)), "ttl": 2.0})
+	# Straight shots only travel as far as the auto-fire range (or the gate charge range when charging).
+	var ttl := 2.0
+	if target == null and straight:
+		var reach := float(flags.tuning.charge_range) if flags.gate_charge else float(GameData.constants().auto_fire_range)
+		ttl = reach / float(weapon.get("speed", 36)) + 0.05
+	var tx: float = float(target.x) if target != null else (x if straight else 0.0)
+	var tz: float = float(target.z) if target != null else (z + 70.0 if straight else z + 16)
+	bullets.append({"x": x, "z": z + 0.8 + offset, "tx": tx, "tz": tz, "type": weapon.type, "damage": float(weapon.get("damage", 4)) * float(robot.stats.dps_mult), "wid": weapon.id, "charge": _bullet_charge(weapon), "speed": float(weapon.get("speed", 36)), "radius": float(weapon.get("area_radius", 0)), "ttl": ttl})
 	if shot_count % 3 == 0:
 		emit("weapon_fire", {"id": weapon.id})
 
@@ -336,6 +489,8 @@ func _combat(dt: float) -> void:
 				firing = true
 				boss.burn_left = float(weapon.burn_s)
 				boss.burn_dps = float(weapon.burn_dps) * float(robot.stats.dps_mult)
+			if flags.gate_charge:
+				_charge_cone(weapon, dt)
 			fire_timers[id] = float(fire_timers.get(id, 0)) - dt
 			if firing and float(fire_timers[id]) <= 0:
 				fire_timers[id] = 0.16
@@ -349,12 +504,13 @@ func _combat(dt: float) -> void:
 	for i in range(bullets.size() - 1, -1, -1):
 		var bullet: Dictionary = bullets[i]
 		var direction := Vector2(float(bullet.tx) - float(bullet.x), float(bullet.tz) - float(bullet.z)).normalized()
+		var prev_z: float = bullet.z
 		bullet.x += direction.x * float(bullet.speed) * dt
 		bullet.z += direction.y * float(bullet.speed) * dt
 		bullet.ttl -= dt
-		var impacted := false
+		var impacted: bool = flags.gate_charge and _charge_gate(bullet, prev_z)
 		for enemy in enemies:
-			if enemy.hp <= 0:
+			if impacted or enemy.hp <= 0:
 				continue
 			if Vector2(float(enemy.x) - float(bullet.x), float(enemy.z) - float(bullet.z)).length() < 0.85:
 				enemy.hp -= float(bullet.damage)
@@ -395,6 +551,10 @@ func _combat(dt: float) -> void:
 					robot.take_damage(float(def.blast_damage_player), self, "barrel")
 			collect_scrap(int(def.get("scrap", 2)))
 			emit("enemy_death", {"x": enemy.x, "z": enemy.z, "id": enemy.id})
+			if enemy.id == "crate":
+				for k in int(def.get("coin_burst", 10)):
+					scrap_nodes.append({"x": clampf(float(enemy.x) + sin(k * 2.4) * 1.4, -3.0, 3.0), "z": float(enemy.z) + 0.8 + float(k) * 0.5, "alive": true, "gold": k % 5 == 0})
+				emit("salvage_looted", {"x": enemy.x, "z": enemy.z})
 			if enemy.id == "hauler":
 				# Jackpot: the crate bursts into a spray of coins and drops a rare part.
 				var reward: Dictionary = GameData.table("gates_level1").miniboss_rare_reward
@@ -405,6 +565,10 @@ func _combat(dt: float) -> void:
 			enemies.remove_at(i)
 			continue
 		var gap: float = float(enemy.z) - z
+		if enemy.id == "crate":
+			if gap < -5:
+				enemies.remove_at(i)
+			continue
 		if enemy.id == "hauler":
 			_hauler(enemy, def, dt)
 			if gap < -5:
@@ -522,6 +686,8 @@ func _tick(dt: float) -> void:
 			hazards.clear()
 			emit("boss_intro")
 	_combat(dt)
+	if flags.aim_mode == "lane":
+		aim_target = _pick_target()
 	if engage != null:
 		engage.on_tick(self)
 	if state == "boss":

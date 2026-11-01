@@ -19,7 +19,7 @@ func _initialize() -> void:
 			overrides.merge(JSON.parse_string(arg.substr(8)), true)
 	var rows: Array = []
 	var md := "| Bot | delay ms | runs | win % | first gate s | payoff s (median) | payoff <=2s | gap pre-boss median | p90 | gap<=4s share | full-run gap p90 |\n|---|---|---|---|---|---|---|---|---|---|---|\n"
-	for config in [["perfect", 0.0], ["perfect", 0.15], ["perfect", 0.25], ["perfect", 0.4], ["random", 0.25], ["no_dodge", 0.0]]:
+	for config in [["perfect", 0.0], ["perfect", 0.15], ["perfect", 0.25], ["perfect", 0.4], ["aim", 0.0], ["aim", 0.15], ["aim", 0.25], ["aim", 0.4], ["random", 0.25], ["no_dodge", 0.0]]:
 		var mode: String = config[0]
 		var delay: float = config[1]
 		var gaps: Array = []
@@ -34,7 +34,7 @@ func _initialize() -> void:
 			var sim := RunSim.new()
 			sim.flag_overrides = overrides
 			sim.setup(level, seed_arg + 1000)
-			var bot := BotController.new(seed_arg + 1000, mode, delay)
+			var bot = AimBot.new(seed_arg + 1000, delay) if mode == "aim" else BotController.new(seed_arg + 1000, mode, delay)
 			for tick in 18000:
 				bot.control(sim)
 				sim.step(1.0 / 60)

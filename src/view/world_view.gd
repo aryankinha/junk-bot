@@ -21,6 +21,9 @@ var enemy_nodes: Array[MeshInstance3D] = []
 var hazard_nodes: Array[MeshInstance3D] = []
 var warnings: Array[MeshInstance3D] = []
 var gate_root: Node3D
+var aim_ring: MeshInstance3D
+var aim_beam: MeshInstance3D
+var salvage_tags: Dictionary = {}
 var gate_signature := ""
 var boss_root: Node3D
 var boss_core: MeshInstance3D
@@ -125,6 +128,67 @@ func _ready() -> void:
 	boss_arm.position = Vector3(2.8, 2.1, 4)
 	boss_root.add_child(boss_arm)
 	boss_root.visible = false
+	_build_aim_feedback()
+
+# Lane-aiming feedback: a ring under the locked target, a soft beam to it, and tags on salvage targets.
+func _build_aim_feedback() -> void:
+	var aim_material := StandardMaterial3D.new()
+	aim_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	aim_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	aim_material.albedo_color = Color(MeshFactory.ORANGE, 0.9)
+	var ring_mesh := TorusMesh.new()
+	ring_mesh.inner_radius = 0.62
+	ring_mesh.outer_radius = 0.86
+	ring_mesh.rings = 20
+	ring_mesh.ring_segments = 6
+	aim_ring = MeshInstance3D.new()
+	aim_ring.mesh = ring_mesh
+	aim_ring.material_override = aim_material
+	aim_ring.visible = false
+	add_child(aim_ring)
+	var beam_mesh := BoxMesh.new()
+	beam_mesh.size = Vector3(0.07, 0.07, 1.0)
+	var beam_material := aim_material.duplicate()
+	beam_material.albedo_color = Color(MeshFactory.ORANGE, 0.35)
+	aim_beam = MeshInstance3D.new()
+	aim_beam.mesh = beam_mesh
+	aim_beam.material_override = beam_material
+	aim_beam.visible = false
+	add_child(aim_beam)
+	for kind in ["blast", "loot"]:
+		var tag := label3d("BLAST" if kind == "blast" else "LOOT", Vector3.ZERO, 110)
+		tag.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		tag.no_depth_test = true
+		tag.modulate = MeshFactory.ORANGE if kind == "blast" else MeshFactory.YELLOW
+		tag.outline_size = 14
+		tag.outline_modulate = Color(0.07, 0.08, 0.14)
+		tag.visible = false
+		add_child(tag)
+		salvage_tags[kind] = tag
+
+func _sync_aim(sim: RunSim) -> void:
+	var target = sim.aim_target
+	var show: bool = target != null and sim.state == "running"
+	aim_ring.visible = show
+	aim_beam.visible = show
+	if show:
+		var tz := sim.z - float(target.z)
+		aim_ring.position = Vector3(target.x, 0.07, tz)
+		aim_ring.scale = Vector3.ONE * (1.0 + sin(elapsed * 10.0) * 0.08)
+		var from := Vector3(sim.x, 1.0, -0.9)
+		var to := Vector3(target.x, 1.0, tz)
+		aim_beam.position = (from + to) / 2.0
+		aim_beam.rotation = Vector3(0, atan2(to.x - from.x, to.z - from.z), 0)
+		aim_beam.scale = Vector3(1, 1, maxf(0.1, from.distance_to(to)))
+	for kind in salvage_tags:
+		salvage_tags[kind].visible = false
+	for enemy in sim.enemies:
+		var kind := str(enemy.get("salvage", ""))
+		var gap: float = float(enemy.z) - sim.z
+		if salvage_tags.has(kind) and gap > 1.0 and gap < 42.0 and enemy.hp > 0:
+			var tag: Label3D = salvage_tags[kind]
+			tag.visible = true
+			tag.position = Vector3(enemy.x, 3.0 + sin(elapsed * 4.0) * 0.12, -gap)
 
 func make_multimesh(mesh: Mesh, count: int, colors := false) -> MultiMeshInstance3D:
 	var node := MultiMeshInstance3D.new()
@@ -326,6 +390,7 @@ func sync(sim: RunSim, dt: float) -> void:
 			var lane_offset := (11.0 + float(i % 4) * 3.0) if heap else (6.2 + float(i % 5) * 1.8)
 			var pos := Vector3(side * lane_offset, 0, 14 - fposmod(float(j) * 13.7 + float(k) * 5.3 - sim.z * 0.95, 190))
 			set_mesh.set_instance_transform(j, Transform3D(basis, pos))
+	_sync_aim(sim)
 	var count := 0
 	var gold_count := 0
 	for node in sim.scrap_nodes:
@@ -376,6 +441,9 @@ func sync(sim: RunSim, dt: float) -> void:
 					node.scale = Vector3.ONE * size * (1.0 + (0.06 if enemy.warning else 0.0) * sin(elapsed * 30))
 				"barrel":
 					node.rotation.y += elapsed * 0.5
+				"crate":
+					hop = absf(sin(elapsed * 3.0 + float(enemy.uid))) * 0.08
+					node.scale = Vector3.ONE * size * (1.0 + sin(elapsed * 5.0) * 0.015)
 				"hauler":
 					# Drives away from the camera, bouncing on its suspension and swaying with its lane.
 					node.rotation = Vector3(sin(elapsed * 14.0) * 0.012, 0.0, sin(elapsed * 9.0) * 0.02 + (float(enemy.x) - sim.x) * 0.0)

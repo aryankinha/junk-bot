@@ -241,6 +241,71 @@ func run() -> void:
 	for tick in 60:
 		overdrive_sim.step(1.0 / 60)
 	check(is_equal_approx(overdrive_sim.robot.overdrive, 2), "sustained Overdrive accrues by time, not bullet count")
+	# E1: steering is aiming. Lane mode only shoots what sits in the robot's lane.
+	var legacy := RunSim.new()
+	legacy.setup(1, 31)
+	legacy.spawn_pack("scrapper", 1, 12)
+	legacy.enemies[0].x = 3.0
+	check(legacy._pick_target() != null, "legacy nearest mode targets an enemy 3 m off to the side")
+	var lane := RunSim.new()
+	lane.flag_overrides = {"aim_mode": "lane"}
+	lane.setup(1, 31)
+	lane.robot.add_part("cannon", lane, 1)
+	lane.spawn_pack("gunner", 1, 12)
+	lane.enemies[0].x = 3.0
+	lane.enemies[0].timer = 99.0
+	check(lane._pick_target() == null, "lane mode ignores an enemy outside the aim cone")
+	lane._fire({"id": "blaster", "type": "projectile", "damage": 4, "speed": 36})
+	check(lane.bullets.size() == 1 and is_equal_approx(float(lane.bullets[0].tx), lane.x), "lane mode fires straight ahead when nothing is in the cone")
+	var start_hp: float = lane.enemies[0].hp
+	for tick in 120:
+		lane._combat(1.0 / 60)
+	check(is_equal_approx(float(lane.enemies[0].hp), start_hp), "enemy outside the cone is not hit while the player holds the lane")
+	lane.x = 3.0
+	lane.target_x = 3.0
+	check(lane._pick_target() != null, "moving into the lane acquires the target")
+	for tick in 120:
+		lane._combat(1.0 / 60)
+	check(lane.enemies.is_empty() or float(lane.enemies[0].hp) < start_hp, "enemy is hit once the player steers into its lane")
+	# Guarded salvage: shooting the barrel clears its guards; the crate pays out when shot.
+	var salvage := RunSim.new()
+	salvage.flag_overrides = {"guarded_salvage": true}
+	salvage.setup(1, 32)
+	check(salvage.beats.any(func(b): return b.type == "salvage"), "guarded_salvage adds a salvage beat")
+	salvage._spawn_salvage(40.0)
+	var kinds: Dictionary = {}
+	for enemy in salvage.enemies:
+		kinds[enemy.id] = int(kinds.get(enemy.id, 0)) + 1
+	check(kinds.get("barrel", 0) == 1 and kinds.get("gunner", 0) == 3 and kinds.get("crate", 0) == 1, "salvage block holds barrel + guards and crate + guard")
+	var barrel: Dictionary = salvage.enemies.filter(func(e): return e.id == "barrel")[0]
+	var guards_near := salvage.enemies.filter(func(e): return e.id == "gunner" and absf(float(e.x) - float(barrel.x)) < 1.5).size()
+	check(guards_near == 2, "two gunners flank the barrel")
+	barrel.hp = 0
+	salvage._combat(0.01)
+	salvage._combat(0.01)
+	check(salvage.enemies.filter(func(e): return e.id == "gunner").size() == 1 and salvage.enemies.any(func(e): return e.id == "crate"), "barrel blast kills its two guards and spares the crate lane")
+	var crate: Dictionary = salvage.enemies.filter(func(e): return e.id == "crate")[0]
+	crate.hp = 0
+	salvage._combat(0.01)
+	check(salvage.events.any(func(e): return e.t == "salvage_looted") and salvage.scrap_nodes.size() >= 10, "looted crate bursts into coins")
+	var plain := RunSim.new()
+	plain.setup(1, 32)
+	check(not plain.beats.any(func(b): return b.type == "salvage"), "no salvage beat with the flag off")
+	# Caps hold with lane aiming and salvage on, for every aiming delay.
+	for delay in [0.0, 0.15, 0.25, 0.4]:
+		var capped := RunSim.new()
+		capped.flag_overrides = {"aim_mode": "lane", "guarded_salvage": true}
+		capped.setup(3, 90)
+		var aimer := AimBot.new(90, delay)
+		var cap_ok := true
+		for tick in 12000:
+			aimer.control(capped)
+			capped.step(1.0 / 60)
+			capped.events.clear()
+			cap_ok = cap_ok and capped.bullets.size() + capped.hostile_bullets.size() <= 64 and capped.enemies.size() <= 24 and capped.hostile_bullets.size() <= 16
+			if capped.state in ["won", "lost"]:
+				break
+		check(cap_ok, "projectile and enemy caps hold with lane aiming (delay %.2f)" % delay)
 	# Exercise the actual scene tree and persistent services as part of the main runner.
 	var integration = load("res://tests/integration_suite.gd").new()
 	var integration_failures: Array = await integration.run(self)

@@ -53,5 +53,12 @@
     "drop_interval_s": 2.2,
     "coin_burst": 18,
     "guaranteed_rare_drop": true
+  },
+  "crate": {
+    "hp": 90,
+    "speed": 0.0,
+    "scrap": 30,
+    "coin_burst": 10,
+    "static": true
   }
 }
