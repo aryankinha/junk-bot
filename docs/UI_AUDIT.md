@@ -62,3 +62,11 @@ Special sits near the extreme lower right in a290px ring; reroll lower left. Pau
 | R8 internal names retain Scrap Dragon; new review names Scrap Bot | CONFIRMED | `project.godot:4`, `Boot.tscn:3`, `export_presets.cfg`; retain application name to protect desktop user:// saves |
 
 No physical device or five new people are available in this environment. Those tests remain UNVERIFIED; no answers are invented.
+
+## Final measurement-method refinement
+
+The original fast bot loop let UI containers resize only every300 simulation steps. Its initial peak19.68% (the earlier19.60% wording was rounded from an intermediate run) is retained in `results/ui_activity_before_unsettled.json` and commit7a6b620, but should not be compared with settled layouts. The final harness yields four process frames at each half-second sample before measuring rectangles. Re-run both variants with that method: `results/ui_activity_before.json` and `ui_activity_after.json`; see the final report for paired values. This changes measurement timing, not sim timing or inputs. The state screenshots already yielded before capture and are unaffected.
+
+The source line numbers above describe the UI-0 checkout (7a6b620); subsequent implementation moves those functions. The JSON inventories provide the exact per-control positions and font sizes: logical1080×1920 at360×640, and1200×1920 at600×960.
+
+Final bot coverage is collected with the real renderer and the shared gameplay HUD timer/counter method (`_tick_run_hud`), not the intermediate headless samples. Final paired values and raw per-second data are linked in `reports/UI_REPORT.md`.

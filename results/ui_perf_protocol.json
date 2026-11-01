@@ -1,0 +1,23 @@
+{
+  "source_commit": "2f43d58",
+  "order": [
+    "before",
+    "after"
+  ],
+  "wall_seconds_per_variant": 90,
+  "seed": 20261031,
+  "same_gameplay_flags": {
+    "mob_stream": true
+  },
+  "ui_v2": [
+    false,
+    true
+  ],
+  "requested_resolution": [
+    432,
+    768
+  ],
+  "actual_resolution_source": "summary.window_size",
+  "other_Godot_checks_running": false,
+  "caveat": "desktop only; initial frame and first-use spikes included; late screenshot at70s precedes boss arrival at80s"
+}

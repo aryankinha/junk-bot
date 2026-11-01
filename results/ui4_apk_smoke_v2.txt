@@ -1,0 +1,3 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+UI APK SMOKE: v2 booted; ui_v2=true; save=user://ui_review_b.json

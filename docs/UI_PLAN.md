@@ -33,3 +33,15 @@ Finish `test_visual_focus.gd`, original trace baseline and full headless suite. 
 ## Deliberate exclusions / owner questions
 
 No new economy, meters, encounters, ads, forced prompts, copied assets, bitmap texture dependency or routine camera effects. Keep rounded robot meshes as identity; replacing all art is a separate direction. No distant enemy landmark that could falsely imply an active target. No new ambient particle system. No five-person responses invented if people are unavailable. Owner questions go in the report: preferred handedness default, preferred theme strength, and approval to enable `ui_v2` after playtesting.
+
+## Final tuning / implementation decisions
+
+The resulting idle HUD is9.7–10.4%, below the starting12–15% band. Keep the extra road space instead of adding decoration. Peak state fixtures remain below16%; the hard cap stays22%. Gate numbers press by12% for0.35s; their multiplier value remains truthful and fixed, while the real stream/coin counters update. No artificial number inflation. The first-use drag arrows disappear after an actual gesture; a ghost finger was rejected because it can resemble a second required input. No new ambient smoke or distant target.
+
+The road uses4% broad seams and4% outer diagonal wear, with rust tint only outside the corridor. Warning drawings are placed10.5m ahead so the robot cannot hide them, retaining their actual horizontal hit width. Phase ticks use explicit resized bounds, not implicit anchor timing. Tier stars in garage rows become one readable tier label; opaque v2 menus stop rendering the hidden battlefield. Result models use the actual run's tiers (including daily runs), not the saved hangar upgrade tiers. Result count-up and idle rotation stop under Reduce Motion.
+
+Final verification also measures draw calls per state; menus are included in that check. Export two debug APKs with unchanged package/signing: default flag-off and an explicit `ui_v2_review` feature build that selects v2 and an isolated save. Source-tree A/B launcher: `tools/play_ui_v2.sh a|b`.
+
+Late-run review moved chain/combo into one quiet header row, so they cannot sit over distant gate signs. A parity check preserves combo resets on damage, loss, theft and replacement; presentation routing must not change saved best-combo statistics.
+
+Evidence is stored in UI-5 after the final source commitUI-4. The final bot measurement uses the actual common HUD timers and real renderer; the default/off and v2 variants are measured sequentially.

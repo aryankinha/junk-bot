@@ -1,0 +1,60 @@
+[
+  {
+    "file": "build/scrap_bot_ui_default.apk",
+    "bytes": 29219368,
+    "sha256": "8c52db5c363974dde7951a122cff5c45147d8f1e26027f973ba2e3a44cb6f9ba",
+    "debug_signed": true,
+    "native_libraries": [
+      {
+        "name": "lib/arm64-v8a/libc++_shared.so",
+        "load_segment_alignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "supports_16k_pages": true
+      },
+      {
+        "name": "lib/arm64-v8a/libgodot_android.so",
+        "load_segment_alignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "supports_16k_pages": true
+      }
+    ],
+    "development_files_in_package": [],
+    "signature_verified": true,
+    "zipalign_16k_ok": true
+  },
+  {
+    "file": "build/scrap_bot_ui_v2_review.apk",
+    "bytes": 29219368,
+    "sha256": "b3d3ad32ddf3cc9a2c7fe4f7da3db81c6fe049d1b4a10021d2f9404bf929e235",
+    "debug_signed": true,
+    "native_libraries": [
+      {
+        "name": "lib/arm64-v8a/libc++_shared.so",
+        "load_segment_alignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "supports_16k_pages": true
+      },
+      {
+        "name": "lib/arm64-v8a/libgodot_android.so",
+        "load_segment_alignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "supports_16k_pages": true
+      }
+    ],
+    "development_files_in_package": [],
+    "signature_verified": true,
+    "zipalign_16k_ok": true
+  }
+]

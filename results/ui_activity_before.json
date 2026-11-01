@@ -4,8 +4,8 @@
       "attention_groups": 0,
       "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 10.2216435185185,
-      "hud_popup_area_pct": 10.2216435185185,
+      "hud_area_pct": 21.5505401234568,
+      "hud_popup_area_pct": 21.5505401234568,
       "logical_size": [
         1080.0,
         1920.0
@@ -157,8 +157,8 @@
       "sim_t": 5.51666666666665
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 18.7447916666667,
       "hud_popup_area_pct": 18.8262731675748,
@@ -170,8 +170,8 @@
       "sim_t": 6.01666666666665
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 18.7447916666667,
       "hud_popup_area_pct": 18.7447916666667,
@@ -183,8 +183,8 @@
       "sim_t": 6.51666666666665
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 18.7447916666667,
       "hud_popup_area_pct": 18.7447916666667,
@@ -196,8 +196,8 @@
       "sim_t": 7.01666666666665
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 18.7447916666667,
       "hud_popup_area_pct": 18.8160879759141,
@@ -209,11 +209,11 @@
       "sim_t": 7.51666666666665
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 13.9222608024691,
-      "hud_popup_area_pct": 13.9935571117166,
+      "hud_area_pct": 18.7447916666667,
+      "hud_popup_area_pct": 18.8160879759141,
       "logical_size": [
         1080.0,
         1920.0
@@ -222,8 +222,8 @@
       "sim_t": 8.01666666666664
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 13.9222608024691,
       "hud_popup_area_pct": 13.9222608024691,
@@ -235,8 +235,8 @@
       "sim_t": 8.51666666666667
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 17.5228587962963,
       "hud_popup_area_pct": 17.5941551055437,
@@ -248,8 +248,8 @@
       "sim_t": 9.01666666666669
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 17.5228587962963,
       "hud_popup_area_pct": 17.5941551549935,
@@ -261,8 +261,8 @@
       "sim_t": 9.51666666666672
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 18.9117476851852,
       "hud_popup_area_pct": 18.9117476851852,
@@ -274,8 +274,8 @@
       "sim_t": 10.0166666666667
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 18.9117476851852,
       "hud_popup_area_pct": 18.9830439944326,
@@ -287,8 +287,8 @@
       "sim_t": 10.5166666666668
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 14.9765625,
       "hud_popup_area_pct": 14.9765625,
@@ -300,8 +300,8 @@
       "sim_t": 11.0166666666668
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 14.9765625,
       "hud_popup_area_pct": 15.0478588092474,
@@ -313,8 +313,8 @@
       "sim_t": 11.5166666666668
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 14.9765625,
       "hud_popup_area_pct": 15.1191551184949,
@@ -326,8 +326,8 @@
       "sim_t": 12.0166666666668
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 14.9765625,
       "hud_popup_area_pct": 15.0478588092474,
@@ -339,11 +339,11 @@
       "sim_t": 12.5166666666669
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 14.9765625,
-      "hud_popup_area_pct": 14.9765625,
+      "hud_area_pct": 16.3654513888889,
+      "hud_popup_area_pct": 16.3654513888889,
       "logical_size": [
         1080.0,
         1920.0
@@ -352,11 +352,11 @@
       "sim_t": 13.0166666666669
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 14.9765625,
-      "hud_popup_area_pct": 14.9765625,
+      "hud_area_pct": 16.3654513888889,
+      "hud_popup_area_pct": 16.3654513888889,
       "logical_size": [
         1080.0,
         1920.0
@@ -365,11 +365,11 @@
       "sim_t": 13.5166666666669
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 14.9765625,
-      "hud_popup_area_pct": 14.9765625,
+      "hud_area_pct": 16.3654513888889,
+      "hud_popup_area_pct": 16.3654513888889,
       "logical_size": [
         1080.0,
         1920.0
@@ -378,8 +378,8 @@
       "sim_t": 14.0166666666669
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 14.9765625,
       "hud_popup_area_pct": 15.0004355721218,
@@ -391,8 +391,8 @@
       "sim_t": 14.516666666667
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 14.9765625,
       "hud_popup_area_pct": 14.9765625,
@@ -404,11 +404,11 @@
       "sim_t": 15.016666666667
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 14.9765625,
-      "hud_popup_area_pct": 15.0478588092474,
+      "hud_area_pct": 16.3654513888889,
+      "hud_popup_area_pct": 16.4367476981363,
       "logical_size": [
         1080.0,
         1920.0
@@ -417,11 +417,11 @@
       "sim_t": 15.516666666667
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 14.9765625,
-      "hud_popup_area_pct": 15.0478588092474,
+      "hud_area_pct": 16.3654513888889,
+      "hud_popup_area_pct": 16.4367476981363,
       "logical_size": [
         1080.0,
         1920.0
@@ -430,11 +430,11 @@
       "sim_t": 16.016666666667
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 14.9765625,
-      "hud_popup_area_pct": 14.9765625,
+      "hud_area_pct": 16.3654513888889,
+      "hud_popup_area_pct": 16.3654513888889,
       "logical_size": [
         1080.0,
         1920.0
@@ -443,8 +443,8 @@
       "sim_t": 16.516666666667
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 14.9765625,
       "hud_popup_area_pct": 14.9765625,
@@ -456,11 +456,11 @@
       "sim_t": 17.016666666667
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 14.9765625,
-      "hud_popup_area_pct": 14.9765625,
+      "hud_area_pct": 13.5876736111111,
+      "hud_popup_area_pct": 13.5876736111111,
       "logical_size": [
         1080.0,
         1920.0
@@ -469,11 +469,11 @@
       "sim_t": 17.516666666667
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 14.9765625,
-      "hud_popup_area_pct": 14.9765625,
+      "hud_area_pct": 13.5876736111111,
+      "hud_popup_area_pct": 13.5876736111111,
       "logical_size": [
         1080.0,
         1920.0
@@ -482,11 +482,11 @@
       "sim_t": 18.0166666666669
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 14.9765625,
-      "hud_popup_area_pct": 14.9765625,
+      "hud_area_pct": 13.5876736111111,
+      "hud_popup_area_pct": 13.5876736111111,
       "logical_size": [
         1080.0,
         1920.0
@@ -495,11 +495,11 @@
       "sim_t": 18.5166666666669
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 14.9765625,
-      "hud_popup_area_pct": 14.9765625,
+      "hud_area_pct": 13.5876736111111,
+      "hud_popup_area_pct": 13.5876736111111,
       "logical_size": [
         1080.0,
         1920.0
@@ -508,11 +508,11 @@
       "sim_t": 19.0166666666669
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 14.9765625,
-      "hud_popup_area_pct": 15.3686921037274,
+      "hud_area_pct": 13.5876736111111,
+      "hud_popup_area_pct": 13.9798032148385,
       "logical_size": [
         1080.0,
         1920.0
@@ -521,11 +521,11 @@
       "sim_t": 19.5166666666668
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 18.9285300925926,
-      "hud_popup_area_pct": 18.9285300925926,
+      "hud_area_pct": 17.5228587962963,
+      "hud_popup_area_pct": 17.5228587962963,
       "logical_size": [
         1080.0,
         1920.0
@@ -534,11 +534,11 @@
       "sim_t": 20.0166666666668
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 19.1215277777778,
-      "hud_popup_area_pct": 19.3509075455947,
+      "hud_area_pct": 17.7326388888889,
+      "hud_popup_area_pct": 18.0534724706485,
       "logical_size": [
         1080.0,
         1920.0
@@ -547,11 +547,11 @@
       "sim_t": 20.5166666666668
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 19.1215277777778,
-      "hud_popup_area_pct": 19.2751752765512,
+      "hud_popup_area_pct": 19.1215277777778,
       "logical_size": [
         1080.0,
         1920.0
@@ -560,11 +560,11 @@
       "sim_t": 21.0166666666668
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 19.1215277777778,
-      "hud_popup_area_pct": 19.1344907313217,
+      "hud_popup_area_pct": 19.1819013651399,
       "logical_size": [
         1080.0,
         1920.0
@@ -573,8 +573,8 @@
       "sim_t": 21.5166666666667
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.1863425925926,
       "hud_popup_area_pct": 15.1863425925926,
@@ -586,11 +586,11 @@
       "sim_t": 22.0166666666667
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 15.1863425925926,
-      "hud_popup_area_pct": 15.1863425925926,
+      "hud_area_pct": 16.5752314814815,
+      "hud_popup_area_pct": 16.5752314814815,
       "logical_size": [
         1080.0,
         1920.0
@@ -599,11 +599,11 @@
       "sim_t": 22.5166666666667
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 15.1863425925926,
-      "hud_popup_area_pct": 15.2576388370844,
+      "hud_area_pct": 16.5752314814815,
+      "hud_popup_area_pct": 16.6465277259732,
       "logical_size": [
         1080.0,
         1920.0
@@ -612,11 +612,11 @@
       "sim_t": 23.0166666666666
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 15.1863425925926,
-      "hud_popup_area_pct": 15.1863425925926,
+      "hud_area_pct": 16.5752314814815,
+      "hud_popup_area_pct": 16.5752314814815,
       "logical_size": [
         1080.0,
         1920.0
@@ -625,11 +625,11 @@
       "sim_t": 23.5166666666666
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 15.1863425925926,
-      "hud_popup_area_pct": 15.2576388370844,
+      "hud_area_pct": 16.5752314814815,
+      "hud_popup_area_pct": 16.6465277259732,
       "logical_size": [
         1080.0,
         1920.0
@@ -638,8 +638,8 @@
       "sim_t": 24.0166666666666
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.1863425925926,
       "hud_popup_area_pct": 15.1863425925926,
@@ -651,8 +651,8 @@
       "sim_t": 24.5166666666666
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.1863425925926,
       "hud_popup_area_pct": 15.1863425925926,
@@ -664,8 +664,8 @@
       "sim_t": 25.0166666666665
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.1863425925926,
       "hud_popup_area_pct": 15.1863425925926,
@@ -677,8 +677,8 @@
       "sim_t": 25.5166666666665
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.1863425925926,
       "hud_popup_area_pct": 15.1863425925926,
@@ -690,8 +690,8 @@
       "sim_t": 26.0166666666665
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 13.7974537037037,
       "hud_popup_area_pct": 13.8789352369897,
@@ -703,8 +703,8 @@
       "sim_t": 26.5166666666664
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 13.7974537037037,
       "hud_popup_area_pct": 13.7974537037037,
@@ -716,11 +716,11 @@
       "sim_t": 27.0166666666664
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 13.7974537037037,
-      "hud_popup_area_pct": 13.8687499481955,
+      "hud_area_pct": 15.1863425925926,
+      "hud_popup_area_pct": 15.2576388370844,
       "logical_size": [
         1080.0,
         1920.0
@@ -729,11 +729,11 @@
       "sim_t": 27.5166666666664
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 13.7974537037037,
-      "hud_popup_area_pct": 13.7974537037037,
+      "hud_area_pct": 15.1863425925926,
+      "hud_popup_area_pct": 15.1863425925926,
       "logical_size": [
         1080.0,
         1920.0
@@ -742,11 +742,11 @@
       "sim_t": 28.0166666666664
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 13.7974537037037,
-      "hud_popup_area_pct": 13.7974537037037,
+      "hud_area_pct": 15.1863425925926,
+      "hud_popup_area_pct": 15.1863425925926,
       "logical_size": [
         1080.0,
         1920.0
@@ -755,11 +755,11 @@
       "sim_t": 28.5166666666663
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 13.7974537037037,
-      "hud_popup_area_pct": 13.7974537037037,
+      "hud_area_pct": 15.1863425925926,
+      "hud_popup_area_pct": 15.1863425925926,
       "logical_size": [
         1080.0,
         1920.0
@@ -768,11 +768,11 @@
       "sim_t": 29.0166666666663
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 13.7974537037037,
-      "hud_popup_area_pct": 13.7974537037037,
+      "hud_area_pct": 15.1863425925926,
+      "hud_popup_area_pct": 15.1863425925926,
       "logical_size": [
         1080.0,
         1920.0
@@ -782,10 +782,10 @@
     },
     {
       "attention_groups": 1,
-      "full_screen_effects": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 13.7974537037037,
-      "hud_popup_area_pct": 13.7974537037037,
+      "hud_area_pct": 15.1863425925926,
+      "hud_popup_area_pct": 15.1863425925926,
       "logical_size": [
         1080.0,
         1920.0
@@ -794,8 +794,8 @@
       "sim_t": 30.0166666666662
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 13.7974537037037,
       "hud_popup_area_pct": 13.7974537037037,
@@ -807,8 +807,8 @@
       "sim_t": 30.5166666666662
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 13.7974537037037,
       "hud_popup_area_pct": 13.9756944444444,
@@ -820,8 +820,8 @@
       "sim_t": 31.0166666666662
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 13.7974537037037,
       "hud_popup_area_pct": 13.9756944444444,
@@ -833,8 +833,8 @@
       "sim_t": 31.5166666666662
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 13.7974537037037,
       "hud_popup_area_pct": 13.7974537037037,
@@ -846,11 +846,11 @@
       "sim_t": 32.0166666666661
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 17.7466724537037,
-      "hud_popup_area_pct": 17.7997106153971,
+      "hud_area_pct": 18.2160011574074,
+      "hud_popup_area_pct": 18.2690393191008,
       "logical_size": [
         1080.0,
         1920.0
@@ -859,11 +859,11 @@
       "sim_t": 32.5166666666661
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 19.1355613425926,
-      "hud_popup_area_pct": 19.1355613425926,
+      "hud_area_pct": 18.2160011574074,
+      "hud_popup_area_pct": 18.2160011574074,
       "logical_size": [
         1080.0,
         1920.0
@@ -872,11 +872,11 @@
       "sim_t": 33.0166666666661
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 19.1355613425926,
-      "hud_popup_area_pct": 19.3138020833333,
+      "hud_area_pct": 18.2160011574074,
+      "hud_popup_area_pct": 18.3942418981481,
       "logical_size": [
         1080.0,
         1920.0
@@ -885,11 +885,11 @@
       "sim_t": 33.516666666666
     },
     {
-      "attention_groups": 5,
-      "full_screen_effects": 1,
+      "attention_groups": 4,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 19.1355613425926,
-      "hud_popup_area_pct": 19.2800042599808,
+      "hud_area_pct": 19.6048900462963,
+      "hud_popup_area_pct": 19.7493329636845,
       "logical_size": [
         1080.0,
         1920.0
@@ -898,11 +898,11 @@
       "sim_t": 34.016666666666
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 15.2003761574074,
-      "hud_popup_area_pct": 15.2003761574074,
+      "hud_area_pct": 15.6697048611111,
+      "hud_popup_area_pct": 15.6697048611111,
       "logical_size": [
         1080.0,
         1920.0
@@ -911,11 +911,11 @@
       "sim_t": 34.516666666666
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 15.2003761574074,
-      "hud_popup_area_pct": 15.3786168981481,
+      "hud_area_pct": 15.6697048611111,
+      "hud_popup_area_pct": 15.8479456018519,
       "logical_size": [
         1080.0,
         1920.0
@@ -924,8 +924,8 @@
       "sim_t": 35.016666666666
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.6697048611111,
       "hud_popup_area_pct": 15.8479456018519,
@@ -937,8 +937,8 @@
       "sim_t": 35.5166666666659
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.6697048611111,
       "hud_popup_area_pct": 15.6697048611111,
@@ -950,8 +950,8 @@
       "sim_t": 36.0166666666659
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.6697048611111,
       "hud_popup_area_pct": 15.6697048611111,
@@ -963,8 +963,8 @@
       "sim_t": 36.5166666666659
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.6697048611111,
       "hud_popup_area_pct": 15.812297479606,
@@ -976,8 +976,8 @@
       "sim_t": 37.0166666666658
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.6697048611111,
       "hud_popup_area_pct": 15.8835937888534,
@@ -989,11 +989,11 @@
       "sim_t": 37.5166666666658
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 15.6697048611111,
-      "hud_popup_area_pct": 15.7410011703585,
+      "hud_area_pct": 14.2808159722222,
+      "hud_popup_area_pct": 14.3521122814697,
       "logical_size": [
         1080.0,
         1920.0
@@ -1002,11 +1002,11 @@
       "sim_t": 38.0166666666658
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 15.6697048611111,
-      "hud_popup_area_pct": 15.6697048611111,
+      "hud_area_pct": 14.2808159722222,
+      "hud_popup_area_pct": 14.2808159722222,
       "logical_size": [
         1080.0,
         1920.0
@@ -1015,11 +1015,11 @@
       "sim_t": 38.5166666666658
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 15.6697048611111,
-      "hud_popup_area_pct": 15.6954208279452,
+      "hud_area_pct": 14.2808159722222,
+      "hud_popup_area_pct": 14.3521122814697,
       "logical_size": [
         1080.0,
         1920.0
@@ -1028,11 +1028,11 @@
       "sim_t": 39.0166666666657
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 15.6697048611111,
-      "hud_popup_area_pct": 15.7005803199623,
+      "hud_area_pct": 14.2808159722222,
+      "hud_popup_area_pct": 14.3521122814697,
       "logical_size": [
         1080.0,
         1920.0
@@ -1041,11 +1041,11 @@
       "sim_t": 39.5166666666657
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 15.6697048611111,
-      "hud_popup_area_pct": 15.6697048611111,
+      "hud_area_pct": 14.2808159722222,
+      "hud_popup_area_pct": 14.2808159722222,
       "logical_size": [
         1080.0,
         1920.0
@@ -1054,8 +1054,8 @@
       "sim_t": 40.0166666666657
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.6697048611111,
       "hud_popup_area_pct": 15.7410011703585,
@@ -1067,8 +1067,8 @@
       "sim_t": 40.5166666666656
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.6697048611111,
       "hud_popup_area_pct": 15.7410011703585,
@@ -1080,8 +1080,8 @@
       "sim_t": 41.0166666666656
     },
     {
-      "attention_groups": 1,
-      "full_screen_effects": 1,
+      "attention_groups": 0,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.6697048611111,
       "hud_popup_area_pct": 15.6697048611111,
@@ -1093,8 +1093,8 @@
       "sim_t": 41.5166666666656
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
       "hud_area_pct": 15.6697048611111,
       "hud_popup_area_pct": 15.7410011703585,
@@ -1106,11 +1106,11 @@
       "sim_t": 42.0166666666656
     },
     {
-      "attention_groups": 4,
-      "full_screen_effects": 1,
+      "attention_groups": 3,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 19.6048900462963,
-      "hud_popup_area_pct": 19.6761863555437,
+      "hud_area_pct": 18.2160011574074,
+      "hud_popup_area_pct": 18.2872974666548,
       "logical_size": [
         1080.0,
         1920.0
@@ -1120,10 +1120,10 @@
     },
     {
       "attention_groups": 2,
-      "full_screen_effects": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 19.6048900462963,
-      "hud_popup_area_pct": 19.6048900462963,
+      "hud_area_pct": 18.2160011574074,
+      "hud_popup_area_pct": 18.2160011574074,
       "logical_size": [
         1080.0,
         1920.0
@@ -1132,11 +1132,11 @@
       "sim_t": 43.0166666666655
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 19.6048900462963,
-      "hud_popup_area_pct": 19.6048900462963,
+      "hud_area_pct": 18.2160011574074,
+      "hud_popup_area_pct": 18.2160011574074,
       "logical_size": [
         1080.0,
         1920.0
@@ -1145,11 +1145,11 @@
       "sim_t": 43.5166666666655
     },
     {
-      "attention_groups": 2,
-      "full_screen_effects": 1,
+      "attention_groups": 1,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 19.6048900462963,
-      "hud_popup_area_pct": 19.6048900462963,
+      "hud_area_pct": 18.2160011574074,
+      "hud_popup_area_pct": 18.2160011574074,
       "logical_size": [
         1080.0,
         1920.0
@@ -1158,11 +1158,11 @@
       "sim_t": 44.0166666666655
     },
     {
-      "attention_groups": 3,
-      "full_screen_effects": 1,
+      "attention_groups": 2,
+      "full_screen_effects": 0,
       "hero_events": 0,
-      "hud_area_pct": 15.6697048611111,
-      "hud_popup_area_pct": 15.7410011703585,
+      "hud_area_pct": 14.2808159722222,
+      "hud_popup_area_pct": 14.3521122814697,
       "logical_size": [
         1080.0,
         1920.0
