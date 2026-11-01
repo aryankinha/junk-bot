@@ -1,7 +1,7 @@
 class_name GameData extends RefCounted
 
 static var tables: Dictionary = {}
-const NAMES = ["constants", "parts", "combos", "enemies", "boss_scrap_titan", "gates_level1", "level_generator", "tradeoffs", "economy", "zones", "bot_models"]
+const NAMES = ["constants", "parts", "combos", "enemies", "boss_scrap_titan", "gates_level1", "level_generator", "tradeoffs", "economy", "zones", "bot_models", "flags"]
 
 static func load_all() -> void:
 	if not tables.is_empty():
@@ -17,3 +17,7 @@ static func table(id: String) -> Dictionary:
 
 static func constants() -> Dictionary:
 	return table("constants")
+
+# Experiment switches (data/flags.json). Sims copy these at setup so tests can override per run.
+static func flags() -> Dictionary:
+	return table("flags")

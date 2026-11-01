@@ -1,0 +1,16 @@
+{
+  "_note": "Interactivity experiments. Every flag defaults to off; with all flags off the sim matches the pre-experiment baseline (see tests/bots/trace_hash.gd).",
+  "engagement_metrics": false,
+  "aim_mode": "nearest",
+  "guarded_salvage": false,
+  "gate_charge": false,
+  "post_gate_payoff": false,
+  "moving_gates": false,
+  "focus_fire": false,
+  "dense_blocks": false,
+  "weapon_evolution": false,
+  "tuning": {
+    "aim_cone_deg": 12.0,
+    "lane_half_width": 1.2
+  }
+}

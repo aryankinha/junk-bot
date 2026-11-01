@@ -41,8 +41,15 @@ var best_chain := 0
 var coin_index := 0
 var frenzy_time := 0.0
 var exposed_time := 0.0
+var flags: Dictionary = {}
+var flag_overrides: Dictionary = {}
+var engage: EngagementLog
 
 func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count := 0, early_unlocks: Array = []) -> void:
+	flags = GameData.flags().merged(flag_overrides, true)
+	if flags.engagement_metrics:
+		engage = EngagementLog.new()
+		engage.setup(float(flags.tuning.lane_half_width))
 	level = level_value
 	seed_value = seed_arg
 	losses = loss_count
@@ -80,6 +87,8 @@ func _generate_beats() -> void:
 
 func emit(type: String, data: Dictionary = {}) -> void:
 	events.append({"t": type, "time": snappedf(t, 0.0001)}.merged(data))
+	if engage != null:
+		engage.on_event(self, type, data)
 
 func drag(dx: float) -> void:
 	var width := float(GameData.constants().road_half_width)
@@ -303,7 +312,7 @@ func _fire(weapon: Dictionary, offset := 0.0) -> void:
 	shot_count += 1
 	var tx: float = float(target.x) if target != null else 0.0
 	var tz: float = float(target.z) if target != null else z + 16
-	bullets.append({"x": x, "z": z + 0.8 + offset, "tx": tx, "tz": tz, "type": weapon.type, "damage": float(weapon.get("damage", 4)) * float(robot.stats.dps_mult), "speed": float(weapon.get("speed", 36)), "radius": float(weapon.get("area_radius", 0)), "ttl": 2.0})
+	bullets.append({"x": x, "z": z + 0.8 + offset, "tx": tx, "tz": tz, "type": weapon.type, "damage": float(weapon.get("damage", 4)) * float(robot.stats.dps_mult), "wid": weapon.id, "speed": float(weapon.get("speed", 36)), "radius": float(weapon.get("area_radius", 0)), "ttl": 2.0})
 	if shot_count % 3 == 0:
 		emit("weapon_fire", {"id": weapon.id})
 
@@ -349,6 +358,8 @@ func _combat(dt: float) -> void:
 				continue
 			if Vector2(float(enemy.x) - float(bullet.x), float(enemy.z) - float(bullet.z)).length() < 0.85:
 				enemy.hp -= float(bullet.damage)
+				if engage != null:
+					engage.on_hit(self, bullet, enemy)
 				if float(bullet.radius) > 0:
 					for other in enemies:
 						if other != enemy and Vector2(float(other.x) - float(enemy.x), float(other.z) - float(enemy.z)).length() < float(bullet.radius):
@@ -511,6 +522,8 @@ func _tick(dt: float) -> void:
 			hazards.clear()
 			emit("boss_intro")
 	_combat(dt)
+	if engage != null:
+		engage.on_tick(self)
 	if state == "boss":
 		var overdrive: Dictionary = GameData.table("boss_scrap_titan").overdrive
 		if t - last_boss_hit <= float(overdrive.sustained_window_s) + 0.000001:

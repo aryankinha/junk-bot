@@ -1,0 +1,153 @@
+{
+  "flags": {
+    "engagement_metrics": true
+  },
+  "level": 1,
+  "rows": [
+    {
+      "bot": "perfect",
+      "delay_ms": 0.0,
+      "first_gate_choice": {
+        "cannon": 20
+      },
+      "first_gate_median": 8.90000000000002,
+      "gap_full_p90": 9.99999999999943,
+      "gap_le_4s_share": 0.0,
+      "gap_pre_boss_median": 5.56666666666635,
+      "gap_pre_boss_p90": 5.56666666666635,
+      "marks": {
+        "dodge": 14,
+        "gate": 140,
+        "pickup": 1545,
+        "shot": 424,
+        "special": 140
+      },
+      "payoff_median": 3.2833333333335,
+      "payoff_seen_share": 1.0,
+      "payoff_within_2s": 0.0,
+      "runs": 20,
+      "win_rate": 1.0
+    },
+    {
+      "bot": "perfect",
+      "delay_ms": 150.0,
+      "first_gate_choice": {
+        "cannon": 20
+      },
+      "first_gate_median": 8.90000000000002,
+      "gap_full_p90": 9.99999999999943,
+      "gap_le_4s_share": 0.0,
+      "gap_pre_boss_median": 5.56666666666635,
+      "gap_pre_boss_p90": 5.56666666666635,
+      "marks": {
+        "dodge": 14,
+        "gate": 140,
+        "pickup": 1545,
+        "shot": 424,
+        "special": 140
+      },
+      "payoff_median": 3.2833333333335,
+      "payoff_seen_share": 1.0,
+      "payoff_within_2s": 0.0,
+      "runs": 20,
+      "win_rate": 1.0
+    },
+    {
+      "bot": "perfect",
+      "delay_ms": 250.0,
+      "first_gate_choice": {
+        "cannon": 20
+      },
+      "first_gate_median": 8.90000000000002,
+      "gap_full_p90": 9.99999999999943,
+      "gap_le_4s_share": 0.0,
+      "gap_pre_boss_median": 5.56666666666635,
+      "gap_pre_boss_p90": 5.56666666666635,
+      "marks": {
+        "dodge": 14,
+        "gate": 140,
+        "pickup": 1545,
+        "shot": 424,
+        "special": 140
+      },
+      "payoff_median": 3.2833333333335,
+      "payoff_seen_share": 1.0,
+      "payoff_within_2s": 0.0,
+      "runs": 20,
+      "win_rate": 1.0
+    },
+    {
+      "bot": "perfect",
+      "delay_ms": 400.0,
+      "first_gate_choice": {
+        "cannon": 20
+      },
+      "first_gate_median": 8.90000000000002,
+      "gap_full_p90": 9.99999999999943,
+      "gap_le_4s_share": 0.0,
+      "gap_pre_boss_median": 5.56666666666635,
+      "gap_pre_boss_p90": 5.56666666666635,
+      "marks": {
+        "dodge": 14,
+        "gate": 140,
+        "pickup": 1545,
+        "shot": 424,
+        "special": 140
+      },
+      "payoff_median": 3.2833333333335,
+      "payoff_seen_share": 1.0,
+      "payoff_within_2s": 0.0,
+      "runs": 20,
+      "win_rate": 1.0
+    },
+    {
+      "bot": "random",
+      "delay_ms": 250.0,
+      "first_gate_choice": {
+        "cannon": 9,
+        "wheels": 11
+      },
+      "first_gate_median": 8.90000000000002,
+      "gap_full_p90": 25.3999999999986,
+      "gap_le_4s_share": 0.0,
+      "gap_pre_boss_median": 5.04999999999971,
+      "gap_pre_boss_p90": 5.56666666666635,
+      "marks": {
+        "dodge": 73,
+        "gate": 140,
+        "pickup": 1874,
+        "shot": 345,
+        "special": 66
+      },
+      "payoff_median": 3.2833333333335,
+      "payoff_seen_share": 0.45,
+      "payoff_within_2s": 0.0,
+      "runs": 20,
+      "win_rate": 0.95
+    },
+    {
+      "bot": "no_dodge",
+      "delay_ms": 0.0,
+      "first_gate_choice": {
+        "cannon": 9,
+        "wheels": 11
+      },
+      "first_gate_median": 8.90000000000002,
+      "gap_full_p90": 50.3666666666638,
+      "gap_le_4s_share": 0.0,
+      "gap_pre_boss_median": 9.99999999999943,
+      "gap_pre_boss_p90": 11.716666666666,
+      "marks": {
+        "gate": 140,
+        "pickup": 110,
+        "shot": 379,
+        "special": 52
+      },
+      "payoff_median": 3.2833333333335,
+      "payoff_seen_share": 0.45,
+      "payoff_within_2s": 0.0,
+      "runs": 20,
+      "win_rate": 0.6
+    }
+  ]
+}
