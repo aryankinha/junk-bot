@@ -37,6 +37,20 @@
     "level1_first_gate": [
       "cannon",
       "storage"
-    ]
+    ],
+    "density_ramp": 0.5,
+    "wave_scrappers": 3,
+    "wave_second": 2,
+    "arc_coins": 12,
+    "arc_amplitude": 2.4,
+    "governor_p95_ms": 18.5,
+    "governor_draws": 135,
+    "evolution_rocket_level": 2,
+    "evolution_children": 3,
+    "evolution_damage_pct": 0.5,
+    "evolution_radius": 1.2,
+    "evolution_reach": 5.5,
+    "evolution_child_cap": 12,
+    "dense_enemy_cap": 14
   }
 }

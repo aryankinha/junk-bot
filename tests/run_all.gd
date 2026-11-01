@@ -294,7 +294,7 @@ func run() -> void:
 	# Caps hold with lane aiming and salvage on, for every aiming delay.
 	for delay in [0.0, 0.15, 0.25, 0.4]:
 		var capped := RunSim.new()
-		capped.flag_overrides = {"aim_mode": "lane", "guarded_salvage": true}
+		capped.flag_overrides = {"aim_mode": "lane", "guarded_salvage": true, "gate_charge": true, "post_gate_payoff": true, "moving_gates": true, "dense_blocks": true, "weapon_evolution": true}
 		capped.setup(3, 90)
 		var aimer := AimBot.new(90, delay)
 		var cap_ok := true
@@ -417,6 +417,80 @@ func run() -> void:
 	for tick in 120:
 		no_focus.step(1.0 / 60)
 	check(is_equal_approx(no_focus.focus_multiplier(), 1.0), "focus fire is inert with the flag off")
+	# E4: rhythm blocks and density ramp.
+	var blocks := RunSim.new()
+	blocks.flag_overrides = {"dense_blocks": true}
+	blocks.setup(1, 61)
+	var block_types: Dictionary = {}
+	for beat in blocks.beats:
+		if beat.type in ["wave", "coin_arc"]:
+			block_types[beat.type] = int(block_types.get(beat.type, 0)) + 1
+	check(block_types.get("wave", 0) == 3 and block_types.get("coin_arc", 0) == 3, "level 1 authors three survival waves and three coin arcs")
+	check(blocks.beats.any(func(b): return b.type == "wave" and int(b.z) == 695), "a survival wave fills the run-in to the boss")
+	var plain_blocks := RunSim.new()
+	plain_blocks.setup(1, 61)
+	check(not plain_blocks.beats.any(func(b): return b.type in ["wave", "coin_arc"]), "no rhythm blocks with the flag off")
+	check(blocks._scaled(4, 100.0) < blocks._scaled(4, 700.0), "enemy counts ramp up toward the boss")
+	var full_density: int = blocks._scaled(4, 700.0)
+	blocks.density_limit = 0.6
+	check(blocks._scaled(4, 700.0) < full_density, "the perf governor lowers density")
+	blocks.density_limit = 1.0
+	blocks._spawn_wave(100.0)
+	check(blocks.enemies.size() >= 5, "a survival wave spawns a first and a second group")
+	blocks._spawn_coin_arc(50.0)
+	var arc_x: Array = blocks.scrap_nodes.map(func(n): return float(n.x))
+	check(arc_x.size() == 12 and arc_x.max() - arc_x.min() > 3.5, "a coin arc needs steering")
+	var generated := RunSim.new()
+	generated.flag_overrides = {"dense_blocks": true}
+	generated.setup(3, 62)
+	check(generated.beats.any(func(b): return b.type == "wave" and is_equal_approx(float(b.z), generated.boss_z - 25.0)), "generated levels get a pre-boss wave")
+	# E5: Cluster Rockets need the burst-volley combo and rocket level 2.
+	var evo := RunSim.new()
+	evo.flag_overrides = {"weapon_evolution": true}
+	evo.setup(1, 71)
+	evo.robot.add_part("rocket", evo, 1)
+	evo.robot.add_part("cannon", evo, 1)
+	check(not evo.evolution_active(), "rocket level 1 does not evolve")
+	evo.robot.add_part("rocket", evo, 1)
+	check(evo.evolution_active(), "rocket level 2 with a cannon evolves")
+	var evo_missing := RunSim.new()
+	evo_missing.flag_overrides = {"weapon_evolution": true}
+	evo_missing.setup(1, 71)
+	evo_missing.robot.add_part("rocket", evo_missing, 2)
+	check(not evo_missing.evolution_active(), "rocket level 2 without a cannon does not evolve")
+	var evo_off := RunSim.new()
+	evo_off.setup(1, 71)
+	evo_off.robot.add_part("rocket", evo_off, 2)
+	evo_off.robot.add_part("cannon", evo_off, 1)
+	check(not evo_off.evolution_active(), "evolution is inert with the flag off")
+	for i in 4:
+		evo.spawn_pack("scrapper", 1, 12.0 + i)
+		evo.enemies.back().x = -1.0 + i * 0.7
+		evo.enemies.back().hp = 500.0
+		evo.enemies.back().timer = 99.0
+	evo.bullets.append({"x": -1.0, "z": 11.4, "tx": -1.0, "tz": 12.0, "type": "rocket", "wid": "rocket", "damage": 40.0, "speed": 26.0, "radius": 2.0, "ttl": 2.0, "charge": 0.0})
+	evo._combat(0.05)
+	var kids: Array = evo.bullets.filter(func(b): return b.type == "cluster")
+	check(kids.size() == 3 and evo.events.any(func(e): return e.t == "cluster_burst"), "a rocket hit splits into three bomblets")
+	evo.events.clear()
+	evo.robot.stats.weapons = []
+	evo.bullets = evo.bullets.filter(func(b): return b.type == "cluster")
+	var max_kids := 0
+	for tick in 120:
+		evo._combat(1.0 / 60)
+		max_kids = maxi(max_kids, evo.bullets.filter(func(b): return b.type == "cluster").size())
+	check(max_kids <= int(evo.flags.tuning.evolution_child_cap), "bomblets stay under the cap")
+	check(not evo.events.any(func(e): return e.t == "cluster_burst"), "bomblets do not split again")
+	var evo_plain := RunSim.new()
+	evo_plain.setup(1, 71)
+	evo_plain.robot.add_part("rocket", evo_plain, 2)
+	evo_plain.robot.add_part("cannon", evo_plain, 1)
+	evo_plain.spawn_pack("scrapper", 1, 12.0)
+	evo_plain.enemies[0].hp = 500.0
+	evo_plain.enemies[0].timer = 99.0
+	evo_plain.bullets.append({"x": 0.0, "z": 11.8, "tx": 0.0, "tz": 12.0, "type": "rocket", "wid": "rocket", "damage": 40.0, "speed": 26.0, "radius": 2.0, "ttl": 2.0, "charge": 0.0})
+	evo_plain._combat(0.05)
+	check(evo_plain.bullets.filter(func(b): return b.type == "cluster").is_empty(), "no bomblets with the flag off")
 	# Exercise the actual scene tree and persistent services as part of the main runner.
 	var integration = load("res://tests/integration_suite.gd").new()
 	var integration_failures: Array = await integration.run(self)

@@ -1,0 +1,40 @@
+{
+  "_note": "Level 1 rhythm blocks (flag dense_blocks). Each block is 6-10 s of road: collect, aim, destroy, dodge, reward. Types: coin_arc (coins that need steering), wave (short survival wave), plus existing beat types.",
+  "level1": [
+    {
+      "z": 40,
+      "type": "coin_arc",
+      "block": "collect"
+    },
+    {
+      "z": 315,
+      "type": "wave",
+      "block": "survival"
+    },
+    {
+      "z": 425,
+      "type": "coin_arc",
+      "block": "reward"
+    },
+    {
+      "z": 545,
+      "type": "wave",
+      "block": "survival"
+    },
+    {
+      "z": 640,
+      "type": "coin_arc",
+      "block": "collect"
+    },
+    {
+      "z": 695,
+      "type": "wave",
+      "block": "survival"
+    }
+  ],
+  "generated": {
+    "wave_after_gate_m": 70,
+    "pre_boss_wave_m": 25,
+    "coin_arc_before_gate_m": 40
+  }
+}

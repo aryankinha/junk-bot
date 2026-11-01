@@ -51,6 +51,10 @@ var daily := false
 var daily_key := ""
 var bot
 var flag_overrides: Dictionary = {}
+var gov_frames: Array = []
+var gov_timer := 0.0
+var gov_draws := 0
+var cluster_seen := false
 var capture := false
 var snapshot_at := -1.0
 var snapshot_path := ""
@@ -582,6 +586,7 @@ func start_run(is_daily := false) -> void:
 	run_paid = 0
 	run_saved = false
 	run_win_applied = false
+	cluster_seen = false
 	run_start_streak = int(save.data.streak)
 	streak_saved = false
 	result_recorded = false
@@ -630,7 +635,7 @@ func bump_combo() -> void:
 
 func _events() -> void:
 	for event in sim.events:
-		if event.t not in ["scrap", "weapon_fire", "gate_charge_tick"]:
+		if event.t not in ["scrap", "weapon_fire", "gate_charge_tick", "wave_spawn", "cluster_burst"]:
 			TelemetryLog.log_event(event)
 		match str(event.t):
 			"part_attached", "part_upgraded":
@@ -719,6 +724,17 @@ func _events() -> void:
 				toast("IT GOT AWAY...")
 			"salvage_spawn":
 				toast("SALVAGE!\nBlast the barrel or crack the crate")
+				audio.play("warning")
+			"cluster_burst":
+				var split_pos := Vector3(event.x, 1.0, sim.z - float(event.z))
+				world.burst(split_pos, 14, MeshFactory.ORANGE, 1.4)
+				if not cluster_seen:
+					cluster_seen = true
+					toast("CLUSTER ROCKETS!\nRockets split on impact")
+					audio.play("stage")
+				haptics.tap(15, 0.3)
+			"wave_spawn":
+				toast("INCOMING!\nHold the line")
 				audio.play("warning")
 			"salvage_looted":
 				toast("LOOT!")
@@ -817,6 +833,8 @@ func _process(delta: float) -> void:
 		_events()
 		world.sync(sim, frame_delta * (0.25 if kill_timer > 0 else 1))
 		perf.sample()
+		if sim.flags.dense_blocks:
+			_govern_density(delta)
 		if runtime - last_perf_save > 5:
 			perf.write()
 			last_perf_save = runtime
@@ -973,6 +991,8 @@ func _update_hud() -> void:
 		hint_label.text = "SHOOT THE CRATE  ·  WATCH THE BARRELS"
 	elif _gate_charging():
 		hint_label.text = "HOLD YOUR LANE  ·  SHOOT THE GATE TO CHARGE IT"
+	elif sim.flags.weapon_evolution and sim.robot.combos().has("burst_volley") and not sim.evolution_active():
+		hint_label.text = "ROCKET LV%d NEEDED  →  CLUSTER ROCKETS" % int(sim.flags.tuning.evolution_rocket_level)
 	elif not available_combo.is_empty():
 		hint_label.text = GameData.table("combos")[available_combo].name.to_upper() + " READY"
 	else:
@@ -985,9 +1005,33 @@ func _update_hud() -> void:
 			if owned == 1:
 				var missing: String = def.needs[1] if sim.robot.parts.has(def.needs[0]) else def.needs[0]
 				hint_label.text = "%s + ?  →  %s" % [missing.to_upper(), def.name.to_upper()]
+				if sim.flags.weapon_evolution and id == "burst_volley":
+					hint_label.text += "  ·  CLUSTER ROCKETS"
 				break
 	debug_label.text = "%d FPS  ·  %d DRAWS  ·  %s" % [Engine.get_frames_per_second(), RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME), sim.state]
 	debug_label.visible = debug_label.visible and OS.is_debug_build() and not capture
+
+# Enemy density only rises while the frame budget holds: back off when p95 frame time or draw calls
+# exceed the limits, creep back toward full density when healthy. The sim reads density_limit at spawn time.
+func _govern_density(delta: float) -> void:
+	gov_frames.append(delta * 1000.0)
+	if gov_frames.size() > 180:
+		gov_frames.pop_front()
+	gov_draws = maxi(gov_draws, int(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME)))
+	gov_timer += delta
+	if gov_timer < 2.0 or gov_frames.size() < 90:
+		return
+	gov_timer = 0.0
+	var sorted := gov_frames.duplicate()
+	sorted.sort()
+	var p95: float = sorted[int(sorted.size() * 0.95)]
+	var draws := gov_draws
+	gov_draws = 0
+	if p95 > float(sim.flags.tuning.governor_p95_ms) or draws > int(sim.flags.tuning.governor_draws):
+		sim.density_limit = maxf(0.6, sim.density_limit - 0.1)
+		TelemetryLog.log_event({"t": "density_governor", "limit": sim.density_limit, "p95_ms": p95, "draws": draws})
+	elif sim.density_limit < 1.0:
+		sim.density_limit = minf(1.0, sim.density_limit + 0.05)
 
 func _gate_charging() -> bool:
 	var gate := sim.next_gate()

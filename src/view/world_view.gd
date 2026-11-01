@@ -8,6 +8,7 @@ var scrap: MultiMeshInstance3D
 var gold: MultiMeshInstance3D
 var projectiles: MultiMeshInstance3D
 var hostile_projectiles: MultiMeshInstance3D
+var bomblets: MultiMeshInstance3D
 var shadows: MultiMeshInstance3D
 var fx: MultiMeshInstance3D
 var fx_items: Array = []
@@ -22,12 +23,12 @@ var hazard_nodes: Array[MeshInstance3D] = []
 var warnings: Array[MeshInstance3D] = []
 var gate_root: Node3D
 var aim_ring: MeshInstance3D
-var aim_beam: MeshInstance3D
 var salvage_tags: Dictionary = {}
 var charge_panels: Array = []
 var gate_rail: MeshInstance3D
 var sim_t1 := 1.0
 var sim_cost: Callable
+var evolution_level := 0
 var sim_t2 := 2.5
 var gate_signature := ""
 var boss_root: Node3D
@@ -73,6 +74,7 @@ func _ready() -> void:
 	gold = make_multimesh(MeshFactory.gold_coin(), 40)
 	projectiles = make_multimesh(MeshFactory.merged([MeshFactory.capsule(0.09, 0.5, Vector3.ZERO, MeshFactory.YELLOW, Vector3(PI / 2, 0, 0))]), 64)
 	hostile_projectiles = make_multimesh(MeshFactory.merged([MeshFactory.capsule(0.13, 0.6, Vector3.ZERO, MeshFactory.RED, Vector3(PI / 2, 0, 0))]), 16)
+	bomblets = make_multimesh(MeshFactory.merged([MeshFactory.sphere(0.27, Vector3.ZERO, MeshFactory.ORANGE, Vector3.ONE, 8), MeshFactory.sphere(0.14, Vector3(0, 0.1, 0), MeshFactory.YELLOW, Vector3.ONE, 6)]), 16)
 	shadows = make_multimesh(MeshFactory.merged([MeshFactory.cylinder(0.65, 0.01, Vector3.ZERO, Color("3b434d"), Vector3.ZERO, -1.0, 16)], true), 26)
 	fx = make_multimesh(MeshFactory.merged([MeshFactory.sphere(0.14, Vector3.ZERO, Color.WHITE, Vector3.ONE, 6)], true), 128, true)
 	player = RobotBuilder.new()
@@ -163,15 +165,6 @@ func _build_aim_feedback() -> void:
 	aim_ring.material_override = aim_material
 	aim_ring.visible = false
 	add_child(aim_ring)
-	var beam_mesh := BoxMesh.new()
-	beam_mesh.size = Vector3(0.07, 0.07, 1.0)
-	var beam_material := aim_material.duplicate()
-	beam_material.albedo_color = Color(MeshFactory.ORANGE, 0.35)
-	aim_beam = MeshInstance3D.new()
-	aim_beam.mesh = beam_mesh
-	aim_beam.material_override = beam_material
-	aim_beam.visible = false
-	add_child(aim_beam)
 	for kind in ["blast", "loot"]:
 		var tag := label3d("BLAST" if kind == "blast" else "LOOT", Vector3.ZERO, 110)
 		tag.billboard = BaseMaterial3D.BILLBOARD_ENABLED
@@ -187,16 +180,10 @@ func _sync_aim(sim: RunSim) -> void:
 	var target = sim.aim_target
 	var show: bool = target != null and sim.state == "running"
 	aim_ring.visible = show
-	aim_beam.visible = show
 	if show:
 		var tz := sim.z - float(target.z)
 		aim_ring.position = Vector3(target.x, 0.07, tz)
 		aim_ring.scale = Vector3.ONE * (1.0 + sin(elapsed * 10.0) * 0.08)
-		var from := Vector3(sim.x, 1.0, -0.9)
-		var to := Vector3(target.x, 1.0, tz)
-		aim_beam.position = (from + to) / 2.0
-		aim_beam.rotation = Vector3(0, atan2(to.x - from.x, to.z - from.z), 0)
-		aim_beam.scale = Vector3(1, 1, maxf(0.1, from.distance_to(to)))
 	for kind in salvage_tags:
 		salvage_tags[kind].visible = false
 	for enemy in sim.enemies:
@@ -252,14 +239,16 @@ func rebuild_gate(gate: Dictionary, robot: RobotState = null) -> void:
 		gate_root.add_child(mesh)
 		var name_label := label3d(GateGen.label(option).to_upper().replace(" ", "\n") if options.size() == 3 else GateGen.label(option).to_upper(), Vector3(dx, 2.72, 0.12), 34 if options.size() == 3 else (42 if moving else 56))
 		gate_root.add_child(name_label)
-		var desc := label3d(GateGen.description(option), Vector3(dx, 2.08, 0.12), 20 if options.size() == 3 else (24 if moving else 30))
-		gate_root.add_child(desc)
+		var charging: bool = gate.has("charge") and option.kind in ["part", "upgrade_random_owned"]
+		if not charging:
+			# Chargeable panels already show their level and next part name above the bar.
+			gate_root.add_child(label3d(GateGen.description(option), Vector3(dx, 2.08, 0.12), 20 if options.size() == 3 else (24 if moving else 30)))
 		if option.kind == "part":
 			var icon := MeshFactory.instance(MeshFactory.part(str(option.id), 1))
 			icon.position = Vector3(dx, 1.2, 0)
 			icon.scale = Vector3.ONE * 0.85
 			gate_root.add_child(icon)
-			var tag := _gate_tag(option, robot)
+			var tag := "" if charging and not tag_is_evolution(option, robot) else _gate_tag(option, robot)
 			if not tag.is_empty():
 				gate_root.add_child(label3d(tag, Vector3(dx, 3.62, 0.12), 40))
 				gate_root.get_child(gate_root.get_child_count() - 1).modulate = MeshFactory.YELLOW
@@ -271,6 +260,9 @@ func rebuild_gate(gate: Dictionary, robot: RobotState = null) -> void:
 			icon.scale = Vector3.ONE * 1.1
 			icon.set_meta("spin", true)
 			gate_root.add_child(icon)
+
+func tag_is_evolution(option: Dictionary, robot: RobotState) -> bool:
+	return _gate_tag(option, robot) in ["EVOLVES!", "COMBO!"]
 
 # Charge bar and next-level preview over a chargeable panel (gate_charge flag).
 func _charge_panel(lane: int, dx: float, width: float, option: Dictionary) -> Dictionary:
@@ -294,14 +286,6 @@ func _charge_panel(lane: int, dx: float, width: float, option: Dictionary) -> Di
 	fill.material_override = fill_material
 	fill.position = Vector3(dx, 4.0, 0.04)
 	gate_root.add_child(fill)
-	var tick_x := (float(sim_t1) / float(sim_t2) - 0.5) * (width - 0.62)
-	var tick := MeshInstance3D.new()
-	var tick_mesh := BoxMesh.new()
-	tick_mesh.size = Vector3(0.1, 0.56, 0.14)
-	tick.mesh = tick_mesh
-	tick.material_override = bar_material
-	tick.position = Vector3(dx + tick_x, 4.0, 0.05)
-	gate_root.add_child(tick)
 	var level_label := label3d("", Vector3(dx, 4.95, 0.12), 54)
 	level_label.modulate = MeshFactory.YELLOW
 	gate_root.add_child(level_label)
@@ -334,6 +318,11 @@ func _gate_tag(option: Dictionary, robot: RobotState) -> String:
 	if robot == null:
 		return ""
 	var id := str(option.id)
+	if evolution_level > 0 and id in ["rocket", "cannon"]:
+		var rocket_after := int(robot.parts.get("rocket", 0)) + (1 if id == "rocket" else 0)
+		var cannon_after := int(robot.parts.get("cannon", 0)) + (1 if id == "cannon" else 0)
+		if rocket_after >= evolution_level and cannon_after >= 1 and not (int(robot.parts.get("rocket", 0)) >= evolution_level and int(robot.parts.get("cannon", 0)) >= 1):
+			return "EVOLVES!"
 	if robot.parts.has(id):
 		return "LV %d > %d" % [int(robot.parts[id]), mini(3, int(robot.parts[id]) + 1)]
 	for combo_id in GameData.table("combos"):
@@ -483,10 +472,19 @@ func sync(sim: RunSim, dt: float) -> void:
 				count += 1
 	scrap.multimesh.visible_instance_count = count
 	gold.multimesh.visible_instance_count = gold_count
-	projectiles.multimesh.visible_instance_count = sim.bullets.size()
-	for i in sim.bullets.size():
-		var bullet: Dictionary = sim.bullets[i]
-		projectiles.multimesh.set_instance_transform(i, Transform3D(Basis(), Vector3(bullet.x, 1.1, sim.z - float(bullet.z))))
+	var shot_count := 0
+	var bomblet_count := 0
+	for bullet in sim.bullets:
+		var at := Vector3(bullet.x, 1.1, sim.z - float(bullet.z))
+		if bullet.type == "cluster":
+			if bomblet_count < 16:
+				bomblets.multimesh.set_instance_transform(bomblet_count, Transform3D(Basis(), at))
+				bomblet_count += 1
+		elif shot_count < 64:
+			projectiles.multimesh.set_instance_transform(shot_count, Transform3D(Basis(), at))
+			shot_count += 1
+	projectiles.multimesh.visible_instance_count = shot_count
+	bomblets.multimesh.visible_instance_count = bomblet_count
 	hostile_projectiles.multimesh.visible_instance_count = sim.hostile_bullets.size()
 	for i in sim.hostile_bullets.size():
 		var bolt: Dictionary = sim.hostile_bullets[i]
@@ -556,6 +554,7 @@ func sync(sim: RunSim, dt: float) -> void:
 		gate_signature = sig
 		rebuild_gate(gate, sim.robot)
 	sim_cost = sim.charge_cost
+	evolution_level = int(sim.flags.tuning.evolution_rocket_level) if sim.flags.weapon_evolution else 0
 	sim_t1 = float(sim.flags.tuning.charge_t1)
 	sim_t2 = float(sim.flags.tuning.charge_t2)
 	_update_charge(gate, sim.robot)

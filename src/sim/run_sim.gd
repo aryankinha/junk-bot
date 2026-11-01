@@ -47,6 +47,7 @@ var engage: EngagementLog
 var aim_target = null
 var payoff_id := ""
 var focus_hold := 0.0
+var density_limit := 1.0
 var last_target_x := 0.0
 var payoff_paid := false
 
@@ -84,6 +85,8 @@ func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count :
 				break
 	if flags.guarded_salvage:
 		_add_salvage_beats()
+	if flags.dense_blocks:
+		_add_rhythm_beats()
 	var gate_index := 0
 	for beat in beats:
 		beat.resolved = false
@@ -127,6 +130,45 @@ func _add_salvage_beats() -> void:
 			if i % 2 == 1:
 				beats.append({"z": float(gates[i].z) + 70.0, "type": "salvage"})
 	beats.sort_custom(func(a, b): return a.z < b.z)
+
+# Rhythm blocks (E4): authored for Level 1, generated for later levels. A short survival wave fills the
+# run-in to the boss, coin arcs ask for steering, and enemy counts ramp up with progress.
+func _add_rhythm_beats() -> void:
+	var blocks: Dictionary = GameData.table("blocks")
+	if level == 1:
+		for block in blocks.level1:
+			beats.append({"z": float(block.z), "type": str(block.type), "block": str(block.block)})
+	else:
+		var rules: Dictionary = blocks.generated
+		var gate_zs: Array = beats.filter(func(b): return b.get("generated", false) and b.has("options")).map(func(b): return float(b.z))
+		for i in gate_zs.size():
+			beats.append({"z": gate_zs[i] - float(rules.coin_arc_before_gate_m), "type": "coin_arc", "block": "collect"})
+			if not flags.guarded_salvage or i % 2 == 0:
+				beats.append({"z": gate_zs[i] + float(rules.wave_after_gate_m), "type": "wave", "block": "survival"})
+		beats.append({"z": boss_z - float(rules.pre_boss_wave_m), "type": "wave", "block": "survival"})
+	beats.sort_custom(func(a, b): return a.z < b.z)
+
+# Enemy count for a pack or wave at beat distance: ramps up to +density_ramp by the boss, scaled by the perf governor.
+func _scaled(base: int, at_z: float) -> int:
+	if not flags.dense_blocks:
+		return base
+	var ramp := 1.0 + float(flags.tuning.density_ramp) * clampf(at_z / maxf(boss_z, 1.0), 0.0, 1.0)
+	return maxi(1, int(round(base * ramp * density_limit)))
+
+func _spawn_wave(bz: float) -> void:
+	var count := _scaled(int(flags.tuning.wave_scrappers), bz)
+	spawn_pack("scrapper", count, bz)
+	spawn_pack("scrapper", _scaled(int(flags.tuning.wave_second), bz), bz + 10.0)
+	if level >= 2:
+		spawn_pack("gunner", 1, bz + 6.0)
+	emit("wave_spawn", {"count": count})
+
+func _spawn_coin_arc(bz: float) -> void:
+	var amplitude := float(flags.tuning.arc_amplitude)
+	for i in int(flags.tuning.arc_coins):
+		if scrap_nodes.size() < 400:
+			coin_index += 1
+			scrap_nodes.append({"x": amplitude * sin(float(i) * 0.95), "z": bz + float(i) * 2.4, "alive": true, "gold": i % 6 == 5})
 
 func _spawn_salvage(bz: float) -> void:
 	var blast_side := -1.0 if rng.spawns.randf() < 0.5 else 1.0
@@ -283,7 +325,8 @@ func _coin_x(zc: float) -> float:
 
 func spawn_pack(id: String, count: int, at_z: float) -> void:
 	var def: Dictionary = GameData.table("enemies")[id]
-	for i in mini(count, 24 - enemies.size()):
+	var enemy_cap := int(flags.tuning.dense_enemy_cap) if flags.dense_blocks else 24
+	for i in mini(count, enemy_cap - enemies.size()):
 		entity_counter += 1
 		enemies.append({"uid": entity_counter, "id": id, "x": rng.spawns.randf_range(-2.7, 2.7), "z": at_z + float(i / 3) * 1.7, "hp": float(def.hp) * (0.8 if level == 1 else 1.0), "max_hp": float(def.hp), "timer": 1.5 + float(i) * 0.3, "warning": false, "aim_x": x, "windup": 0.0, "charge_left": 0.0, "charges_remaining": 0, "burn_left": 0.0, "burn_dps": 0.0})
 
@@ -291,7 +334,9 @@ func _spawn_beats() -> void:
 	while next_beat < beats.size() and float(beats[next_beat].z) <= z + 45:
 		var beat: Dictionary = beats[next_beat]
 		match str(beat.type):
-			"enemy_pack": spawn_pack(str(beat.enemy), int(beat.count), float(beat.z))
+			"enemy_pack": spawn_pack(str(beat.enemy), _scaled(int(beat.count), float(beat.z)), float(beat.z))
+			"wave": _spawn_wave(float(beat.z))
+			"coin_arc": _spawn_coin_arc(float(beat.z))
 			"miniboss": spawn_pack("hauler", 1, float(beat.z))
 			"salvage": _spawn_salvage(float(beat.z))
 			"hazard":
@@ -442,6 +487,33 @@ func focus_multiplier() -> float:
 	var ramp := clampf((focus_hold - float(flags.tuning.focus_hold_s)) / float(flags.tuning.focus_ramp_s), 0.0, 1.0)
 	return 1.0 + float(flags.tuning.focus_max_bonus) * ramp
 
+# Weapon evolution (E5): Cluster Rockets. Needs the cannon + rocket combo (Burst Volley) and the rocket at level 2+.
+# A rocket that hits an enemy then splits into bomblets that seek nearby enemies or fan out ahead.
+func evolution_active() -> bool:
+	return flags.weapon_evolution and int(robot.parts.get("rocket", 0)) >= int(flags.tuning.evolution_rocket_level) and robot.combos().has("burst_volley")
+
+func _split_rocket(bullet: Dictionary, hit: Dictionary) -> void:
+	var children := 0
+	for b in bullets:
+		if b.type == "cluster":
+			children += 1
+	var cap := int(flags.tuning.evolution_child_cap)
+	var targets: Array = enemies.filter(func(e): return e != hit and e.hp > 0 and Vector2(float(e.x) - float(hit.x), float(e.z) - float(hit.z)).length() < float(flags.tuning.evolution_reach))
+	targets.sort_custom(func(a, b): return Vector2(float(a.x) - float(hit.x), float(a.z) - float(hit.z)).length() < Vector2(float(b.x) - float(hit.x), float(b.z) - float(hit.z)).length())
+	var spawned := 0
+	for i in int(flags.tuning.evolution_children):
+		if children + spawned >= cap or bullets.size() + hostile_bullets.size() >= 64:
+			break
+		var tx: float = float(hit.x) + (i - 1) * 2.2
+		var tz: float = float(hit.z) + 6.0
+		if i < targets.size():
+			tx = float(targets[i].x)
+			tz = float(targets[i].z)
+		bullets.append({"x": hit.x, "z": hit.z, "tx": tx, "tz": tz, "type": "cluster", "wid": "cluster", "charge": 0.0, "damage": float(bullet.damage) * float(flags.tuning.evolution_damage_pct), "speed": 26.0, "radius": float(flags.tuning.evolution_radius), "ttl": 0.6})
+		spawned += 1
+	if spawned > 0:
+		emit("cluster_burst", {"x": hit.x, "z": hit.z, "children": spawned})
+
 func tap_special() -> bool:
 	var combos := robot.combos()
 	var chosen := ""
@@ -572,6 +644,8 @@ func _combat(dt: float) -> void:
 				enemy.hp -= float(bullet.damage)
 				if engage != null:
 					engage.on_hit(self, bullet, enemy)
+				if bullet.type == "rocket" and flags.weapon_evolution and evolution_active():
+					_split_rocket(bullet, enemy)
 				if float(bullet.radius) > 0:
 					for other in enemies:
 						if other != enemy and Vector2(float(other.x) - float(enemy.x), float(other.z) - float(enemy.z)).length() < float(bullet.radius):

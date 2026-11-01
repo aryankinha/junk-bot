@@ -19,6 +19,8 @@ var payoff_t := -1.0
 var telegraph_x := 0.0
 var warned: Dictionary = {}     # enemy uid -> x when its telegraph started
 var lane_half := 1.2
+var evolution_t := -1.0
+var bursts := 0
 
 func setup(half_width: float) -> void:
 	lane_half = half_width
@@ -79,6 +81,10 @@ func on_event(sim, type: String, data: Dictionary) -> void:
 			_payoff(sim.t, "shield")
 		"player_hit":
 			_payoff(sim.t, "armour")
+		"cluster_burst":
+			bursts += 1
+			if evolution_t < 0:
+				evolution_t = sim.t
 		"gate_charge_tick":
 			mark(sim.t, "charge")
 		"payoff":
@@ -122,7 +128,9 @@ func results(run_end: float) -> Dictionary:
 		"max_gap_full_run": _max_gap(sorted, run_end),
 		"mark_count": sorted.size(),
 		"marks_by_kind": _by_kind(sorted),
-		"chosen": chosen_id}
+		"chosen": chosen_id,
+		"evolution_t": evolution_t,
+		"bursts": bursts}
 
 func _by_kind(list: Array) -> Dictionary:
 	var out: Dictionary = {}

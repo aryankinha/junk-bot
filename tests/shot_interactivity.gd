@@ -26,12 +26,23 @@ func run() -> void:
 	game.start_run(false)
 	game.paused = true
 	print("flags ", game.sim.flags.aim_mode, " ", game.sim.flags.guarded_salvage, " salvage beats ", game.sim.beats.filter(func(b): return b.type == "salvage").size())
+	if scenario == "evolution":
+		game.sim.robot.add_part("cannon", game.sim, 2)
+		game.sim.robot.add_part("rocket", game.sim, 2)
+		game.sim.events.clear()
+		game.sim.z = 100.0
+		for i in 5:
+			game.sim.spawn_pack("scrapper", 1, 116.0 + float(i % 2) * 1.5)
+			game.sim.enemies.back().x = -1.4 + float(i) * 0.7
+			game.sim.enemies.back().timer = 99.0
+			game.sim.enemies.back().hp = 400.0
 	var bot := AimBot.new(20261031, 0.0)
 	var done := false
 	for i in 20000:
 		bot.control(game.sim)
 		game.sim.step(1.0 / 60)
-		game.sim.events.clear()
+		if scenario != "evolution":
+			game.sim.events.clear()
 		match scenario:
 			"first_gate":
 				done = game.sim.z >= 80.0 - 36.0
@@ -46,14 +57,20 @@ func run() -> void:
 			"aim":
 				done = game.sim.aim_target != null and float(game.sim.aim_target.z) - game.sim.z < 14 and game.sim.z > 100
 			"evolution":
-				done = game.sim.has_method("evolution_active") and game.sim.evolution_active() and game.sim.bullets.size() > 6
+				done = game.sim.bullets.any(func(b): return b.type == "cluster")
 		if done or game.sim.state in ["won", "lost"]:
 			break
+	if scenario == "evolution":
+		for n in 4:
+			bot.control(game.sim)
+			game.sim.step(1.0 / 60)
+		game._events()
+		game.sim.events.clear()
 	game.world.sync(game.sim, 0.016)
 	game._update_hud()
 	for n in 20:
 		await process_frame
-		game.world.sync(game.sim, 0.016)
+		game.world.sync(game.sim, 0.002)
 	await RenderingServer.frame_post_draw
 	root.get_viewport().get_texture().get_image().save_png("res://results/interactivity_%s.png" % out)
 	print("captured %s at z=%.1f t=%.1f done=%s" % [scenario, game.sim.z, game.sim.t, done])
