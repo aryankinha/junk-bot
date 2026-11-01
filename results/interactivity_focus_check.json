@@ -1,0 +1,50 @@
+[
+  {
+    "boss_median_s": 18.0833333333336,
+    "bot": "stationary",
+    "focus_fire": false,
+    "kills": 20.0333333333333,
+    "scrap": 213.066666666667,
+    "win_rate": 0.766666666666667
+  },
+  {
+    "boss_median_s": 13.8166666666669,
+    "bot": "stationary",
+    "focus_fire": true,
+    "kills": 21.1666666666667,
+    "scrap": 224.233333333333,
+    "win_rate": 0.9
+  },
+  {
+    "boss_median_s": 12.3833333333335,
+    "bot": "aim",
+    "focus_fire": false,
+    "kills": 29.7333333333333,
+    "scrap": 238.9,
+    "win_rate": 1.0
+  },
+  {
+    "boss_median_s": 11.7833333333335,
+    "bot": "aim",
+    "focus_fire": true,
+    "kills": 29.3,
+    "scrap": 239.7,
+    "win_rate": 1.0
+  },
+  {
+    "boss_median_s": 12.6500000000002,
+    "bot": "aim_slow",
+    "focus_fire": false,
+    "kills": 29.0333333333333,
+    "scrap": 191.5,
+    "win_rate": 1.0
+  },
+  {
+    "boss_median_s": 10.7166666666668,
+    "bot": "aim_slow",
+    "focus_fire": true,
+    "kills": 28.1333333333333,
+    "scrap": 189.833333333333,
+    "win_rate": 1.0
+  }
+]

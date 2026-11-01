@@ -1,5 +1,7 @@
 # Interactivity audit (Step 1, no gameplay changes)
 
+> This file is the Step 1 snapshot taken before any gameplay change (commit 6b6a13a). Line numbers refer to that commit. What was built afterwards and the before/after numbers are in `reports/INTERACTIVITY_REPORT.md`.
+
 Branch `main`, baseline commit `f53b16c`. All line numbers are `path:line` in the tree at the audit commit; every number below was either read from a file or measured in this session (commands under "How measured"). Labels: **CONFIRMED**, **CONTRADICTED**, **PARTLY**, **UNVERIFIED**.
 
 ## 1. Facts about the project

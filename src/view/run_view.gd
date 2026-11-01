@@ -124,6 +124,7 @@ func _ready() -> void:
 		var available := DisplayServer.screen_get_usable_rect().size
 		var height := mini(1152, int(available.y * 0.86))
 		get_window().size = Vector2i(int(height * 9.0 / 16.0), height)
+	get_window().title = "Scrap Bot"
 	audio = GameAudio.new()
 	add_child(audio)
 	ads = AdsService.new()
@@ -1043,6 +1044,8 @@ func _gate_charging() -> bool:
 func _finish_run() -> void:
 	if not result_recorded:
 		result_recorded = true
+		if sim.engage != null:
+			TelemetryLog.log_event({"t": "run_metrics", "level": sim.level, "state": sim.state}.merged(sim.engage.results(sim.t)))
 		var won := sim.state == "won"
 		run_stars = 0
 		new_best_stars = false
@@ -1252,7 +1255,7 @@ func _hangar_home() -> void:
 	gear.offset_bottom = 31
 	settings.add_child(gear)
 	header.add_child(settings)
-	var title := text_label("SCRAP DRAGON", 88, INK)
+	var title := text_label("SCRAP BOT", 88, INK)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(title)
 	var subtitle := text_label("Build your next big thing", 32, MUTED)
