@@ -563,6 +563,18 @@ static func icon(kind: String) -> ArrayMesh:
 	cache[key] = merged(a)
 	return cache[key]
 
+# Scrap drone for the Mob Stream: a little boxy flyer with a rotor and one eye. Pale vertex colours so the per-instance tint
+# (bolt / bomb / torch / champion) decides the colour. Faces -Z, the direction of travel.
+static func drone() -> ArrayMesh:
+	if cache.has("drone"):
+		return cache.drone
+	cache.drone = merged([
+		rbox(Vector3(0.34, 0.24, 0.4), Vector3.ZERO, Color("f4f6fb"), 0.08),
+		rbox(Vector3(0.5, 0.05, 0.1), Vector3(0, 0.17, 0.02), Color("c9d1e4"), 0.02),
+		sphere(0.07, Vector3(0, 0.03, -0.2), Color("232838"), Vector3.ONE, 6),
+		box(Vector3(0.05, 0.12, 0.05), Vector3(0, 0.11, 0.02), Color("8d98b4"))], true)
+	return cache.drone
+
 static func gold_coin() -> ArrayMesh:
 	if cache.has("gold_coin"):
 		return cache.gold_coin

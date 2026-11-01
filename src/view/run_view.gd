@@ -581,7 +581,7 @@ func start_run(is_daily := false) -> void:
 	sim = RunSim.new()
 	sim.flag_overrides = flag_overrides
 	sim.setup(level, seed_arg, {} if daily else save.data.part_tiers, 0 if daily else int(save.data.losses_on_level), [] if daily else save.data.unlocked_parts)
-	bot = (AimBot.new(seed_arg, 0.15) if sim.flags.aim_mode == "lane" else BotController.new(seed_arg, "perfect", 0)) if capture else null
+	bot = (AimBot.new(seed_arg, 0.15) if sim.flags.aim_mode == "lane" or sim.flags.mob_stream else BotController.new(seed_arg, "perfect", 0)) if capture else null
 	perf = PerfLog.new()
 	reward_doubled = false
 	run_paid = 0

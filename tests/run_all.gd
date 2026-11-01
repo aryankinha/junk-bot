@@ -491,6 +491,10 @@ func run() -> void:
 	evo_plain.bullets.append({"x": 0.0, "z": 11.8, "tx": 0.0, "tz": 12.0, "type": "rocket", "wid": "rocket", "damage": 40.0, "speed": 26.0, "radius": 2.0, "ttl": 2.0, "charge": 0.0})
 	evo_plain._combat(0.05)
 	check(evo_plain.bullets.filter(func(b): return b.type == "cluster").is_empty(), "no bomblets with the flag off")
+	var mob_suite = load("res://tests/mob_suite.gd").new()
+	mob_suite.run()
+	checks += mob_suite.checks
+	failures.append_array(mob_suite.failures)
 	# Exercise the actual scene tree and persistent services as part of the main runner.
 	var integration = load("res://tests/integration_suite.gd").new()
 	var integration_failures: Array = await integration.run(self)

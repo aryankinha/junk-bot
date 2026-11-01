@@ -10,6 +10,11 @@ func run() -> void:
 	var scenario := "first_gate"
 	var out := "shot"
 	var flags: Dictionary = {}
+	var parts := ""
+	var stop_z := -1.0
+	var stop_event := ""
+	var stop_extra := 0
+	var outfile := ""
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--scenario="):
 			scenario = arg.get_slice("=", 1)
@@ -17,6 +22,16 @@ func run() -> void:
 			out = arg.get_slice("=", 1)
 		elif arg.begins_with("--flags="):
 			flags = JSON.parse_string(arg.substr(8))
+		elif arg.begins_with("--parts="):
+			parts = arg.get_slice("=", 1)
+		elif arg.begins_with("--z="):
+			stop_z = arg.get_slice("=", 1).to_float()
+		elif arg.begins_with("--event="):
+			stop_event = arg.get_slice("=", 1)
+		elif arg.begins_with("--extra="):
+			stop_extra = arg.get_slice("=", 1).to_int()
+		elif arg.begins_with("--outfile="):
+			outfile = arg.get_slice("=", 1)
 	game = load("res://src/view/Boot.tscn").instantiate()
 	root.add_child(game)
 	game.capture = true
@@ -36,12 +51,17 @@ func run() -> void:
 			game.sim.enemies.back().x = -1.4 + float(i) * 0.7
 			game.sim.enemies.back().timer = 99.0
 			game.sim.enemies.back().hp = 400.0
-	var bot := AimBot.new(20261031, 0.0)
+	for entry in parts.split(",", false):
+		game.sim.robot.add_part(entry.get_slice(":", 0), game.sim, entry.get_slice(":", 1).to_int())
+	var bot = MobBot.new(20261031, 0.0) if flags.get("mob_stream", false) else AimBot.new(20261031, 0.0)
 	var done := false
+	var seen_event := 0
 	for i in 20000:
 		bot.control(game.sim)
 		game.sim.step(1.0 / 60)
-		if scenario != "evolution":
+		if not stop_event.is_empty() and game.sim.events.any(func(e): return e.t == stop_event):
+			seen_event += 1
+		if scenario not in ["evolution", "event"]:
 			game.sim.events.clear()
 		match scenario:
 			"first_gate":
@@ -58,6 +78,11 @@ func run() -> void:
 				done = game.sim.aim_target != null and float(game.sim.aim_target.z) - game.sim.z < 14 and game.sim.z > 100
 			"evolution":
 				done = game.sim.bullets.any(func(b): return b.type == "cluster")
+			"z":
+				done = game.sim.z >= stop_z
+			"event":
+				done = seen_event > stop_extra
+				game.sim.events.clear()
 		if done or game.sim.state in ["won", "lost"]:
 			break
 	if scenario == "evolution":
@@ -72,6 +97,6 @@ func run() -> void:
 		await process_frame
 		game.world.sync(game.sim, 0.002)
 	await RenderingServer.frame_post_draw
-	root.get_viewport().get_texture().get_image().save_png("res://results/interactivity_%s.png" % out)
+	root.get_viewport().get_texture().get_image().save_png(outfile if not outfile.is_empty() else "res://results/interactivity_%s.png" % out)
 	print("captured %s at z=%.1f t=%.1f done=%s" % [scenario, game.sim.z, game.sim.t, done])
 	quit()

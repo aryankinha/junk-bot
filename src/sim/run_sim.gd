@@ -44,6 +44,7 @@ var exposed_time := 0.0
 var flags: Dictionary = {}
 var flag_overrides: Dictionary = {}
 var engage: EngagementLog
+var mob: MobSim
 var aim_target = null
 var payoff_id := ""
 var focus_hold := 0.0
@@ -64,6 +65,9 @@ func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count :
 	if flags.engagement_metrics:
 		engage = EngagementLog.new()
 		engage.setup(float(flags.tuning.lane_half_width))
+	if flags.mob_stream:
+		mob = MobSim.new()
+		mob.setup(GameData.table("mob"), 0.0)
 	level = level_value
 	seed_value = seed_arg
 	losses = loss_count
@@ -551,12 +555,16 @@ func tap_special() -> bool:
 	emit("special_used", {"id": chosen if not chosen.is_empty() else "overdrive"})
 	return true
 
+# Mob Stream always fires along the lane, whatever aim_mode says.
+func _lane_aim() -> bool:
+	return flags.aim_mode == "lane" or flags.mob_stream
+
 # Auto-fire target. "nearest" is the legacy rule: closest enemy inside a wide cone.
 # "lane" keeps shots to the lane the robot stands in: closest enemy inside a narrow aim-assist cone.
 func _pick_target():
 	var target = null
 	var distance := float(GameData.constants().auto_fire_range)
-	var lane: bool = flags.aim_mode == "lane"
+	var lane: bool = _lane_aim()
 	var cone := deg_to_rad(float(flags.tuning.aim_cone_deg) if lane else float(GameData.constants().auto_fire_cone_deg))
 	for enemy in enemies:
 		var dz: float = float(enemy.z) - z
@@ -579,6 +587,13 @@ func _bullet_charge(weapon: Dictionary) -> float:
 	return float(weapon.get("damage", 4)) / maxf(nominal, 1.0)
 
 func _fire(weapon: Dictionary, offset := 0.0) -> void:
+	if mob != null:
+		# Mob Stream: the shot becomes a volley of drones (damage split across the volley).
+		shot_count += 1
+		mob.launch_volley(self, weapon, offset)
+		if shot_count % 3 == 0:
+			emit("weapon_fire", {"id": weapon.id})
+		return
 	if bullets.size() + hostile_bullets.size() >= 64:
 		return
 	var target = _pick_target()
@@ -604,6 +619,13 @@ func _combat(dt: float) -> void:
 			enemy.burn_left -= dt
 	for weapon in robot.stats.weapons:
 		var id: String = weapon.id
+		if weapon.type == "cone" and mob != null:
+			var launched := mob.flame(self, weapon, dt)
+			if flags.gate_charge:
+				_charge_cone(weapon, dt)
+			if launched and (state == "boss" or enemies.any(func(e): return e.hp > 0 and float(e.z) > z and float(e.z) - z < float(weapon.range))):
+				emit("weapon_fire", {"id": id})
+			continue
 		if weapon.type == "cone":
 			var firing := false
 			for enemy in enemies:
@@ -629,6 +651,9 @@ func _combat(dt: float) -> void:
 			fire_timers[id] = 1.0 / (float(weapon.rate) * (2.0 if special_time > 0 else 1.0) * focus_multiplier())
 			for barrel in int(weapon.get("barrels", 1)):
 				_fire(weapon, barrel * 0.15)
+	if mob != null:
+		mob.cap_scale = density_limit
+		mob.step(self, dt)
 	for i in range(bullets.size() - 1, -1, -1):
 		var bullet: Dictionary = bullets[i]
 		var direction := Vector2(float(bullet.tx) - float(bullet.x), float(bullet.tz) - float(bullet.z)).normalized()
@@ -819,7 +844,7 @@ func _tick(dt: float) -> void:
 			hazards.clear()
 			emit("boss_intro")
 	_combat(dt)
-	if flags.aim_mode == "lane":
+	if _lane_aim():
 		aim_target = _pick_target()
 	if engage != null:
 		engage.on_tick(self)

@@ -9,6 +9,7 @@ var gold: MultiMeshInstance3D
 var projectiles: MultiMeshInstance3D
 var hostile_projectiles: MultiMeshInstance3D
 var bomblets: MultiMeshInstance3D
+var drones: MultiMeshInstance3D
 var shadows: MultiMeshInstance3D
 var fx: MultiMeshInstance3D
 var fx_items: Array = []
@@ -75,6 +76,7 @@ func _ready() -> void:
 	projectiles = make_multimesh(MeshFactory.merged([MeshFactory.capsule(0.09, 0.5, Vector3.ZERO, MeshFactory.YELLOW, Vector3(PI / 2, 0, 0))]), 64)
 	hostile_projectiles = make_multimesh(MeshFactory.merged([MeshFactory.capsule(0.13, 0.6, Vector3.ZERO, MeshFactory.RED, Vector3(PI / 2, 0, 0))]), 16)
 	bomblets = make_multimesh(MeshFactory.merged([MeshFactory.sphere(0.27, Vector3.ZERO, MeshFactory.ORANGE, Vector3.ONE, 8), MeshFactory.sphere(0.14, Vector3(0, 0.1, 0), MeshFactory.YELLOW, Vector3.ONE, 6)]), 16)
+	drones = make_multimesh(MeshFactory.drone(), 256, true)
 	shadows = make_multimesh(MeshFactory.merged([MeshFactory.cylinder(0.65, 0.01, Vector3.ZERO, Color("3b434d"), Vector3.ZERO, -1.0, 16)], true), 26)
 	fx = make_multimesh(MeshFactory.merged([MeshFactory.sphere(0.14, Vector3.ZERO, Color.WHITE, Vector3.ONE, 6)], true), 128, true)
 	player = RobotBuilder.new()
@@ -335,6 +337,33 @@ func _gate_tag(option: Dictionary, robot: RobotState) -> String:
 				return "COMBO!"
 	return ""
 
+const DRONE_COLORS := [Color("ffd23f"), Color("ff8a1f"), Color("ff4f2a"), Color("5fd0ff")]
+
+# Mob Stream drones: one MultiMesh, tint by kind, scale by how heavy (multiplied or merged) the drone is.
+func _sync_drones(sim: RunSim) -> void:
+	var mob: MobSim = sim.mob
+	if mob == null:
+		drones.multimesh.visible_instance_count = 0
+		return
+	var count := mini(mob.n, 256)
+	var kinds: Dictionary = mob.cfg.kinds
+	var extra := float(mob.cfg.scale_per_extra_weight)
+	var limit := float(mob.cfg.scale_max)
+	for i in count:
+		var k := mob.kind[i]
+		var s := minf(limit * (3.0 if k == MobSim.Kind.CHAMPION else 1.0), float(kinds[MobSim.KIND_NAMES[k]].scale) * (1.0 + extra * (mob.wgt[i] - 1.0)))
+		var yaw := -atan2(mob.vx[i], maxf(mob.vz[i], 0.1)) if absf(mob.vx[i]) > 0.3 else 0.0
+		var at := Vector3(mob.px[i], 1.0 + sin(elapsed * 14.0 + float(i)) * 0.05, sim.z - mob.pz[i])
+		drones.multimesh.set_instance_transform(i, Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3.ONE * s), at))
+		drones.multimesh.set_instance_color(i, DRONE_COLORS[k])
+	drones.multimesh.visible_instance_count = count
+	var shown := 0
+	for impact in mob.impacts:
+		if shown < 6:
+			burst(Vector3(impact[0], 1.0, sim.z - float(impact[1])), 1 + mini(3, int(float(impact[2]))), DRONE_COLORS[int(impact[3])], 0.6)
+			shown += 1
+	mob.impacts.clear()
+
 func burst(pos: Vector3, count := 8, color := MeshFactory.YELLOW, speed := 1.0) -> void:
 	for i in mini(count, 128 - fx_items.size()):
 		fx_items.append({"pos": pos, "vel": Vector3(randf_range(-3, 3), randf_range(2, 5), randf_range(-3, 3)) * speed, "life": randf_range(0.35, 0.8), "color": color})
@@ -485,6 +514,7 @@ func sync(sim: RunSim, dt: float) -> void:
 			shot_count += 1
 	projectiles.multimesh.visible_instance_count = shot_count
 	bomblets.multimesh.visible_instance_count = bomblet_count
+	_sync_drones(sim)
 	hostile_projectiles.multimesh.visible_instance_count = sim.hostile_bullets.size()
 	for i in sim.hostile_bullets.size():
 		var bolt: Dictionary = sim.hostile_bullets[i]

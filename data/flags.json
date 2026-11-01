@@ -9,6 +9,8 @@
   "focus_fire": false,
   "dense_blocks": false,
   "weapon_evolution": false,
+  "mob_stream": false,
+  "mob_enemy_streams": false,
   "tuning": {
     "aim_cone_deg": 12.0,
     "lane_half_width": 1.2,
