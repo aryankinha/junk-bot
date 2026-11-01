@@ -19,10 +19,28 @@ var lost_id := ""
 var lost_time := 0.0
 var safe_override := Vector2.ZERO
 var feedback_log: Array = []
+var feedback_counts: Dictionary = {}
+var last_player_flash := -10.0
+var last_pickup := -10.0
+var flash_times: Array = []
+var pending_scrap := 0
 var frame := 0
+var log_cursor := 0
+var last_steer_frame := -1
 var optional_particles := 0
 var gesture_seen := false
 var motion_scale := 1.0
+class VolumeSlider:
+	extends HSlider
+	func _draw() -> void:
+		var y := size.y * 0.5
+		var x := 24.0 + (size.x - 48.0) * float(value - min_value) / maxf(0.001, max_value - min_value)
+		draw_line(Vector2(24, y), Vector2(size.x - 24, y), Color("bec8bf"), 8)
+		draw_line(Vector2(24, y), Vector2(x, y), Color("56685e"), 8)
+		var points := PackedVector2Array()
+		for i in 6: points.append(Vector2(x, y) + Vector2(cos(TAU * i / 6), sin(TAU * i / 6)) * 23)
+		draw_colored_polygon(points, Color("34433f"))
+		draw_circle(Vector2(x, y), 12, Color("edf3ec"))
 
 func label(game, text: String, size := 36, color := INK) -> Label:
 	return game.text_label(text, size, color)
@@ -92,11 +110,11 @@ func layout(game) -> void:
 	game.boss_panel.offset_top = y
 	var boss_visible: bool = game.sim != null and (game.sim.boss != null or game.sim.enemies.any(func(e): return e.id == "hauler" and e.hp > 0))
 	hero_panel.offset_top = y + (108 if boss_visible else 4); hero_panel.offset_bottom = hero_panel.offset_top + 90
-	game.chain_label.offset_top = hero_panel.offset_bottom + 8; game.chain_label.offset_bottom = game.chain_label.offset_top + 34
-	game.combo_label.offset_top = game.chain_label.offset_bottom; game.combo_label.offset_bottom = game.combo_label.offset_top + 34
+	game.chain_label.offset_top = hero_panel.offset_bottom + 8; game.chain_label.offset_bottom = game.chain_label.offset_top + 48
+	game.combo_label.offset_top = game.chain_label.offset_bottom; game.combo_label.offset_bottom = game.combo_label.offset_top + 48
 
 func reset(game) -> void:
-	hero_time = 0; hero_priority = 0; hero_panel.visible = false; ready_before = false; ready_time = 0; last_parts = ""; lost_time = 0; receipt.text = ""; feedback_log.clear(); frame = 0; gesture_seen = false
+	hero_time = 0; hero_priority = 0; hero_panel.visible = false; ready_before = false; ready_time = 0; last_parts = ""; lost_time = 0; receipt.text = ""; feedback_log.clear(); log_cursor = 0; last_steer_frame = -1; feedback_counts.clear(); flash_times.clear(); last_player_flash = -10; last_pickup = -10; pending_scrap = 0; frame = 0; gesture_seen = false
 	game.world.popup_limit = 3
 	layout(game)
 
@@ -130,11 +148,11 @@ func sync_hud(game) -> void:
 		cooldown = minf(cooldown, float(s.robot.cooldowns.get(combo, 0)))
 		ready = ready or cooldown <= 0
 	game.special_button.disabled = not ready
-	game.special_button.text = "OVERDRIVE" if s.robot.overdrive >= 100 else ("SPECIAL READY" if ready else "SPECIAL")
+	game.special_button.text = "OVERDRIVE" if s.robot.overdrive >= 100 else ("SPECIAL\nREADY" if ready else "SPECIAL")
 	game.special_ring.value = 1.0 if ready else (s.robot.overdrive / 100.0 if s.robot.combos().is_empty() else 1.0 - clampf(cooldown / 12, 0, 1))
 	game.special_ring.glow = false; charge.value = game.special_ring.value * 100
 	if ready and not ready_before:
-		ready_time = 0.4; game.audio.play("special"); game.haptics.tap(15, 0.25); record(game, "special_ready", "settling ready border", 1)
+		ready_time = 0.4; game.audio.play("ready"); game.haptics.tap(15, 0.25); record(game, "special_ready", "settling ready border", 1)
 	ready_before = ready
 	game.reroll_button.visible = s.state == "running"; game.reroll_button.disabled = s.free_rerolls <= 0 and not game.ads.is_available()
 	game.reroll_button.text = "RE-ROLL\nFREE" if s.free_rerolls > 0 else ("RE-ROLL\nWATCH" if game.ads.is_available() else "RE-ROLL\nUSED")
@@ -151,26 +169,125 @@ func hero(game, text: String, priority: int, color: Color, duration := 1.1) -> v
 
 func record(game, action: String, response: String, strength: int) -> void:
 	if OS.is_debug_build():
-		feedback_log.append({"action": action, "response": response, "strength": strength, "sim_t": game.sim.t, "frame": frame, "reduce_motion": bool(game.save.data.settings.reduce_motion)})
-		if feedback_log.size() > 4096: feedback_log.pop_front()
+		feedback_counts[action] = int(feedback_counts.get(action, 0)) + 1
+		var item := {"action": action, "response": response, "strength": strength, "sim_t": game.sim.t, "frame": frame, "reduce_motion": bool(game.save.data.settings.reduce_motion)}
+		if feedback_log.size() < 4096: feedback_log.append(item)
+		else: feedback_log[log_cursor] = item; log_cursor = (log_cursor + 1) % 4096
 
 func on_event(game, event: Dictionary) -> void:
-	# Feedback map is extended in UI-2. Existing persistent/ad event handling stays in RunView.
-	match str(event.t):
-		"scrap": game.pickup_glow = 0.18; receipt.text = "+%d" % int(event.amount); record(game, "scrap", "counter receipt", 0)
-		"part_attached", "part_upgraded": hero(game, str(event.id).to_upper() + " / L%d" % int(event.level), 40, GREEN); game.audio.play("attach"); game.haptics.tap(20, 0.4); record(game, event.t, "attach receipt", 2)
-		"enemy_death": game.bump_combo(); game.audio.play("explosion"); record(game, event.t, "target confirmation", 1)
-		"weapon_fire": game.world.player.fire_kick = 1; game.audio.play("fire"); record(game, event.t, "muzzle recoil", 0)
-		"player_hit": hero(game, "HULL HIT / −%d" % int(event.amount), 80, RED); game.audio.play("hit"); game.haptics.tap(40, 0.6); record(game, event.t, "damage receipt", 3)
-		"part_broken", "part_stolen": lost_id = str(event.id); lost_time = 1.5; hero(game, "PART LOST / " + lost_id.to_upper(), 85, RED); game.audio.play("break"); game.haptics.tap(60, 0.7); record(game, event.t, "lost chip", 3)
-		"boss_intro": hero(game, "SCRAP TITAN / CONTACT", 100, RED, 1.5); game.audio.play("warning"); record(game, event.t, "boss receipt", 3)
-		"boss_killed": game.kill_timer = 1.2; hero(game, "TITAN DISABLED", 110, GREEN); game.audio.play("victory"); game.haptics.tap(100, 0.8); record(game, event.t, "victory receipt", 3)
+	var s: RunSim = game.sim
+	var world = game.world
+	var reduced: bool = bool(game.save.data.settings.reduce_motion)
+	var rate := clampi(int(game.save.data.settings.get("flash_limit", 3)), 0, 3)
+	var action := str(event.t)
+	var point := Vector3(float(event.get("x", s.x)), 0.1, s.z - float(event.get("z", s.z)))
+	match action:
+		"run_start": record(game, action, "sector / controls visible", 0)
+		"death": game.audio.play("defeat"); record(game, action, "loss result / retry", 3)
+		"combo_active": hero(game, "COMBO ONLINE / " + str(GameData.table("combos")[event.id].name).to_upper(), 50, BLUE); record(game, action, "combo receipt", 2)
+		"buy_offer": record(game, action, "purchase screen", 1)
+		"station_unavailable": hero(game, "NOT ENOUGH SCRAP", 50, INK); record(game, action, "unavailable receipt / optional offer", 1)
+		"scrap":
+			pending_scrap += int(event.amount)
+			if not reduced and rate > 0 and s.t - last_pickup >= 1.0 / rate + 0.002:
+				game.pickup_glow = 0.18; receipt.text = "+%d" % pending_scrap; pending_scrap = 0; last_pickup = s.t
+			game.audio.play("scrap")
+			if int(event.get("chain", 0)) > 0 and int(event.get("chain", 0)) % 10 == 0: game.haptics.tap(8, 0.18)
+			record(game, action, "counter / grouped receipt", 0)
+		"part_attached", "part_upgraded":
+			hero(game, str(event.id).to_upper() + " / L%d" % int(event.level), 40, GREEN)
+			world.ui_feedback.ring(Vector3(s.x, 0.06, 0), GREEN, s.z)
+			game.audio.play("upgrade" if action == "part_upgraded" else "attach"); game.haptics.tap(20, 0.4)
+			record(game, action, "socket animation / attach receipt", 2)
+		"stage_up":
+			hero(game, "BATTLE FRAME ONLINE" if event.stage == 2 else "MONSTER FRAME ONLINE", 70, GREEN)
+			world.ui_feedback.ring(Vector3(s.x, 0.06, 0), GREEN, s.z); game.audio.play("stage"); game.haptics.tap(55, 0.6)
+			record(game, action, "evolution ring / frame receipt", 3)
+		"part_replaced":
+			record(game, action, "socket replacement / updated chip", 1)
+		"enemy_death":
+			game.bump_combo(); world.ui_feedback.ring(point, BLUE, s.z); game.audio.play("explosion")
+			record(game, action, "target ring / compact combo", 1)
+		"weapon_fire":
+			world.player.fire_kick = 1; game.audio.play("fire"); record(game, action, "muzzle recoil / visible projectile", 0)
+		"player_hit":
+			hero(game, "HULL HIT / −%d" % int(event.amount), 80, RED)
+			if not reduced and rate > 0 and s.t - last_player_flash >= 1.0 / rate + 0.002:
+				world.player.flash(); last_player_flash = s.t; flash_times.append(s.t)
+			game.audio.play("hit"); game.haptics.tap(40, 0.6)
+			record(game, action, "local hull flash / health receipt", 3)
+		"part_broken", "part_stolen":
+			lost_id = str(event.id); lost_time = 1.5
+			hero(game, ("PART STOLEN / " if action == "part_stolen" else "PART LOST / ") + lost_id.to_upper(), 85, RED)
+			game.audio.play("break"); game.haptics.tap(60, 0.7); record(game, action, "crossed lost-part chip", 3)
+		"gate_choice":
+			world.ui_feedback.confirm(int(event.side), world.gate_panel_count, float(event.z))
+			if event.option.kind != "part": game.audio.play("attach"); game.haptics.tap(15, 0.3)
+			record(game, action, "chosen lane / dimmed alternatives", 2)
+		"gate_charge_tick", "gate_charged", "gate_level_up":
+			if action == "gate_level_up":
+				hero(game, "+%d LEVEL / CHARGE BONUS" % int(event.bonus), 55, GREEN); game.audio.play("upgrade"); game.haptics.tap(20, 0.4)
+			record(game, action, "panel charge / bonus number", 1)
+		"mob_gate_pass":
+			world.ui_feedback.mob_pass(event)
+			var trap: bool = event.type == "trap"
+			var key := int(event.ord) * 4 + int(event.lane)
+			if game.runtime - float(game.mob_popup_at.get(key, -10.0)) >= 0.8:
+				game.mob_popup_at[key] = game.runtime
+				hero(game, world._mob_panel_text({"t": event.type, "v": event.v}) + (" / STREAM REDUCED" if trap else " / STREAM BOOSTED"), 90 if trap else 60, RED if trap else GREEN, 0.9)
+				game.audio.play("trap" if trap else "multiply"); game.haptics.tap(15, 0.35)
+			world.ui_feedback.ring(point, RED if trap else BLUE, s.z)
+			record(game, action, "gate number press / boosted drone tint", 2)
+		"telegraph", "enemy_warning":
+			hero(game, "DANGER / " + str(event.get("attack", "MARKED LANE")).replace("_", " ").to_upper(), 105, RED, 1.0)
+			game.audio.play("warning"); game.audio.duck(true); game.haptics.tap(15, 0.3)
+			record(game, action, "striped danger shape / priority warning", 3)
+		"boss_attack":
+			game.audio.duck(false); game.audio.play("hit"); world.ui_feedback.ring(Vector3(s.x, 0.05, -1.2), RED, s.z)
+			record(game, action, "local impact / threat resolution", 2)
+		"clean_dodge", "boss_exposed":
+			hero(game, "CLEAN DODGE" if action == "clean_dodge" else "CORE OPEN / ×1.5", 45 if action == "clean_dodge" else 75, GREEN, 0.8)
+			game.audio.play("dodge"); game.haptics.tap(10, 0.2); record(game, action, "dodge confirmation / weak-point ring", 1)
+		"boss_intro", "boss_phase":
+			var text := "SCRAP TITAN / CONTACT" if action == "boss_intro" else ("CORE EXPOSED" if event.phase == 2 else "TITAN ENRAGED")
+			hero(game, text, 100, RED if action == "boss_intro" or event.get("phase", 3) == 3 else GREEN, 1.4)
+			game.audio.play("warning" if action == "boss_intro" else "stage"); game.haptics.tap(40, 0.5); record(game, action, "boss state / phased health bar", 3)
+		"special_used", "mob_champion":
+			var text := "CHAMPION DEPLOYED" if action == "mob_champion" else ("OVERDRIVE RELEASED" if event.id == "overdrive" else str(GameData.table("combos")[event.id].name).to_upper())
+			hero(game, text, 85 if action == "mob_champion" else 70, BLUE)
+			world.ui_feedback.ring(Vector3(s.x, 0.06, -1), BLUE, s.z); game.audio.play("champion" if action == "mob_champion" else "special"); game.haptics.tap(55, 0.6)
+			record(game, action, "deploy ring / special receipt", 3)
+		"shield_block", "surge":
+			hero(game, "SHIELD HELD" if action == "shield_block" else "OVERDRIVE CHARGED", 60, BLUE); game.audio.play("special"); game.haptics.tap(15, 0.3); world.ui_feedback.ring(Vector3(s.x, 0.06, 0), BLUE, s.z)
+			record(game, action, "energy ring / ready state", 2)
+		"repaired", "healed", "arm_recovered":
+			hero(game, "PART RECOVERED" if action == "arm_recovered" else "REPAIR COMPLETE", 55, GREEN); game.audio.play("upgrade"); game.haptics.tap(20, 0.3); record(game, action, "restored chip / repair receipt", 2)
+		"frenzy", "salvage_looted", "hauler_destroyed":
+			hero(game, "SALVAGE BONUS / COINS ×2" if action == "frenzy" else "CARGO SECURED", 65, GOLD); game.audio.play("scrap" if action == "frenzy" else "victory"); game.haptics.tap(25, 0.4); world.ui_feedback.ring(point, GOLD, s.z)
+			record(game, action, "gold payout / cargo ring", 2)
+		"hauler_spawn", "hauler_missed", "salvage_spawn", "wave_spawn":
+			var text: String = {"hauler_spawn": "HAULER / BREAK THE CARGO", "hauler_missed": "HAULER ESCAPED", "salvage_spawn": "SALVAGE / CHOOSE A TARGET", "wave_spawn": "INCOMING / HOLD YOUR LINE"}[action]
+			hero(game, text, 50, INK); game.audio.play("warning"); record(game, action, "encounter cue", 1)
+		"cluster_burst":
+			world.ui_feedback.ring(point, Color("8197cf"), s.z)
+			if not game.cluster_seen: game.cluster_seen = true; hero(game, "CLUSTER ROCKETS ONLINE", 55, BLUE); game.audio.play("stage")
+			record(game, action, "cluster impact / first evolution receipt", 2)
+		"boss_killed":
+			game.kill_timer = 1.2; hero(game, "TITAN DISABLED", 110, GREEN); world.ui_feedback.ring(Vector3(0, 0.05, -17), GREEN, s.z); game.audio.play("victory"); game.haptics.tap(100, 0.8); record(game, action, "victory receipt / titan collapse", 3)
+
+func steering(game) -> void:
+	gesture_seen = true
+	if last_steer_frame != frame:
+		last_steer_frame = frame; record(game, "steer", "robot lean / mode-correct aim cue", 0)
 
 func tick(game, delta: float) -> void:
 	frame += 1
 	motion_scale = 0.0 if bool(game.save.data.settings.reduce_motion) else 1.0
 	hero_time = maxf(0, hero_time - delta); lost_time = maxf(0, lost_time - delta); ready_time = maxf(0, ready_time - delta)
 	hero_panel.visible = hero_time > 0 and game.screen == "run"
+	hero_panel.modulate.a = 1.0 if motion_scale == 0 else minf(1, hero_time / 0.15)
+	if game.world.ui_feedback != null: game.world.ui_feedback.duck = hero_time > 0
+	if hero_time > 0: game.hint_label.text = ""
 	if hero_time <= 0: hero_priority = 0
 	# Supporting info ducks slightly; danger/health remains fully readable.
 	game.parts_row.modulate.a = 0.65 if hero_time > 0 else 1.0
@@ -189,12 +306,14 @@ func settings_ui(game, column: VBoxContainer) -> void:
 		var key: String = id
 		var title := label(game, ("SFX" if id == "sfx_volume" else "MUSIC") + " VOLUME", 36)
 		column.add_child(title)
-		var slider := HSlider.new(); slider.min_value = 0; slider.max_value = 1; slider.step = 0.1; slider.value = float(game.save.data.settings.get(id, 1.0)); slider.custom_minimum_size.y = 120; slider.tooltip_text = title.text
-		slider.value_changed.connect(func(value): game.save.data.settings[key] = value; game._apply_settings())
+		var slider := VolumeSlider.new(); slider.min_value = 0; slider.max_value = 1; slider.step = 0.1; slider.value = float(game.save.data.settings.get(id, 1.0)); slider.custom_minimum_size.y = 120; slider.tooltip_text = title.text
+		slider.value_changed.connect(func(value): game.save.data.settings[key] = value; game._apply_settings(); slider.queue_redraw())
 		slider.drag_ended.connect(func(_changed): game.save.write())
 		slider.focus_exited.connect(func(): game.save.write())
 		column.add_child(slider)
 	var flashes := OptionButton.new(); flashes.custom_minimum_size.y = 120; flashes.add_theme_font_override("font", game.body_font); flashes.add_theme_font_size_override("font_size", 36)
+	for state in ["normal", "hover", "pressed"]: flashes.add_theme_stylebox_override(state, game.style(Color("edf3ec")))
+	flashes.add_theme_color_override("font_color", INK)
 	for rate in 4: flashes.add_item("LOCAL FLASHES / OFF" if rate == 0 else "LOCAL FLASHES / MAX %d PER SECOND" % rate)
 	flashes.selected = clampi(int(game.save.data.settings.get("flash_limit", 3)), 0, 3)
 	flashes.item_selected.connect(func(index): game.save.data.settings["flash_limit"] = index; game.save.write(); game._apply_settings())

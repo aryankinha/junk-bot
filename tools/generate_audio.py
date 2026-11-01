@@ -8,6 +8,15 @@ rng=random.Random(77)
 def write(name,values):
  with wave.open(str(out/(name+'.wav')),'wb') as f:
   f.setparams((1,2,rate,0,'NONE','not compressed'));f.writeframes(b''.join(struct.pack('<h',int(max(-1,min(1,v))*22000)) for v in values))
+# UI-v2 ready cue; isolated mode leaves every existing sample byte-identical.
+import sys
+if '--ui-only' in sys.argv:
+ values=[]
+ for i in range(int(rate*.22)):
+  t=i/rate;f=620 if t<.1 else 920
+  values.append(math.sin(2*math.pi*f*t)*.35*min(1,t/.008)*(1-t/.22)**2)
+ write('ready',values)
+ sys.exit(0)
 for name,freq,duration in [('attach',180,.16),('upgrade',660,.24),('stage',110,.4),('scrap',1200,.055),('fire',320,.08),('hit',80,.18),('break',65,.3),('warning',780,.16),('special',440,.3),('victory',550,.8),('defeat',180,.65),('click',550,.06),('explosion',50,.28),('dodge',900,.1)]:
  values=[]
  for i in range(int(rate*duration)):

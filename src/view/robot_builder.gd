@@ -14,6 +14,7 @@ var growth_tween: Tween
 var drive_speed := 0.0
 var steer := 0.0
 var fire_kick := 0.0
+var reduced_motion := false
 var flash_amount := 0.0
 var clock := 0.0
 var wheel_spin := 0.0
@@ -57,6 +58,12 @@ func flash() -> void:
 func _process(delta: float) -> void:
 	if body == null:
 		return
+	if reduced_motion:
+		body.position = Vector3.ZERO
+		body.rotation.z = -steer * 0.05
+		head_pivot.rotation = Vector3.ZERO
+		antenna_pivot.rotation = Vector3.ZERO
+		return
 	clock += delta
 	# Wheels roll with the drive speed; idle models still tick over slowly.
 	wheel_spin += delta * (drive_speed * 3.0 + 1.5)
@@ -86,6 +93,7 @@ func _process(delta: float) -> void:
 		node.set_instance_shader_parameter("flash", flash_amount)
 
 func sync(robot: RobotState, animate := true) -> void:
+	animate = animate and not reduced_motion
 	var key := JSON.stringify(robot.parts) + str(robot.stage()) + JSON.stringify(robot.slots) + JSON.stringify(robot.tiers)
 	if key == signature:
 		return

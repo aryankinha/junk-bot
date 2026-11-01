@@ -1,6 +1,12 @@
 class_name WorldView extends Node3D
 var ui_v2_enabled := false
 var popup_limit := 10
+const UiWorldScript = preload("res://src/ui/ui_world_feedback.gd")
+var ui_feedback
+var reduce_motion := false
+var flash_rate := 3
+var default_warning_material: StandardMaterial3D
+var gate_panel_count := 2
 var road: MeshInstance3D
 var stripes: MultiMeshInstance3D
 var skids: MultiMeshInstance3D
@@ -116,6 +122,7 @@ func _ready() -> void:
 	crowd_scrappers = make_multimesh(MeshFactory.enemy("scrapper"), 24, false, true)
 	crowd_scrappers.material_override = MeshFactory.crowd_palette()
 	var warning_material := StandardMaterial3D.new()
+	default_warning_material = warning_material
 	warning_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	warning_material.albedo_color = Color("e84c41")
 	for i in 8:
@@ -236,6 +243,7 @@ func rebuild_gate(gate: Dictionary, robot: RobotState = null) -> void:
 	if gate.is_empty():
 		return
 	var options: Array = gate.options
+	gate_panel_count = options.size()
 	var moving: bool = gate.get("moving", false)
 	var width := (2.4 if moving else 6.8 / options.size())
 	for i in options.size():
@@ -250,6 +258,9 @@ func rebuild_gate(gate: Dictionary, robot: RobotState = null) -> void:
 			MeshFactory.rbox(Vector3(width - 0.15, 0.04, 0.6), Vector3(dx, 0.04, 0), tone)]))
 		gate_root.add_child(mesh)
 		var name_label := label3d(GateGen.label(option).to_upper().replace(" ", "\n") if options.size() == 3 else GateGen.label(option).to_upper(), Vector3(dx, 2.72, 0.12), 34 if options.size() == 3 else (42 if moving else 56))
+		if ui_v2_enabled:
+			name_label.font = load("res://assets/fonts/rajdhani_Rajdhani-Bold.ttf")
+			name_label.font_size = 64 if options.size() == 3 or moving else 80
 		gate_root.add_child(name_label)
 		var charging: bool = gate.has("charge") and option.kind in ["part", "upgrade_random_owned"]
 		if not charging:
@@ -396,6 +407,10 @@ func _rebuild_mob_gate(slot: Dictionary, gate: Dictionary, tuning: Dictionary) -
 		var label: Label3D = slot.labels[i]
 		label.text = _mob_panel_text(panels[i])
 		label.font_size = 56 if moving or panels.size() == 3 else 76
+		if ui_v2_enabled:
+			label.font = load("res://assets/fonts/rajdhani_Rajdhani-Bold.ttf")
+			label.font_size = 100 if moving or panels.size() == 3 else 144
+			if panels[i].t == "speed": label.text = "↑%d%%" % int(panels[i].v)
 		label.position = Vector3(dx, 3.02, 0.14)
 		label.modulate = Color("ff6b7a") if str(panels[i].t) == "trap" else Color.WHITE
 		label.visible = true
@@ -423,6 +438,13 @@ func _sync_mob_gates(sim: RunSim) -> void:
 				_rebuild_mob_gate(slot, gate, sim.flags.tuning)
 			slot.root.visible = true
 			slot.root.position = Vector3(mob.gate_offset(gate, sim.t, sim.flags.tuning), 0, sim.z - gz)
+			for panel_index in slot.labels.size():
+				var number: Label3D = slot.labels[panel_index]
+				number.scale = Vector3.ONE
+				if ui_v2_enabled and ui_feedback != null and ui_feedback.mob_pulses.has(int(gate.ord)):
+					var pulse: Dictionary = ui_feedback.mob_pulses[int(gate.ord)]
+					if int(pulse.lane) == panel_index and float(pulse.until) > ui_feedback.clock and not reduce_motion:
+						number.scale = Vector3.ONE * (1.0 + (float(pulse.until) - ui_feedback.clock) / 0.35 * 0.12)
 			var is_moving: bool = gate.get("moving", false)
 			slot.rail.visible = is_moving
 			if is_moving:
@@ -441,6 +463,7 @@ const DRONE_COLORS := [Color("50b9df"), Color("8197cf"), Color("e0a254"), Color(
 func reset_run_feedback() -> void:
 	fx_items.clear()
 	impact_count = 0
+	if ui_feedback != null: ui_feedback.reset()
 	for label in popups:
 		label.visible = false
 		label.set_meta("life", 0.0)
@@ -464,9 +487,11 @@ func _sync_drones(sim: RunSim) -> void:
 		var k := mob.kind[i]
 		var s := minf(limit * (3.0 if k == MobSim.Kind.CHAMPION else 1.0), float(kinds[MobSim.KIND_NAMES[k]].scale) * (1.0 + extra * (mob.wgt[i] - 1.0)))
 		var yaw := -atan2(mob.vx[i], maxf(mob.vz[i], 0.1)) if absf(mob.vx[i]) > 0.3 else 0.0
-		var at := Vector3(mob.px[i], mob.py[i] + sin(elapsed * 14.0 + float(i)) * 0.05, sim.z - mob.pz[i])
+		var at := Vector3(mob.px[i], mob.py[i] + (0.0 if reduce_motion else sin(elapsed * 14.0 + float(i)) * 0.05), sim.z - mob.pz[i])
 		drones.multimesh.set_instance_transform(i, Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3.ONE * s), at))
-		drones.multimesh.set_instance_color(i, DRONE_COLORS[k])
+		var tint: Color = DRONE_COLORS[k]
+		if ui_v2_enabled and mob.wgt[i] > 1.01: tint = tint.lerp(Color.WHITE, minf(0.4, (mob.wgt[i] - 1.0) * 0.12))
+		drones.multimesh.set_instance_color(i, tint)
 	drones.multimesh.visible_instance_count = count
 	var shown := 0
 	impact_count = mob.impacts.size()
@@ -477,6 +502,9 @@ func _sync_drones(sim: RunSim) -> void:
 	mob.impacts.clear()
 
 func burst(pos: Vector3, count := 8, color := MeshFactory.YELLOW, speed := 1.0) -> void:
+	if ui_v2_enabled:
+		if reduce_motion: return
+		count = mini(count, 4 if ui_feedback != null and ui_feedback.duck else 12)
 	for i in mini(count, 128 - fx_items.size()):
 		fx_items.append({"pos": pos, "vel": Vector3(randf_range(-3, 3), randf_range(2, 5), randf_range(-3, 3)) * speed, "life": randf_range(0.35, 0.8), "color": color})
 
@@ -549,7 +577,7 @@ func popup(text: String, pos: Vector3, color := Color.WHITE, size := 72) -> void
 func sync(sim: RunSim, dt: float) -> void:
 	elapsed += dt
 	player.position.x = sim.x
-	player.position.y = absf(sin(elapsed * 9.0)) * 0.035 if sim.state in ["running", "boss"] else 0.0
+	player.position.y = absf(sin(elapsed * 9.0)) * 0.035 if sim.state in ["running", "boss"] and not reduce_motion else 0.0
 	var lean := (sim.x - sim.target_x) * 0.05
 	player.rotation.z = lerpf(player.rotation.z, lean if absf(lean) > 0.004 else 0.0, 0.2)
 	player.sync(sim.robot)
@@ -557,7 +585,7 @@ func sync(sim: RunSim, dt: float) -> void:
 	player.steer = clampf(sim.target_x - sim.x, -1.5, 1.5)
 	var moving: bool = sim.state in ["running", "boss"]
 	dust_fx.position = Vector3(sim.x, 0.25, 0.8)
-	dust_fx.emitting = moving
+	dust_fx.emitting = moving and not reduce_motion and not (ui_feedback != null and ui_feedback.duck)
 	shield_bubble.visible = sim.robot.shield_charges > 0
 	shield_bubble.position = Vector3(sim.x, 1.1, 0)
 	shield_bubble.scale = Vector3.ONE * (1.0 + sin(elapsed * 5) * 0.03) * (0.85 + float(player.stage_value) * 0.15)
@@ -572,7 +600,7 @@ func sync(sim: RunSim, dt: float) -> void:
 			if life <= 0:
 				label.visible = false
 	flame_fx.position = Vector3(sim.x, 1.0, -0.9)
-	flame_fx.emitting = sim.robot.parts.has("flame") and (sim.state == "boss" or not sim.enemies.is_empty())
+	flame_fx.emitting = sim.robot.parts.has("flame") and (sim.state == "boss" or not sim.enemies.is_empty()) and not reduce_motion
 	# Leave the playable surface clear. Sparse matte salvage keeps the junkyard setting outside it.
 	stripes.multimesh.visible_instance_count = 0
 	skids.multimesh.visible_instance_count = 0
@@ -665,9 +693,12 @@ func sync(sim: RunSim, dt: float) -> void:
 			node.position = Vector3(enemy.x, hop, sim.z - float(enemy.z))
 			var last_hp: float = node.get_meta("hp", float(enemy.hp))
 			if float(enemy.hp) < last_hp - 0.01:
-				node.set_meta("flash", 1.0)
+				if not ui_v2_enabled or (not reduce_motion and flash_rate > 0 and elapsed - float(node.get_meta("flash_at", -10.0)) >= 1.0 / flash_rate + 0.002):
+					node.set_meta("flash", 1.0)
+					node.set_meta("flash_at", elapsed)
 			node.set_meta("hp", float(enemy.hp))
 			var flash_value: float = maxf(0.0, float(node.get_meta("flash", 0.0)) - dt * 6.0)
+			if ui_v2_enabled and (reduce_motion or flash_rate == 0): flash_value = 0
 			node.set_meta("flash", flash_value)
 			node.set_instance_shader_parameter("flash", flash_value)
 			if sim.mob != null and enemy.id == "scrapper":
@@ -711,11 +742,11 @@ func sync(sim: RunSim, dt: float) -> void:
 	_sync_mob_gates(sim)
 	boss_root.visible = sim.boss != null
 	if boss_root.visible:
-		boss_root.position.y = sin(elapsed * 2) * 0.06
-		boss_root.rotation.z = sin(elapsed * 1.3) * 0.018
+		boss_root.position.y = 0.0 if reduce_motion else sin(elapsed * 2) * 0.06
+		boss_root.rotation.z = 0.0 if reduce_motion else sin(elapsed * 1.3) * 0.018
 		boss_plate.visible = sim.boss.phase == 1
 		boss_arm.visible = sim.boss.arm_hp > 0 or sim.boss.attack == "grabber_arm"
-		boss_core.scale = Vector3.ONE * (1.1 + sin(elapsed * 6) * 0.1)
+		boss_core.scale = Vector3.ONE if reduce_motion else Vector3.ONE * (1.1 + sin(elapsed * 6) * 0.1)
 		if sim.state == "won":
 			boss_root.scale = boss_root.scale.lerp(Vector3.ONE * 0.01, dt * 2)
 		else:
@@ -755,7 +786,11 @@ func sync(sim: RunSim, dt: float) -> void:
 			node.scale = Vector3(1.8, 0.025, 6)
 			warning_index += 1
 	for i in warning_index:
-		warnings[i].material_override.albedo_color = Color("e53935").lerp(Color("ff9070"), (sin(elapsed * 14) + 1) * 0.25)
+		if ui_v2_enabled and ui_feedback != null:
+			warnings[i].material_override = ui_feedback.danger_material
+		else:
+			warnings[i].material_override = default_warning_material
+			warnings[i].material_override.albedo_color = Color("e53935").lerp(Color("ff9070"), (sin(elapsed * 14) + 1) * 0.25)
 	for i in range(warning_index, warnings.size()):
 		warnings[i].visible = false
 	for i in range(fx_items.size() - 1, -1, -1):
@@ -770,3 +805,14 @@ func sync(sim: RunSim, dt: float) -> void:
 	for i in fx_items.size():
 		fx.multimesh.set_instance_transform(i, Transform3D(Basis.from_euler(Vector3.ONE * elapsed * 6).scaled(Vector3.ONE * minf(1, fx_items[i].life * 3)), fx_items[i].pos))
 		fx.multimesh.set_instance_color(i, fx_items[i].color)
+	if ui_v2_enabled and ui_feedback != null: ui_feedback.sync(self, sim, dt)
+
+func configure_ui_v2(enabled: bool, reduced: bool, limit: int) -> void:
+	ui_v2_enabled = enabled; reduce_motion = enabled and reduced; flash_rate = clampi(limit, 0, 3)
+	player.reduced_motion = reduce_motion
+	if enabled and ui_feedback == null:
+		ui_feedback = UiWorldScript.new(); add_child(ui_feedback)
+	if ui_feedback != null:
+		ui_feedback.visible = enabled; ui_feedback.reduced = reduce_motion; ui_feedback.flash_limit = flash_rate
+	if reduce_motion:
+		fx_items.clear(); player.flash_amount = 0

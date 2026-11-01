@@ -317,10 +317,10 @@ func bar(color: Color, height := 22) -> ProgressBar:
 	back.bg_color = Color("e0e5dc")
 	back.border_color = INK
 	back.set_border_width_all(4)
-	back.set_corner_radius_all(int(height / 2))
+	back.set_corner_radius_all(2 if ui_v2_enabled else int(height / 2))
 	var fill := StyleBoxFlat.new()
 	fill.bg_color = color
-	fill.set_corner_radius_all(int(height / 2))
+	fill.set_corner_radius_all(2 if ui_v2_enabled else int(height / 2))
 	fill.border_color = color.lightened(0.35)
 	fill.border_width_top = 4
 	node.add_theme_stylebox_override("background", back)
@@ -549,7 +549,7 @@ func menu(title: String, subtitle: String) -> VBoxContainer:
 	overlay.add_child(cover)
 	# Faint rivet stripes at the top give the menus a worn-metal feel.
 	var stripe := ColorRect.new()
-	stripe.color = Color(1, 0.55, 0.15, 0.9)
+	stripe.color = Color("65716b") if ui_v2_enabled else Color(1, 0.55, 0.15, 0.9)
 	stripe.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
 	stripe.offset_bottom = 14
 	stripe.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -664,7 +664,7 @@ func _configure_ui_v2(enabled: bool) -> void:
 		display_font = load("res://assets/fonts/rajdhani_Rajdhani-Bold.ttf" if enabled else "res://assets/fonts/lilita_LilitaOne-Regular.ttf")
 		ui_v2 = null
 		_build_hud()
-	world.ui_v2_enabled = enabled
+	world.configure_ui_v2(enabled, bool(save.data.settings.reduce_motion), int(save.data.settings.get("flash_limit", 3)))
 	world.popup_limit = 3 if enabled else 10
 
 # One camera update owns the transform. Rewards never change projection, offsets or simulation timing.
@@ -708,9 +708,9 @@ func _events() -> void:
 	for event in sim.events:
 		if event.t not in ["scrap", "weapon_fire", "gate_charge_tick", "wave_spawn", "cluster_burst", "mob_gate_pass"]:
 			TelemetryLog.log_event(event)
-		if ui_v2_enabled and event.t not in ["combo_active", "buy_offer", "station_unavailable"]:
+		if ui_v2_enabled:
 			ui_v2.on_event(self, event)
-			continue
+			if event.t not in ["combo_active", "buy_offer", "station_unavailable"]: continue
 		match str(event.t):
 			"part_attached", "part_upgraded":
 				var id: String = event.id
@@ -1546,7 +1546,9 @@ func _apply_settings() -> void:
 	audio.music_enabled = bool(save.data.settings.music)
 	haptics.enabled = bool(save.data.settings.haptics)
 	audio.apply_volumes(float(save.data.settings.get("sfx_volume", 1.0)) if ui_v2_enabled else 1.0, float(save.data.settings.get("music_volume", 1.0)) if ui_v2_enabled else 1.0)
-	if ui_v2_enabled and ui_v2 != null: ui_v2.layout(self)
+	if ui_v2_enabled and ui_v2 != null:
+		ui_v2.layout(self)
+		if world != null: world.configure_ui_v2(true, bool(save.data.settings.reduce_motion), int(save.data.settings.get("flash_limit", 3)))
 	if audio.music_player != null:
 		if not audio.music_enabled:
 			audio.music_player.stop()
@@ -1629,8 +1631,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if screen != "run" or paused:
 		return
 	if event is InputEventScreenDrag:
+		if ui_v2_enabled: ui_v2.steering(self)
 		sim.drag(event.relative.x / get_viewport().get_visible_rect().size.x * float(GameData.constants().drag_world_per_screen_width))
 	elif event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not ProjectSettings.get_setting("input_devices/pointing/emulate_touch_from_mouse"):
+		if ui_v2_enabled: ui_v2.steering(self)
 		sim.drag(event.relative.x / get_viewport().get_visible_rect().size.x * 6.8)
 	if event is InputEventKey and event.pressed:
 		if event.keycode in [KEY_LEFT, KEY_A]:

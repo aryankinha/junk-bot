@@ -30,7 +30,7 @@ func _ready() -> void:
 	music_player.finished.connect(func():
 		if music_enabled:
 			music_player.play())
-	for id in ["attach", "upgrade", "stage", "scrap", "fire", "hit", "break", "warning", "special", "victory", "defeat", "click", "explosion", "dodge", "multiply", "swarm_hit", "champion", "trap", "run_music", "hangar_music"]:
+	for id in ["attach", "upgrade", "stage", "scrap", "fire", "hit", "break", "warning", "special", "victory", "defeat", "click", "explosion", "dodge", "multiply", "swarm_hit", "champion", "trap", "ready", "run_music", "hangar_music"]:
 		streams[id] = load("res://assets/audio/%s.%s" % [id, "ogg" if id.ends_with("music") else "wav"])
 
 func play(id: String) -> void:
