@@ -41,6 +41,7 @@ var accumulator := 0.0
 var runtime := 0.0
 var toast_timer := 0.0
 var hit_stop := 0.0
+var mob_popup_at: Dictionary = {}
 var shake := 0.0
 var paused := false
 var screen := "run"
@@ -56,6 +57,7 @@ var gov_timer := 0.0
 var gov_draws := 0
 var cluster_seen := false
 var capture := false
+var playtest_variant := ""
 var snapshot_at := -1.0
 var snapshot_path := ""
 var exit_after := -1.0
@@ -111,6 +113,10 @@ func _ready() -> void:
 			perf_output = arg.get_slice("=", 1)
 		elif arg.begins_with("--flags="):
 			flag_overrides = JSON.parse_string(arg.substr(8))
+		elif arg.begins_with("--playtest=") and OS.is_debug_build():
+			var variant := arg.get_slice("=", 1)
+			if variant in ["a", "b"]:
+				playtest_variant = variant
 		elif arg.begins_with("--snapshot-at="):
 			snapshot_at = arg.get_slice("=", 1).to_float()
 		elif arg.begins_with("--snapshot-path="):
@@ -120,6 +126,12 @@ func _ready() -> void:
 	if capture:
 		save.path = "user://capture_save.json"
 		save.data = save.defaults()
+	elif not playtest_variant.is_empty():
+		# Fresh isolated progress for an A/B session; the owner's save stays in its existing location.
+		save.path = "user://mob_playtest_%s.json" % playtest_variant
+		save.data = save.defaults()
+		flag_overrides["mob_stream"] = playtest_variant == "b"
+		flag_overrides["engagement_metrics"] = true
 	if OS.has_feature("macos") and DisplayServer.get_name() != "headless" and not OS.get_cmdline_args().has("--resolution") and not OS.get_cmdline_args().has("--write-movie"):
 		var available := DisplayServer.screen_get_usable_rect().size
 		var height := mini(1152, int(available.y * 0.86))
@@ -575,14 +587,15 @@ func start_run(is_daily := false) -> void:
 	daily = is_daily
 	daily_key = Time.get_date_string_from_system(true)
 	var seed_arg := int(daily_key.replace("-", "")) if daily else int(Time.get_unix_time_from_system())
-	if capture:
+	if capture or not playtest_variant.is_empty():
 		seed_arg = 20261031
 	var level := 1 if daily else int(save.data.level)
 	sim = RunSim.new()
 	sim.flag_overrides = flag_overrides
 	sim.setup(level, seed_arg, {} if daily else save.data.part_tiers, 0 if daily else int(save.data.losses_on_level), [] if daily else save.data.unlocked_parts)
-	bot = (AimBot.new(seed_arg, 0.15) if sim.flags.aim_mode == "lane" or sim.flags.mob_stream else BotController.new(seed_arg, "perfect", 0)) if capture else null
+	bot = (MobBot.new(seed_arg, 0.15) if sim.flags.mob_stream else AimBot.new(seed_arg, 0.15) if sim.flags.aim_mode == "lane" else BotController.new(seed_arg, "perfect", 0)) if capture else null
 	perf = PerfLog.new()
+	mob_popup_at.clear()
 	reward_doubled = false
 	run_paid = 0
 	run_saved = false
@@ -613,6 +626,7 @@ func start_run(is_daily := false) -> void:
 	world.player.rotation = Vector3.ZERO
 	camera.position.x = 0.0
 	world.gate_signature = ""
+	world.reset_run_feedback()
 	audio.music("run_music")
 	world.sync(sim, 0)
 
@@ -781,18 +795,21 @@ func _events() -> void:
 				haptics.tap(70, 0.8)
 				shake = maxf(shake, 0.3)
 				fov_kick = maxf(fov_kick, 9.0)
-				world.popup("CHAMPION!", Vector3(sim.x, 3.4, -2.0), Color("5fd0ff"), 110)
+				world.popup("CHAMPION!", Vector3(0, 3.4, -2.0), Color("5fd0ff"), 72)
 				world.burst(Vector3(sim.x, 1.3, -1.0), 24, Color("5fd0ff"), 1.6)
 			"mob_gate_pass":
 				var pass_type := str(event.type)
 				var pass_color := world._mob_panel_color(pass_type)
 				var gain: float = float(event.gain)
-				world.popup(world._mob_panel_text({"t": pass_type, "v": event.v}), Vector3(float(event.x), 3.0, sim.z - float(event.z)), pass_color if pass_type != "trap" else Color("ff6b7a"), 96 if gain > 0 or pass_type == "trap" else 72)
+				var pop_key := int(event.ord) * 4 + int(event.lane)
+				if runtime - float(mob_popup_at.get(pop_key, -9.0)) >= 1.2:
+					mob_popup_at[pop_key] = runtime
+					world.popup(world._mob_panel_text({"t": pass_type, "v": event.v}), Vector3(float(event.x), 3.0, sim.z - float(event.z)), pass_color if pass_type != "trap" else Color("ff6b7a"), 96 if gain > 0 or pass_type == "trap" else 72)
+					audio.play("trap" if pass_type == "trap" else "multiply")
+					haptics.tap(12, 0.3)
+					if pass_type != "trap":
+						fov_kick = maxf(fov_kick, 2.5)
 				world.burst(Vector3(float(event.x), 1.3, sim.z - float(event.z)), 6 + mini(14, int(event.count) * 2), pass_color, 1.3)
-				audio.play("trap" if pass_type == "trap" else "multiply")
-				haptics.tap(12, 0.3)
-				if pass_type != "trap":
-					fov_kick = maxf(fov_kick, 2.5)
 			"special_used":
 				toast("OVERDRIVE" if event.id == "overdrive" else GameData.table("combos")[event.id].name.to_upper())
 				fov_kick = 10.0

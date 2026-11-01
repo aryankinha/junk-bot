@@ -7,9 +7,12 @@ var delay := 0.0
 var mode := "best"
 var steer_window := 60.0
 var rng := RandomNumberGenerator.new()
+var commands: Array = []
+var applied_target := 0.0
 
 func _init(seed_arg := 1, reaction := 0.0, build: Array = [], inner_mode := "perfect", gate_mode := "best") -> void:
-	aim = AimBot.new(seed_arg, reaction, build, inner_mode)
+	# Delay the whole steering command, including boss dodges. The old perfect inner bot ignored reaction time.
+	aim = AimBot.new(seed_arg, 0.0, build, inner_mode)
 	rng.seed = seed_arg * 7919 + 13
 	delay = reaction
 	mode = gate_mode
@@ -26,6 +29,18 @@ static func panel_value(panel: Dictionary, add_per: float) -> float:
 	return 0.0
 
 func control(sim: RunSim) -> void:
+	if mode == "stay":
+		sim.target_x = 0.0
+		sim.tap_special()
+		return
+	_decide(sim)
+	if delay > 0.0:
+		commands.append([sim.t, sim.target_x])
+		while not commands.is_empty() and float(commands[0][0]) <= sim.t - delay:
+			applied_target = float(commands.pop_front()[1])
+		sim.target_x = applied_target
+
+func _decide(sim: RunSim) -> void:
 	aim.control(sim)
 	if sim.mob == null or sim.state != "running" or mode == "stay":
 		return
@@ -57,4 +72,4 @@ func control(sim: RunSim) -> void:
 			return
 	# A moving panel is led: aim where it will be when the stream arrives (about gap / 27 m/s later), seen `delay` late.
 	var lead := (float(gate.z) - sim.z) / 27.0 if gate.get("moving", false) else 0.0
-	sim.target_x = clampf(mob.panel_center(gate, int(gate.bot_lane), sim.t + lead - delay, sim.flags.tuning), -3.0, 3.0)
+	sim.target_x = clampf(mob.panel_center(gate, int(gate.bot_lane), sim.t + lead, sim.flags.tuning), -3.0, 3.0)

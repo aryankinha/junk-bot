@@ -352,7 +352,8 @@ func _build_mob_gate_pool() -> void:
 		var labels: Array = []
 		for k in 3:
 			var label := label3d("", Vector3.ZERO, 76)
-			label.outline_size = 12
+			# The dark sign supplies contrast; an extra outline pass costs one draw per panel.
+			label.outline_size = 0
 			label.outline_modulate = Color(0.06, 0.07, 0.12)
 			label.visible = false
 			root.add_child(label)
@@ -402,11 +403,13 @@ func _sync_mob_gates(sim: RunSim) -> void:
 	var shown_ords: Array = []
 	if mob != null and sim.state == "running":
 		var reach := float(mob.cfg.gates.visible_m)
+		# Draw-call budget: while a part gate is on screen only the nearest mob gate is drawn.
+		var limit := 1 if gate_root.visible else 2
 		for gate in mob.gates:
 			var gz := float(gate.z)
 			if gz < sim.z - 3.0:
 				continue
-			if gz > sim.z + reach or shown >= 2:
+			if gz > sim.z + reach or shown >= limit:
 				break
 			var slot: Dictionary = mob_gate_nodes[int(gate.ord) % 2]
 			if int(slot.ord) != int(gate.ord):
@@ -428,6 +431,17 @@ func _sync_mob_gates(sim: RunSim) -> void:
 
 const DRONE_COLORS := [Color("ffd23f"), Color("ff8a1f"), Color("ff4f2a"), Color("5fd0ff")]
 
+func reset_run_feedback() -> void:
+	fx_items.clear()
+	impact_count = 0
+	for label in popups:
+		label.visible = false
+		label.set_meta("life", 0.0)
+	for slot in mob_gate_nodes:
+		slot.ord = -1
+		slot.root.visible = false
+		slot.rail.visible = false
+
 # Mob Stream drones: one MultiMesh, tint by kind, scale by how heavy (multiplied or merged) the drone is.
 func _sync_drones(sim: RunSim) -> void:
 	var mob: MobSim = sim.mob
@@ -443,7 +457,7 @@ func _sync_drones(sim: RunSim) -> void:
 		var k := mob.kind[i]
 		var s := minf(limit * (3.0 if k == MobSim.Kind.CHAMPION else 1.0), float(kinds[MobSim.KIND_NAMES[k]].scale) * (1.0 + extra * (mob.wgt[i] - 1.0)))
 		var yaw := -atan2(mob.vx[i], maxf(mob.vz[i], 0.1)) if absf(mob.vx[i]) > 0.3 else 0.0
-		var at := Vector3(mob.px[i], 1.0 + sin(elapsed * 14.0 + float(i)) * 0.05, sim.z - mob.pz[i])
+		var at := Vector3(mob.px[i], mob.py[i] + sin(elapsed * 14.0 + float(i)) * 0.05, sim.z - mob.pz[i])
 		drones.multimesh.set_instance_transform(i, Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3.ONE * s), at))
 		drones.multimesh.set_instance_color(i, DRONE_COLORS[k])
 	drones.multimesh.visible_instance_count = count

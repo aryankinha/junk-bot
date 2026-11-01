@@ -29,6 +29,9 @@ func _initialize() -> void:
 		var peaks: Array = []
 		var cap_share: Array = []
 		var gains: Array = []
+		var merges: Array = []
+		var over_cap_ticks := 0
+		var timeouts := 0
 		var wins := 0
 		var fast := 0
 		for seed_arg in seeds:
@@ -37,17 +40,20 @@ func _initialize() -> void:
 			sim.setup(level, seed_arg + 3000)
 			var bot
 			match mode:
-				"mob": bot = MobBot.new(seed_arg + 3000, delay) if overrides.mob_stream else AimBot.new(seed_arg + 3000, delay)
+				"mob": bot = MobBot.new(seed_arg + 3000, delay)
 				"stay": bot = MobBot.new(seed_arg + 3000, delay, [], "no_dodge", "stay")
 				"aim": bot = AimBot.new(seed_arg + 3000, delay)
 				_: bot = BotController.new(seed_arg + 3000, mode, delay)
 			for tick in 18000:
 				bot.control(sim)
 				sim.step(1.0 / 60)
+				if sim.mob != null and sim.mob.n > sim.mob.live_cap():
+					over_cap_ticks += 1
 				sim.events.clear()
 				if sim.state in ["won", "lost"]:
 					break
 			wins += int(sim.state == "won")
+			timeouts += int(sim.state not in ["won", "lost"])
 			var r: Dictionary = sim.engage.results(sim.t)
 			gaps.append(r.max_gap_pre_boss)
 			fast += int(r.max_gap_pre_boss <= 4.0)
@@ -61,8 +67,12 @@ func _initialize() -> void:
 				peaks.append(float(st.peak))
 				cap_share.append(float(st.cap_ticks) / maxf(1.0, float(st.ticks)))
 				gains.append(float(st.gain))
+				merges.append(float(st.merges))
 		var row := {"bot": mode, "delay_ms": delay * 1000, "runs": seeds, "win_rate": float(wins) / seeds, "first_multiply_median": _q(firsts, 0.5), "gap_median": _q(gaps, 0.5), "gap_p90": _q(gaps, 0.9), "gap_le_4s": float(fast) / seeds, "boss_time_median": _q(boss_times, 0.5), "drones_avg": _mean(avgs), "drones_peak": _q(peaks, 1.0), "cap_tick_share": _mean(cap_share), "gate_gain_damage": _mean(gains)}
 		rows.append(row)
+		row["merge_operations_avg"] = _mean(merges)
+		row["over_cap_ticks"] = over_cap_ticks
+		row["timeouts"] = timeouts
 		md += "| %s | %d | %d | %.0f | %.1f | %.1f | %.1f | %.0f%% | %.1f | %.0f | %.0f | %.1f | %.0f |\n" % [mode, delay * 1000, seeds, row.win_rate * 100, row.first_multiply_median, row.gap_median, row.gap_p90, row.gap_le_4s * 100, row.boss_time_median, row.drones_avg, row.drones_peak, row.cap_tick_share * 100, row.gate_gain_damage]
 	FileAccess.open("res://results/%s.json" % label, FileAccess.WRITE).store_string(JSON.stringify({"level": level, "flags": overrides, "rows": rows}, "  "))
 	print(md)

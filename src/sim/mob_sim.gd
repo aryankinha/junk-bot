@@ -9,6 +9,7 @@ const KIND_TYPE := ["projectile", "rocket", "cone", "rocket"]  # weapon type the
 var cfg: Dictionary
 var n := 0
 var px := PackedFloat64Array()
+var py := PackedFloat64Array()
 var pz := PackedFloat64Array()
 var vx := PackedFloat64Array()
 var vz := PackedFloat64Array()
@@ -21,6 +22,7 @@ var rad := PackedFloat64Array()     # splash radius (bomb)
 var kind := PackedInt32Array()
 var pierce := PackedInt32Array()
 var lasthit := PackedInt32Array()
+var hit_ids: Array = []             # piercing drones cannot hit the same target again
 var gmask := PackedInt64Array()     # mob gates that already affected this drone (once per gate)
 var wid := PackedStringArray()
 
@@ -33,6 +35,7 @@ var cap_scale := 1.0
 var gates: Array = []               # mob_gate beats in z order
 var gate_cursor := 0
 var first_multiply_t := -1.0
+var track_realised := false         # measurement only: credit landed damage to the gates a drone passed
 var impacts: Array = []             # [x, z, weight, kind] for the view; not events, never logged
 var stats := {"launched": 0, "launched_damage": 0.0, "hit_damage": 0.0, "peak": 0, "live_sum": 0.0, "ticks": 0, "merges": 0, "cap_ticks": 0, "over_cap": 0, "passes": {}, "gain": 0.0, "trap_loss": 0.0}
 
@@ -51,6 +54,7 @@ func _grow() -> int:
 	n += 1
 	if px.size() < n:
 		px.append(0.0)
+		py.append(1.0)
 		pz.append(0.0)
 		vx.append(0.0)
 		vz.append(0.0)
@@ -63,21 +67,33 @@ func _grow() -> int:
 		kind.append(0)
 		pierce.append(0)
 		lasthit.append(0)
+		hit_ids.append([])
 		gmask.append(0)
 		wid.append("")
 	return i
 
-# Adds a drone, or folds its damage into the last drone when the live cap is reached (heavier drone, no lost damage).
-func add_drone(k: int, x: float, z: float, svx: float, svz: float, damage: float, charge: float, life_s: float, weight := 1.0, weapon_id := "", burn_dps := 0.0, splash := 0.0, mask := 0, force := false) -> int:
-	if n >= live_cap() and not force:
-		stats.merges += 1
-		var last := n - 1
-		dmg[last] += damage
-		wgt[last] += weight
-		chg[last] += charge
-		return last
+# Adds a drone, or folds it into a compatible heavier drone at the cap. Champions share the same cap.
+func add_drone(k: int, x: float, z: float, svx: float, svz: float, damage: float, charge: float, life_s: float, weight := 1.0, weapon_id := "", burn_dps := 0.0, splash := 0.0, mask := 0, height := 1.0) -> int:
+	enforce_cap()
+	if n >= live_cap():
+		var last := -1
+		for candidate in range(n - 1, -1, -1):
+			if kind[candidate] == k and gmask[candidate] == mask and wid[candidate] == weapon_id:
+				last = candidate
+				break
+		# Free a slot rather than turning a bomb/champion into an unrelated bolt.
+		if last < 0:
+			_compact_one()
+		else:
+			stats.merges += 1
+			dmg[last] += damage
+			wgt[last] += weight
+			chg[last] += charge
+			life[last] = maxf(life[last], life_s)
+			return last
 	var i := _grow()
 	px[i] = x
+	py[i] = height
 	pz[i] = z
 	vx[i] = svx
 	vz[i] = svz
@@ -90,14 +106,56 @@ func add_drone(k: int, x: float, z: float, svx: float, svz: float, damage: float
 	kind[i] = k
 	pierce[i] = int(cfg.kinds[KIND_NAMES[k]].pierce)
 	lasthit[i] = 0
+	hit_ids[i] = []
 	gmask[i] = mask
 	wid[i] = weapon_id
 	return i
+
+func _compact_one() -> void:
+	var a := 0
+	var b := 1
+	var best := INF
+	var groups: Dictionary = {}
+	for j in range(1, n):
+		var previous := j - 1
+		var key := "%d:%d:%s" % [kind[previous], gmask[previous], wid[previous]]
+		if not groups.has(key):
+			groups[key] = previous
+		key = "%d:%d:%s" % [kind[j], gmask[j], wid[j]]
+		var i := int(groups.get(key, 0))
+		var score := absf(pz[i] - pz[j]) + absf(px[i] - px[j])
+		if kind[i] != kind[j] or wid[i] != wid[j]:
+			score += 10000.0
+		if gmask[i] != gmask[j]:
+			score += 1000.0
+		if kind[i] == Kind.CHAMPION or kind[j] == Kind.CHAMPION:
+			score += 100000.0
+		if score < best:
+			best = score
+			a = i
+			b = j
+	dmg[a] += dmg[b]
+	wgt[a] += wgt[b]
+	chg[a] += chg[b]
+	life[a] = maxf(life[a], life[b])
+	burn[a] = maxf(burn[a], burn[b])
+	rad[a] = maxf(rad[a], rad[b])
+	gmask[a] |= gmask[b]
+	for uid in hit_ids[b]:
+		if not hit_ids[a].has(uid):
+			hit_ids[a].append(uid)
+	_swap_remove(b)
+	stats.merges += 1
+
+func enforce_cap() -> void:
+	while n > live_cap():
+		_compact_one()
 
 func _swap_remove(i: int) -> void:
 	var last := n - 1
 	if i != last:
 		px[i] = px[last]
+		py[i] = py[last]
 		pz[i] = pz[last]
 		vx[i] = vx[last]
 		vz[i] = vz[last]
@@ -110,11 +168,22 @@ func _swap_remove(i: int) -> void:
 		kind[i] = kind[last]
 		pierce[i] = pierce[last]
 		lasthit[i] = lasthit[last]
+		hit_ids[i] = hit_ids[last]
 		gmask[i] = gmask[last]
 		wid[i] = wid[last]
 	n -= 1
 
 # One barrel shot becomes a volley of drones. Level of the weapon part sets the volley size.
+func muzzle(sim, weapon_id: String) -> Vector3:
+	var slot := "blaster"
+	for socket in sim.robot.slots:
+		if sim.robot.slots[socket] == weapon_id:
+			slot = str(socket)
+			break
+	var point: Array = cfg.launch.sockets.get(slot, cfg.launch.sockets.blaster)
+	var stage_scale := float(cfg.launch.stage_scale[sim.robot.stage() - 1])
+	return Vector3(sim.x + float(point[0]) * stage_scale, float(point[1]) * stage_scale, sim.z + float(point[2]) * stage_scale)
+
 func launch_volley(sim, weapon: Dictionary, z_offset: float) -> void:
 	var weapon_id := str(weapon.get("id", "blaster"))
 	var level := int(sim.robot.parts.get(weapon_id, 1))
@@ -128,6 +197,7 @@ func launch_volley(sim, weapon: Dictionary, z_offset: float) -> void:
 	var speed := float(weapon.get("speed", 36))
 	var target = _aim_target(sim)
 	var launch: Dictionary = cfg.launch
+	var origin := muzzle(sim, weapon_id)
 	stats.launched_damage += total
 	stats.launched += count
 	for i in count:
@@ -135,13 +205,13 @@ func launch_volley(sim, weapon: Dictionary, z_offset: float) -> void:
 		var svx: float
 		var svz: float
 		if target != null:
-			var dir := Vector2(float(target.x) - sim.x, float(target.z) - sim.z).normalized().rotated(s * float(launch.aim_spread_rad))
-			svx = dir.x * speed
+			var dir := Vector2(float(target.x) - origin.x, float(target.z) - origin.z).normalized().rotated(s * float(launch.aim_spread_rad))
+			svx = dir.x * speed + robot_vx * float(cfg.lateral_inherit)
 			svz = dir.y * speed
 		else:
 			svx = s * float(launch.straight_spread_mps) + robot_vx * float(cfg.lateral_inherit) + _hash(sim.shot_count, i) * float(launch.jitter_mps)
 			svz = speed
-		add_drone(k, sim.x + s * float(launch.muzzle_spread_m), sim.z + 0.8 + z_offset + float(i) * 0.04, svx, svz, per, charge_total / count, float(spec.life_s), 1.0, str(weapon.id), 0.0, float(weapon.get("area_radius", 0)))
+		add_drone(k, origin.x + s * float(launch.muzzle_spread_m), origin.z + z_offset + float(i) * 0.04, svx, svz, per, charge_total / count, float(spec.life_s), 1.0, str(weapon.id), 0.0, float(weapon.get("area_radius", 0)), 0, origin.y)
 
 # Aim assist yields to mob gates: a target that sits behind an upcoming gate is not homed on, so the gate panel the player
 # lines up decides where the stream goes; the multiplied stream then reaches whatever is beyond if the player is aligned.
@@ -158,15 +228,12 @@ func _aim_target(sim):
 	return target
 
 # Overdrive champion: one big drone down the lane. It smashes through a column of enemies (splash on contact), is boosted by
-# mob gates and cannot be destroyed by traps. It is exempt from the live cap (a small reserve above it).
+# mob gates and cannot be destroyed by traps. Existing drones compact to leave room under the global cap.
 func launch_champion(sim, overcharged: bool) -> void:
 	var spec: Dictionary = cfg.champion
 	var kind_spec: Dictionary = cfg.kinds.champion
 	var damage := float(spec.damage) * float(sim.robot.stats.dps_mult) * (1.5 if overcharged else 1.0)
-	var reserve_ok := n < live_cap() + int(spec.reserve)
-	if not reserve_ok:
-		return
-	add_drone(Kind.CHAMPION, sim.x, sim.z + 1.4, robot_vx * float(cfg.lateral_inherit), float(spec.speed), damage, 0.0, float(kind_spec.life_s), 1.0, "champion", 0.0, float(spec.splash), 0, true)
+	add_drone(Kind.CHAMPION, sim.x, sim.z + 1.4, robot_vx * float(cfg.lateral_inherit), float(spec.speed), damage, 0.0, float(kind_spec.life_s), 1.0, "champion", 0.0, float(spec.splash))
 	stats["champions"] = int(stats.get("champions", 0)) + 1
 	sim.emit("mob_champion", {"damage": snappedf(damage, 0.1)})
 
@@ -187,9 +254,10 @@ func flame(sim, weapon: Dictionary, dt: float) -> bool:
 		torch_burn_s = float(weapon.get("burn_s", 2.0))
 		stats.launched_damage += total
 		stats.launched += count
+		var origin := muzzle(sim, "flame")
 		for i in count:
 			var s := (float(i) - (count - 1) / 2.0) / maxf(1.0, (count - 1) / 2.0)
-			add_drone(Kind.TORCH, sim.x + s * 0.3, sim.z + 0.9, s * float(cfg.torch.fan_mps), speed, total / count, 0.0, life_s, 1.0, "flame", float(weapon.get("burn_dps", 0)) * float(sim.robot.stats.dps_mult))
+			add_drone(Kind.TORCH, origin.x + s * 0.3, origin.z, s * float(cfg.torch.fan_mps) + robot_vx * float(cfg.lateral_inherit), speed, total / count, 0.0, life_s, 1.0, "flame", float(weapon.get("burn_dps", 0)) * float(sim.robot.stats.dps_mult), 0.0, 0, origin.y)
 	return launched
 
 func _record_impact(x: float, z: float, weight: float, k: int) -> void:
@@ -199,6 +267,7 @@ func _record_impact(x: float, z: float, weight: float, k: int) -> void:
 
 # Advance every drone, resolve hits on enemies, crates, barrels and the boss, and charge part gates.
 func step(sim, dt: float) -> void:
+	enforce_cap()
 	robot_vx = (sim.x - prev_x) / maxf(dt, 0.0001)
 	prev_x = sim.x
 	var targets: Array = []
@@ -254,25 +323,30 @@ func step(sim, dt: float) -> void:
 					continue
 				var enemy: Dictionary = targets[j]
 				var uid := int(enemy.uid)
-				if uid == lasthit[i] or float(enemy.hp) <= 0:
+				if hit_ids[i].has(uid) or float(enemy.hp) <= 0:
 					continue
 				if Vector2(tx[j] - px[i], tz[j] - pz[i]).length() >= r:
 					continue
 				_hit_enemy(sim, i, enemy, targets)
 				lasthit[i] = uid
+				hit_ids[i].append(uid)
 				if pierce[i] <= 0:
 					dead = true
 					break
 				pierce[i] -= 1
 		if not dead and in_boss and pz[i] >= boss_plane:
 			var boss_damage := dmg[i] * (1.5 if sim.exposed_time > 0 else 1.0)
+			var before_hp: float = sim.boss.hp + sim.boss.arm_hp
 			sim.boss.apply_hit(KIND_TYPE[k], boss_damage, sim, "arm" if sim.boss.arm_hp > 0 else "core")
 			if k == Kind.TORCH:
 				sim.boss.burn_left = torch_burn_s
 				sim.boss.burn_dps = burn[i]
-			stats.hit_damage += boss_damage
+			var landed := maxf(0.0, before_hp - float(sim.boss.hp) - float(sim.boss.arm_hp))
+			stats.hit_damage += landed
+			if track_realised:
+				_attribute(i, landed)
 			_record_impact(px[i], boss_plane, wgt[i], k)
-			if sim.boss.roar <= 0:
+			if landed > 0:
 				sim.last_boss_hit = sim.t
 			dead = true
 		if dead:
@@ -285,10 +359,18 @@ func step(sim, dt: float) -> void:
 	if n >= live_cap():
 		stats.cap_ticks += 1
 
+func _attribute(i: int, damage: float) -> void:
+	for g in gates:
+		if (gmask[i] & (1 << int(g.ord))) != 0:
+			g["realised"] = float(g.get("realised", 0.0)) + damage
+
 func _hit_enemy(sim, i: int, enemy: Dictionary, targets: Array) -> void:
 	var damage := dmg[i]
+	var landed := minf(damage, maxf(0.0, float(enemy.hp)))
+	if track_realised:
+		_attribute(i, landed)
 	enemy.hp -= damage
-	stats.hit_damage += damage
+	stats.hit_damage += landed
 	_record_impact(px[i], pz[i], wgt[i], kind[i])
 	if sim.engage != null:
 		sim.engage.on_hit(sim, {"wid": wid[i], "damage": damage}, enemy)
@@ -301,6 +383,10 @@ func _hit_enemy(sim, i: int, enemy: Dictionary, targets: Array) -> void:
 		if rad[i] > 0:
 			for other in targets:
 				if other != enemy and Vector2(float(other.x) - float(enemy.x), float(other.z) - float(enemy.z)).length() < rad[i]:
+					landed = minf(damage, maxf(0.0, float(other.hp)))
+					stats.hit_damage += landed
+					if track_realised:
+						_attribute(i, landed)
 					other.hp -= damage
 
 func is_alive(i: int) -> bool:
@@ -309,6 +395,7 @@ func is_alive(i: int) -> bool:
 func _clone(i: int) -> int:
 	var j := _grow()
 	px[j] = px[i]
+	py[j] = py[i]
 	pz[j] = pz[i]
 	vx[j] = vx[i]
 	vz[j] = vz[i]
@@ -321,6 +408,7 @@ func _clone(i: int) -> int:
 	kind[j] = kind[i]
 	pierce[j] = pierce[i]
 	lasthit[j] = lasthit[i]
+	hit_ids[j] = hit_ids[i].duplicate()
 	gmask[j] = gmask[i]
 	wid[j] = wid[i]
 	return j
@@ -387,7 +475,7 @@ func _multiply(i: int, extra: int, jitter_seed: int) -> void:
 	for c in made:
 		var j := _clone(i)
 		var side := 1.0 if c % 2 == 0 else -1.0
-		px[j] += side * (1 + c / 2) * float(cfg.gates.copy_spread_m)
+		px[j] += side * (1 + c / 2) * minf(float(cfg.gates.copy_spread_m), float(cfg.gates.copy_span_m) / maxf(1.0, float(extra)))
 		vx[j] += _hash(jitter_seed, c) * float(cfg.gates.copy_jitter_mps)
 
 # Applies one panel to drone i. Returns true when the drone is destroyed (trap).
@@ -465,7 +553,7 @@ func _flush_passes(sim) -> void:
 				stats.gain += float(state.gain)
 				if sim.state == "running" and float(state.gain) > 0.0:
 					sim.robot.overdrive = minf(100.0, sim.robot.overdrive + float(state.gain) * float(cfg.champion.overdrive_per_gain))
-				if first_multiply_t < 0.0 and typ in ["mult", "add"]:
+				if first_multiply_t < 0.0 and float(state.gain) > 0.0 and typ in ["mult", "add"]:
 					first_multiply_t = sim.t
 				sim.emit("mob_gate_pass", {"ord": gate.ord, "lane": lane, "type": typ, "v": panel.v, "count": state.count, "gain": snappedf(state.gain, 0.01), "x": snappedf(float(state.sx) / state.count, 0.01), "z": gz})
 				state.count = 0

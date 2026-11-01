@@ -122,6 +122,79 @@ func run() -> void:
 
 	_gate_tests()
 	_champion_tests()
+	_generated_tests()
+	_stream_tests()
+	_resume_regressions()
+
+func _resume_regressions() -> void:
+	var sim := gate_sim([{"t": "mult", "v": 3}])
+	for i in sim.mob.live_cap():
+		sim.mob.add_drone(MobSim.Kind.BOLT, 0.0, 0.0, 0.0, 0.0, 2.0, 0.5, 9.0)
+	var before := total_damage(sim)
+	sim.mob.launch_champion(sim, true)
+	check(sim.mob.n <= sim.mob.live_cap() and sim.mob.kind.slice(0, sim.mob.n).has(MobSim.Kind.CHAMPION), "champion launches inside the global cap")
+	check(absf(total_damage(sim) - before - float(sim.mob.cfg.champion.damage) * 1.5) < 0.001, "making room for champion preserves existing damage")
+	before = total_damage(sim)
+	sim.mob.cap_scale = 0.6
+	sim.mob.step(sim, 0.0)
+	check(sim.mob.n == sim.mob.live_cap() and absf(total_damage(sim) - before) < 0.001, "governor immediately compacts existing drones without losing damage")
+	# A piercing drone overlapping multiple enemies may damage each once, never ping-pong between them.
+	var pierce_sim := gate_sim([])
+	pierce_sim.spawn_pack("crate", 2, 5.0)
+	for enemy in pierce_sim.enemies:
+		enemy.x = 0.0
+		enemy.z = 5.0
+		enemy.hp = 1000.0
+	pierce_sim.mob.add_drone(MobSim.Kind.CHAMPION, 0, 5, 0, 0, 10, 0, 5)
+	pierce_sim.mob.step(pierce_sim, 0.01)
+	pierce_sim.mob.step(pierce_sim, 0.01)
+	check(pierce_sim.enemies.all(func(e): return is_equal_approx(float(e.hp), 990.0)), "piercing drone hits each enemy only once")
+	var stream := RunSim.new()
+	stream.flag_overrides = {"mob_stream": true, "mob_enemy_streams": true, "dense_blocks": true}
+	stream.setup(1, 41)
+	stream.beats = [{"type": "enemy_stream", "z": 20.0, "x": 1.8, "count": 40}]
+	stream.next_beat = 0
+	stream._spawn_beats()
+	check(stream.events.any(func(e): return e.t == "mob_enemy_stream") and not stream.enemies.is_empty(), "enemy-stream beats actually spawn")
+	check(stream.enemies.size() <= int(stream.flags.tuning.dense_enemy_cap), "enemy streams obey the dense enemy cap")
+	var stationary := RunSim.new()
+	stationary.flag_overrides = {"mob_stream": true}
+	stationary.setup(1, 7)
+	var stay := MobBot.new(7, 0.0, [], "no_dodge", "stay")
+	for tick in 600:
+		stay.control(stationary)
+		stationary.step(1.0 / 60)
+	check(is_zero_approx(stationary.x) and is_zero_approx(stationary.target_x), "stationary bot really stays at x=0")
+	var delayed := RunSim.new()
+	delayed.flag_overrides = {"mob_stream": true}
+	delayed.setup(1, 8)
+	var bot := MobBot.new(8, 0.4)
+	bot.control(delayed)
+	check(is_zero_approx(delayed.target_x), "delayed bot cannot react on the first frame")
+	delayed.t = 0.41
+	bot.control(delayed)
+	check(not is_zero_approx(delayed.target_x), "delayed steering command becomes available after reaction time")
+	# A relocated weapon uses its assigned nominal socket, not the central blaster origin.
+	var socket_sim := gate_sim([])
+	socket_sim.robot.add_part("cannon", socket_sim)
+	socket_sim.robot.slots = {"side_r": "cannon"}
+	var muzzle := socket_sim.mob.muzzle(socket_sim, "cannon")
+	check(muzzle.x > 1.0 and muzzle.y > 0.5, "weapon launches from its assigned socket")
+	# Plate, exposed core and clean-dodge exposure all go through the existing BossSim rules.
+	for spec in [[MobSim.Kind.BOLT, 1, 0.0, 5.0], [MobSim.Kind.BOMB, 1, 0.0, 10.0], [MobSim.Kind.BOLT, 3, 0.0, 15.0], [MobSim.Kind.BOMB, 3, 1.0, 22.5]]:
+		var boss_sim := RunSim.new()
+		boss_sim.flag_overrides = {"mob_stream": true}
+		boss_sim.setup(1, 55)
+		boss_sim.state = "boss"
+		boss_sim.boss = BossSim.new()
+		boss_sim.boss.setup(1, 0)
+		boss_sim.boss.roar = 0.0
+		boss_sim.boss.phase = int(spec[1])
+		boss_sim.exposed_time = float(spec[2])
+		boss_sim.mob.add_drone(int(spec[0]), 0, 14.0, 0, 0, 10, 0, 5)
+		var hp := boss_sim.boss.hp
+		boss_sim.mob.step(boss_sim, 0.0)
+		check(is_equal_approx(hp - boss_sim.boss.hp, float(spec[3])), "drone kind %d phase %d exposure %.0f obeys Titan damage rules" % [spec[0], spec[1], spec[2]])
 
 # Sim with one mob gate at z=20 and a single drone aimed straight at it.
 func gate_sim(panels: Array, moving := false) -> RunSim:
@@ -308,3 +381,60 @@ func _champion_tests() -> void:
 	fill.step(0.1)
 	fill.step(0.5)
 	check(fill.robot.overdrive > 0.0, "gate gain fills Overdrive (%.1f)" % fill.robot.overdrive)
+
+func _generated_tests() -> void:
+	for level in [2, 3, 4, 5]:
+		var sim := RunSim.new()
+		sim.flag_overrides = {"mob_stream": true}
+		sim.setup(level, 700 + level)
+		var rows := sim.beats.filter(func(b): return b.type == "mob_gate")
+		var part := sim.beats.filter(func(b): return b.get("generated", false) and b.has("options"))
+		check(rows.size() == part.size(), "level %d: one mob row between each part gate pair plus one after the final choice (%d rows, %d part gates)" % [level, rows.size(), part.size()])
+		var spacing := 999.0
+		for row in rows:
+			for gate in part:
+				spacing = minf(spacing, absf(float(row.z) - float(gate.z)))
+		check(spacing >= 35.0, "level %d: mob rows keep 35 m from part gates (%.0f)" % [level, spacing])
+		check(rows.any(func(b): return b.get("moving", false)) and rows.all(func(b): return b.panels.size() >= 2), "level %d: some rows slide, all have at least two panels" % level)
+		var same := RunSim.new()
+		same.flag_overrides = {"mob_stream": true}
+		same.setup(level, 700 + level)
+		check(JSON.stringify(same.beats) == JSON.stringify(sim.beats), "level %d: generated mob rows are deterministic" % level)
+		var off := RunSim.new()
+		off.setup(level, 700 + level)
+		check(not off.beats.any(func(b): return b.type == "mob_gate"), "level %d: no mob rows with the flag off" % level)
+	var power2 := RunSim.new()
+	power2.flag_overrides = {"mob_stream": true}
+	power2.setup(2, 5)
+	var power5 := RunSim.new()
+	power5.flag_overrides = {"mob_stream": true}
+	power5.setup(5, 5)
+	var best := func(sim: RunSim) -> int:
+		var top := 0
+		for b in sim.beats.filter(func(x): return x.type == "mob_gate"):
+			for panel in b.panels:
+				if panel.t == "power":
+					top = maxi(top, int(panel.v))
+		return top
+	check(best.call(power5) > best.call(power2) or best.call(power2) == 0, "power values scale with level")
+
+func _stream_tests() -> void:
+	var sim := RunSim.new()
+	sim.flag_overrides = {"mob_stream": true, "mob_enemy_streams": true}
+	sim.setup(1, 81)
+	var streams := sim.beats.filter(func(b): return b.type == "enemy_stream")
+	check(streams.size() == GameData.table("mob").enemy_streams.level1.size(), "level 1 enemy streams come from data")
+	var peak := 0
+	for tick in 4000:
+		sim.step(1.0 / 60.0)
+		peak = maxi(peak, sim.enemies.size())
+		sim.events.clear()
+	check(peak > 0 and peak <= 24, "enemy streams respect the enemy cap (%d)" % peak)
+	var plain := RunSim.new()
+	plain.flag_overrides = {"mob_stream": true}
+	plain.setup(1, 81)
+	check(not plain.beats.any(func(b): return b.type == "enemy_stream"), "no enemy streams without their flag")
+	var generated := RunSim.new()
+	generated.flag_overrides = {"mob_stream": true, "mob_enemy_streams": true}
+	generated.setup(3, 81)
+	check(generated.beats.filter(func(b): return b.type == "enemy_stream").size() == generated.beats.filter(func(b): return b.type == "mob_gate").size(), "generated levels get one stream per mob row")

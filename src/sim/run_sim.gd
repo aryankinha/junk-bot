@@ -113,7 +113,7 @@ func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count :
 		mob.register_gates(beats)
 	emit("run_start", {"level": level, "seed": seed_value})
 
-# Mob gates (flag mob_stream): authored for Level 1 in data/mob.json, generated for later levels (MOB-4).
+# Mob gates (flag mob_stream): authored for Level 1 in data/mob.json, generated for later levels between the part gates.
 func _add_mob_gates() -> void:
 	var rules: Dictionary = GameData.table("mob").gates
 	if level == 1:
@@ -121,7 +121,47 @@ func _add_mob_gates() -> void:
 			beats.append({"z": float(row.z), "type": "mob_gate", "panels": row.panels.duplicate(true), "moving": bool(row.get("moving", false))})
 			if row.has("pack"):
 				beats.append({"z": float(row.z) + float(row.pack.dz), "type": "enemy_pack", "enemy": str(row.pack.enemy), "count": int(row.pack.count), "lane": "spread"})
+	else:
+		var gen: Dictionary = rules.generated
+		var part_z: Array = beats.filter(func(b): return b.get("generated", false) and b.has("options")).map(func(b): return float(b.z))
+		var finals: Array = beats.filter(func(b): return b.type == "final_choice")
+		var row_z: Array = []
+		for i in range(1, part_z.size()):
+			row_z.append((part_z[i - 1] + part_z[i]) / 2.0)
+		if not finals.is_empty():
+			row_z.append(float(finals[0].z) + float(gen.final_dz))
+		for i in row_z.size():
+			var panels: Array = gen.rows[(i + level) % gen.rows.size()].duplicate(true)
+			if level >= int(gen.three_panel_from_level) and i % 2 == 1 and panels.size() == 2:
+				panels.append(gen.third_panel.duplicate(true))
+			for panel in panels:
+				if panel.t == "power":
+					panel.v = int(panel.v) + int(gen.power_per_level) * (level - 1)
+				elif panel.t == "add":
+					panel.v = int(panel.v) + int(gen.add_per_level) * (level - 1)
+			var moving: bool = i % int(gen.moving_every) == int(gen.moving_every) - 1 and panels.size() == 2
+			beats.append({"z": row_z[i], "type": "mob_gate", "panels": panels, "moving": moving})
+			beats.append({"z": row_z[i] + float(gen.pack_dz), "type": "enemy_pack", "enemy": ["scrapper", "gunner", "scrapper"][i % 3], "count": int(gen.pack_base) + level / 2 if i % 3 != 1 else 1, "lane": "spread"})
+	if flags.mob_enemy_streams:
+		_add_enemy_streams()
 	beats.sort_custom(func(a, b): return a.z < b.z)
+
+# Flag mob_enemy_streams: columns of scrappers down one lane between the mob gates.
+func _add_enemy_streams() -> void:
+	var rules: Dictionary = GameData.table("mob").enemy_streams
+	if level == 1:
+		for row in rules.level1:
+			beats.append({"z": float(row.z), "type": "enemy_stream", "x": float(row.x), "count": int(row.count)})
+	else:
+		var rows: Array = beats.filter(func(b): return b.type == "mob_gate")
+		for i in rows.size():
+			beats.append({"z": float(rows[i].z) + float(rules.generated_after_row_m), "type": "enemy_stream", "x": 1.8 if i % 2 == 0 else -1.8, "count": int(rules.generated_count_base) + level / 2})
+
+func _spawn_stream(beat: Dictionary) -> void:
+	var count := _scaled(int(beat.count), float(beat.z))
+	for i in count:
+		_place("scrapper", float(beat.x), float(beat.z) + float(i) * float(GameData.table("mob").enemy_streams.spacing_m))
+	emit("mob_enemy_stream", {"count": count})
 
 func _generate_beats() -> void:
 	beats.clear()
@@ -353,6 +393,7 @@ func _spawn_beats() -> void:
 		var beat: Dictionary = beats[next_beat]
 		match str(beat.type):
 			"enemy_pack": spawn_pack(str(beat.enemy), _scaled(int(beat.count), float(beat.z)), float(beat.z))
+			"enemy_stream": _spawn_stream(beat)
 			"wave": _spawn_wave(float(beat.z))
 			"coin_arc": _spawn_coin_arc(float(beat.z))
 			"miniboss": spawn_pack("hauler", 1, float(beat.z))
@@ -857,6 +898,9 @@ func _tick(dt: float) -> void:
 			state = "boss"
 			boss = BossSim.new()
 			boss.setup(level, losses)
+			if mob != null:
+				boss.max_hp *= float(GameData.table("mob").boss_hp_mult)
+				boss.hp = boss.max_hp
 			enemies.clear()
 			hazards.clear()
 			emit("boss_intro")

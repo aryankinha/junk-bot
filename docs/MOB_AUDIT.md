@@ -81,7 +81,7 @@ The launcher label is `package/name` and is already "Scrap Bot"; no player-visib
 | `RunSim` movement/beats/collision/combat; `BossSim` Titan with plate x0.5 phase 1, core x1.5 phase 3, clean dodges fill Overdrive | CONFIRMED | `boss_sim.gd:41-60, _finish_attack` |
 | `tap_special` handles `burst_volley`, `ram_charge`, `vacuum`; `strafe_run`, `inferno_aura` stubs | CONFIRMED | `run_sim.gd:517-552`; `combos.json` `stretch: true` |
 | `gate_charge` E2; `moving_gates` +-0.9 m | CONFIRMED | `run_sim.gd:383-443, 410-413` |
-| Tests: `run_all.gd` 25,177 checks, trace_hash, aim_bot, pair_audit, measure_engagement exist | PARTLY: files exist; count is 25,220 in the latest recorded run | `reports/INTERACTIVITY_REPORT.md`; live re-run below |
+| Tests: `run_all.gd` 25,177 checks, trace_hash, aim_bot, pair_audit, measure_engagement exist | CONTRADICTED: files exist; count is 25,220 in the recorded audit run | `reports/INTERACTIVITY_REPORT.md`; live re-run below |
 | NOT RUN items (phone fps/thermals/memory, cold boot, native ads, human playtests) | CONFIRMED still not run | no device; see section 7 |
 | Leftovers: project name, root node, `scrap_dragon_*`, `elite_bruiser`, unused chance keys | CONFIRMED (all five) | section 3 and 8 |
 
@@ -109,3 +109,19 @@ Live checks run at the start of MOB-0: see "Baseline checks" at the end.
 - `Godot --headless --script tests/run_all.gd`: **25,220 checks; 0 failures**; INTEGRATION 59 checks (the prompt's 25,177 is CONTRADICTED by +43).
 - `Godot --headless --script tests/bots/trace_hash.gd`: **TRACE MATCH** (36 runs).
 - Desktop perf with E1-E5 on: section 7. Phone: NOT RUN.
+
+
+## Resumed implementation audit (2026-11-01)
+
+The sections above describe the MOB-0 revision `627a41d`; their source line numbers refer to that revision. The interrupted work reached commit `fcd42b5` (MOB-3), with generated content, bot instrumentation and tuning still uncommitted. The final current-state evidence and acceptance exceptions are in `reports/MOB_STREAM_REPORT.md`.
+
+- CONFIRMED: the resumed full suite passes 25,320 checks plus 59 integration checks, with no failures (`results/mob_resume_final_checks.txt`). The original reported 25,177 was historical, not the present count.
+- CONFIRMED: flag-off replay is unchanged (`results/mob_resume_trace.txt`, `TRACE MATCH`). No baseline was regenerated.
+- CONFIRMED: current drone core uses packed arrays and a per-drone direct-hit history, with nominal weapon-socket origins (`src/sim/mob_sim.gd:177`). Multiplication and capacity compaction conserve direct damage and charge; the capacity now includes champions (`mob_sim.gd:114`, `:150`, `:232`).
+- CONTRADICTED: the earlier champion implementation exempted champions from the advertised global cap. It is repaired; there is no reserve above the cap.
+- CONTRADICTED: the previous `stay` bot was stationary, or its "perfect" inner controller applied a reaction delay to boss dodges. `tests/bots/mob_bot.gd` now holds x=0 for `stay` and delays complete steering commands for the aiming bot. Earlier bot result files are historical, not current acceptance evidence.
+- CONTRADICTED: authored `enemy_stream` beats were enough to produce enemy streams. The spawn dispatch was missing; it is now connected (`src/sim/run_sim.gd:396`) and covered by a regression test.
+- CONFIRMED: generated Levels 2–5 complete without entity-cap violations or timeouts in the small end-to-end sample (`results/mob_resume_levels.json`). This is not human difficulty validation.
+- UNVERIFIED: phone fps, PSS, cold boot, temperature, three-run thermals, haptics, native ad callbacks and five-player acceptance. No physical device is connected (`results/mob_resume_devices.txt`). The phone protocol allow-list passes (`results/mob_resume_phone_protocol.txt`).
+
+The new launch origins are deterministic nominal sockets, rather than feeding animated view transforms back into the pure simulation. Champion durability is represented by its 12 pierces and gate immunity; there is no unused HP stat or separate enemy-versus-drone health system. Ordinary incoming threats still damage the robot. Neither adaptation changes the save schema.

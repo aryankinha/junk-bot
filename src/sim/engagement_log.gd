@@ -100,7 +100,7 @@ func on_event(sim, type: String, data: Dictionary) -> void:
 			if steered(mob_samples):
 				mark(sim.t, "mobgate")
 			mob_passes += int(data.count)
-			if first_multiply_t < 0.0 and str(data.type) in ["mult", "add"]:
+			if first_multiply_t < 0.0 and float(data.gain) > 0.0 and str(data.type) in ["mult", "add"]:
 				first_multiply_t = sim.t
 		"payoff":
 			_payoff(sim.t, str(data.get("source", "")))
@@ -145,7 +145,9 @@ func results(run_end: float) -> Dictionary:
 		"marks_by_kind": _by_kind(sorted),
 		"chosen": chosen_id,
 		"evolution_t": evolution_t,
-		"bursts": bursts}
+		"bursts": bursts,
+		"time_to_first_multiply": first_multiply_t,
+		"mob_passes": mob_passes}
 
 func _by_kind(list: Array) -> Dictionary:
 	var out: Dictionary = {}
