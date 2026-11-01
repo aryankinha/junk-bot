@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M3
+
+VISUAL FOCUS before: { "normal": { "state": [21.6666666666667, 195.000000000005, -1.24222253061799, 84.0, 32, { "cannon": 1, "armour": 1 }], "scenery_instances": 84, "litter": 70, "skids": 26 }, "mob": { "state": [21.6666666666667, 195.000000000005, 1.69999999515939, 84.0, 39, { "cannon": 1, "armour": 1 }], "scenery_instances": 84, "litter": 70, "skids": 26 } }

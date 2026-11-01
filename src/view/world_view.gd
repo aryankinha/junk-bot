@@ -44,7 +44,7 @@ var elapsed := 0.0
 var scrap_mesh: ArrayMesh
 var circle_warning: CylinderMesh
 var box_warning := BoxMesh.new()
-var floor_color := Color("b48e5e")
+var floor_color := Color("e8e1d2")
 
 func _ready() -> void:
 	circle_warning = CylinderMesh.new()
@@ -54,15 +54,14 @@ func _ready() -> void:
 	circle_warning.radial_segments = 32
 	road = MeshFactory.instance(MeshFactory.merged([
 		MeshFactory.box(Vector3(120, 0.3, 190), Vector3(0, -0.35, -55), floor_color),
-		MeshFactory.box(Vector3(60, 0.06, 150), Vector3(0, -0.19, -50), Color("9c7a52")),
-		MeshFactory.box(Vector3(9.6, 0.1, 150), Vector3(0, -0.12, -50), Color("7d6244")),
-		MeshFactory.box(Vector3(7.4, 0.12, 150), Vector3(0, -0.1, -50), Color("58545f")),
-		MeshFactory.box(Vector3(0.6, 0.125, 150), Vector3(-1.5, -0.099, -50), Color("4a4651")),
-		MeshFactory.box(Vector3(0.6, 0.125, 150), Vector3(1.5, -0.099, -50), Color("4a4651")),
-		MeshFactory.box(Vector3(0.3, 0.2, 150), Vector3(-3.85, 0, -50), MeshFactory.RUST),
-		MeshFactory.box(Vector3(0.3, 0.2, 150), Vector3(3.85, 0, -50), MeshFactory.RUST),
-		MeshFactory.box(Vector3(0.3, 0.22, 150), Vector3(-4.15, -0.02, -50), Color("6b5236")),
-		MeshFactory.box(Vector3(0.3, 0.22, 150), Vector3(4.15, -0.02, -50), Color("6b5236"))], true))
+		MeshFactory.box(Vector3(60, 0.06, 150), Vector3(0, -0.19, -50), Color("e5dece")),
+		MeshFactory.box(Vector3(9.6, 0.1, 150), Vector3(0, -0.12, -50), Color("d5d1c3")),
+		MeshFactory.box(Vector3(7.4, 0.12, 150), Vector3(0, -0.1, -50), Color("b7c2bf")),
+		MeshFactory.box(Vector3(0.6, 0.125, 150), Vector3(-1.5, -0.099, -50), Color("b5c0bd")),
+		MeshFactory.box(Vector3(0.6, 0.125, 150), Vector3(1.5, -0.099, -50), Color("b5c0bd")),
+		MeshFactory.box(Vector3(0.16, 0.14, 150), Vector3(-3.6, -0.06, -50), Color("f2efdf")),
+		MeshFactory.box(Vector3(0.16, 0.14, 150), Vector3(3.6, -0.06, -50), Color("f2efdf"))], true))
+	road.material_override = MeshFactory.road_palette()
 	add_child(road)
 	# Road litter (rocks, rust shards, bolts) and tyre skids scroll past instead of painted lane dashes.
 	stripes = make_multimesh(MeshFactory.merged([
@@ -72,11 +71,12 @@ func _ready() -> void:
 	skids = make_multimesh(MeshFactory.merged([MeshFactory.box(Vector3(0.16, 0.012, 2.6), Vector3.ZERO, Color("3b3844"))], true), 26)
 	for k in 6:
 		scenery_sets.append(make_multimesh(MeshFactory.prop(k), 14))
+		scenery_sets.back().material_override = MeshFactory.scenery_palette()
 	scenery = scenery_sets[0]
 	scrap_mesh = MeshFactory.merged([MeshFactory.cylinder(0.24, 0.1, Vector3.ZERO, MeshFactory.YELLOW, Vector3(PI / 2, 0, 0), -1.0, 14), MeshFactory.cylinder(0.15, 0.14, Vector3.ZERO, Color('ffe98a'), Vector3(PI / 2, 0, 0), -1.0, 12)])
 	scrap = make_multimesh(scrap_mesh, 400)
 	gold = make_multimesh(MeshFactory.gold_coin(), 40)
-	projectiles = make_multimesh(MeshFactory.merged([MeshFactory.capsule(0.09, 0.5, Vector3.ZERO, MeshFactory.YELLOW, Vector3(PI / 2, 0, 0))]), 64)
+	projectiles = make_multimesh(MeshFactory.merged([MeshFactory.capsule(0.09, 0.5, Vector3.ZERO, MeshFactory.BLUE, Vector3(PI / 2, 0, 0))]), 64)
 	hostile_projectiles = make_multimesh(MeshFactory.merged([MeshFactory.capsule(0.13, 0.6, Vector3.ZERO, MeshFactory.RED, Vector3(PI / 2, 0, 0))]), 16)
 	bomblets = make_multimesh(MeshFactory.merged([MeshFactory.sphere(0.27, Vector3.ZERO, MeshFactory.ORANGE, Vector3.ONE, 8), MeshFactory.sphere(0.14, Vector3(0, 0.1, 0), MeshFactory.YELLOW, Vector3.ONE, 6)]), 16)
 	drones = make_multimesh(MeshFactory.drone(), 256, true)
@@ -228,6 +228,7 @@ func label3d(text: String, pos: Vector3, size := 64) -> Label3D:
 
 func rebuild_gate(gate: Dictionary, robot: RobotState = null) -> void:
 	for child in gate_root.get_children():
+		gate_root.remove_child(child)
 		child.queue_free()
 	charge_panels.clear()
 	if gate.is_empty():
@@ -433,7 +434,7 @@ func _sync_mob_gates(sim: RunSim) -> void:
 			slot.rail.visible = false
 			slot.ord = -1
 
-const DRONE_COLORS := [Color("ffd23f"), Color("ff8a1f"), Color("ff4f2a"), Color("5fd0ff")]
+const DRONE_COLORS := [Color("50b9df"), Color("8197cf"), Color("e0a254"), Color("5fd0ff")]
 
 func reset_run_feedback() -> void:
 	fx_items.clear()
@@ -486,19 +487,19 @@ func _build_player_fx() -> void:
 	var puff_material := StandardMaterial3D.new()
 	puff_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	puff_material.vertex_color_use_as_albedo = true
-	puff_material.albedo_color = Color(0.62, 0.5, 0.36, 0.6)
+	puff_material.albedo_color = Color(0.7, 0.65, 0.55, 0.25)
 	puff_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	puff.material = puff_material
 	dust_fx = CPUParticles3D.new()
-	dust_fx.amount = 14
-	dust_fx.lifetime = 0.55
+	dust_fx.amount = 6
+	dust_fx.lifetime = 0.3
 	dust_fx.direction = Vector3(0, 0.4, 1)
 	dust_fx.spread = 25
-	dust_fx.initial_velocity_min = 5
-	dust_fx.initial_velocity_max = 8
+	dust_fx.initial_velocity_min = 2
+	dust_fx.initial_velocity_max = 3
 	dust_fx.gravity = Vector3.ZERO
 	dust_fx.scale_amount_min = 0.5
-	dust_fx.scale_amount_max = 1.2
+	dust_fx.scale_amount_max = 0.7
 	var fade := Curve.new()
 	fade.add_point(Vector2(0, 1))
 	fade.add_point(Vector2(1, 0))
@@ -537,7 +538,7 @@ func popup(text: String, pos: Vector3, color := Color.WHITE, size := 72) -> void
 	var label := popups[popup_index]
 	popup_index = (popup_index + 1) % popups.size()
 	label.text = text
-	label.font_size = size
+	label.font_size = mini(size, 64)
 	label.modulate = color
 	label.position = pos
 	label.visible = true
@@ -565,35 +566,24 @@ func sync(sim: RunSim, dt: float) -> void:
 			label.position.y += dt * 2.2
 			label.position.z += dt * (9 if sim.state == "running" else 0)
 			label.modulate.a = clampf(life * 2.5, 0, 1)
-			label.scale = Vector3.ONE * (1.0 + maxf(0, life - 0.8) * 3.0)
+			label.scale = Vector3.ONE
 			if life <= 0:
 				label.visible = false
 	flame_fx.position = Vector3(sim.x, 1.0, -0.9)
 	flame_fx.emitting = sim.robot.parts.has("flame") and (sim.state == "boss" or not sim.enemies.is_empty())
-	stripes.multimesh.visible_instance_count = 70
-	for i in 70:
-		var h := fposmod(sin(float(i) * 78.233) * 43758.5453, 1.0)
-		var h2 := fposmod(sin(float(i) * 12.9898) * 23421.631, 1.0)
-		var litter_z := fposmod(float(i) * 2.9 + h * 2.0 - sim.z, 200.0)
-		stripes.multimesh.set_instance_transform(i, Transform3D(Basis(Vector3.UP, h2 * TAU), Vector3(h * 7.0 - 3.5, 0.0, 12 - litter_z)))
-	skids.multimesh.visible_instance_count = 26
-	for i in 26:
-		var h := fposmod(sin(float(i) * 37.719) * 91753.113, 1.0)
-		var skid_z := fposmod(float(i) * 7.9 + h * 4.0 - sim.z, 200.0)
-		skids.multimesh.set_instance_transform(i, Transform3D(Basis(Vector3.UP, (h - 0.5) * 0.1), Vector3((h - 0.5) * 6.2, 0.0, 12 - skid_z)))
+	# Leave the playable surface clear. Sparse matte salvage keeps the junkyard setting outside it.
+	stripes.multimesh.visible_instance_count = 0
+	skids.multimesh.visible_instance_count = 0
+	MeshFactory.road_palette().set_shader_parameter("travel", sim.z)
 	for k in scenery_sets.size():
 		var set_mesh := scenery_sets[k].multimesh
-		set_mesh.visible_instance_count = 14
-		for j in 14:
-			var i := j * 6 + k
+		set_mesh.visible_instance_count = 4 if k in [0, 1, 4] else 0
+		for j in set_mesh.visible_instance_count:
 			var side := -1 if (j + k) % 2 == 0 else 1
-			var heap := k == 4
-			var sz := (1.6 + float(i % 3) * 0.4) if heap else (0.9 + float(i % 3) * 0.25)
-			if k == 5:
-				sz *= 0.7
-			var basis := Basis(Vector3.UP, i * 1.7).scaled(Vector3.ONE * sz)
-			var lane_offset := (11.0 + float(i % 4) * 3.0) if heap else (6.2 + float(i % 5) * 1.8)
-			var pos := Vector3(side * lane_offset, 0, 14 - fposmod(float(j) * 13.7 + float(k) * 5.3 - sim.z * 0.95, 190))
+			var size := 0.85 if k == 4 else 1.0
+			var basis := Basis(Vector3.UP, float(j) * 1.7).scaled(Vector3.ONE * size)
+			var offset := 10.0 + float(k) * 1.1 + float(j % 2) * 1.8
+			var pos := Vector3(side * offset, 0, 14.0 - fposmod(float(j) * 48.0 + float(k) * 11.0 - sim.z, 192.0))
 			set_mesh.set_instance_transform(j, Transform3D(basis, pos))
 	_sync_aim(sim)
 	var count := 0
@@ -624,7 +614,6 @@ func sync(sim: RunSim, dt: float) -> void:
 	projectiles.multimesh.visible_instance_count = shot_count
 	bomblets.multimesh.visible_instance_count = bomblet_count
 	_sync_drones(sim)
-	_sync_mob_gates(sim)
 	hostile_projectiles.multimesh.visible_instance_count = sim.hostile_bullets.size()
 	for i in sim.hostile_bullets.size():
 		var bolt: Dictionary = sim.hostile_bullets[i]
@@ -708,7 +697,7 @@ func sync(sim: RunSim, dt: float) -> void:
 	for child in gate_root.get_children():
 		if child.has_meta("spin"):
 			child.rotation.y = elapsed * 2.0
-	gate_root.visible = not gate.is_empty() and sim.state == "running"
+	gate_root.visible = not gate.is_empty() and sim.state == "running" and float(gate.z) - sim.z <= 62.0
 	if not gate.is_empty():
 		gate_root.position.z = sim.z - float(gate.z)
 		gate_root.position.x = sim.gate_offset(gate, sim.t)
@@ -717,6 +706,7 @@ func sync(sim: RunSim, dt: float) -> void:
 		gate_rail.position.z = sim.z - float(gate.z)
 		var travel: float = 2.0 * (float(sim.flags.tuning.moving_amplitude) + 1.4 + float(sim.flags.tuning.moving_half))
 		gate_rail.scale = Vector3(travel, 1, 1)
+	_sync_mob_gates(sim)
 	boss_root.visible = sim.boss != null
 	if boss_root.visible:
 		boss_root.position.y = sin(elapsed * 2) * 0.06

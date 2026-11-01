@@ -2,10 +2,15 @@ extends SceneTree
 var game
 var failures: Array = []
 var checks := 0
+var output_prefix := "ui_20261101"
 func check(value: bool, message: String) -> void:
 	checks += 1
 	if not value: failures.append(message)
 func _initialize() -> void:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--out-prefix="):
+			output_prefix = arg.substr(13)
+			assert(output_prefix.is_valid_filename())
 	call_deferred("run")
 func settle() -> void:
 	for i in 5: await process_frame
@@ -78,7 +83,7 @@ func run() -> void:
 			if page in ["home","settings","pause","result"]:
 				audit_controls(game.overlay, game.get_viewport().get_visible_rect())
 			await RenderingServer.frame_post_draw
-			root.get_texture().get_image().save_png("res://results/ui_20261101_%s_%d.png" % [page,dimensions.x])
+			root.get_texture().get_image().save_png("res://results/%s_%s_%d.png" % [output_prefix,page,dimensions.x])
 	game.sim.boss = BossSim.new()
 	game.sim.boss.setup(1, 0)
 	game.sim.state = "boss"
@@ -97,10 +102,10 @@ func run() -> void:
 		check(not game.boss_panel.get_global_rect().intersects(game.toast_label.get_global_rect()), "Toast clears boss bar")
 		check(not game.chain_label.get_global_rect().intersects(game.combo_label.get_global_rect()), "Combo and pickup chain do not overlap")
 		await RenderingServer.frame_post_draw
-		root.get_texture().get_image().save_png("res://results/ui_20261101_hud_%d.png" % dimensions.x)
+		root.get_texture().get_image().save_png("res://results/%s_hud_%d.png" % [output_prefix,dimensions.x])
 	print("UI REVIEW: %d checks, %d failures" % [checks, failures.size()])
 	for failure in failures: printerr(failure)
-	var file := FileAccess.open("res://results/ui_review_20261101.json",FileAccess.WRITE)
+	var file := FileAccess.open("res://results/%s_checks.json" % output_prefix,FileAccess.WRITE)
 	file.store_string(JSON.stringify({"checks":checks,"failures":failures},"  "))
 	game.queue_free()
 	for i in 10: await process_frame

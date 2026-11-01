@@ -1,0 +1,17 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SCRIPT ERROR: Parse Error: Expected statement, found "Indent" instead.
+          at: GDScript::reload (res://src/view/run_view.gd:795)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/integration_suite.gd:9)
+              [1] run (res://tests/run_all.gd:500)
+ERROR: Failed to load script "res://src/view/run_view.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] run (res://tests/integration_suite.gd:9)
+       [1] run (res://tests/run_all.gd:500)
+SCRIPT ERROR: Invalid access to property or key 'save' on a base object of type 'Node3D'.
+          at: run (res://tests/integration_suite.gd:12)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/integration_suite.gd:12)
+25261 checks; 0 failures

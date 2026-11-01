@@ -37,12 +37,12 @@ var special_button: Button
 var reroll_button: Button
 var debug_label: Label
 var flash: ColorRect
+var camera_focus := Vector3(0, 0.7, -7.5)
+var pickup_glow := 0.0
 var accumulator := 0.0
 var runtime := 0.0
 var toast_timer := 0.0
-var hit_stop := 0.0
 var mob_popup_at: Dictionary = {}
-var shake := 0.0
 var paused := false
 var screen := "run"
 var result_recorded := false
@@ -88,10 +88,7 @@ var combo_count := 0
 var combo_timer := 0.0
 var best_combo := 0
 var run_kills := 0
-var scrap_acc := 0
-var scrap_timer := 0.0
 var hp_display := 100.0
-var fov_kick := 0.0
 var run_min_hp := 1.0
 var run_stars := 0
 var new_best_stars := false
@@ -155,32 +152,32 @@ func _ready() -> void:
 	var environment := WorldEnvironment.new()
 	var env := Environment.new()
 	var sky_material := ProceduralSkyMaterial.new()
-	sky_material.sky_top_color = Color("4aa3ff")
-	sky_material.sky_horizon_color = Color("ffe2b0")
-	sky_material.ground_horizon_color = Color("ffe2b0")
-	sky_material.ground_bottom_color = Color("f0c98c")
+	sky_material.sky_top_color = Color("f3f1e9")
+	sky_material.sky_horizon_color = Color("ede8dc")
+	sky_material.ground_horizon_color = Color("ede8dc")
+	sky_material.ground_bottom_color = Color("ded7c6")
 	sky_material.sky_curve = 0.18
 	var sky := Sky.new()
 	sky.sky_material = sky_material
 	env.background_mode = Environment.BG_SKY
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color("cfd8ff")
+	env.ambient_light_color = Color("fff5e5")
 	env.ambient_light_energy = 0.55
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	env.fog_enabled = true
 	env.fog_mode = Environment.FOG_MODE_DEPTH
-	env.fog_light_color = Color("ffe2b0")
-	env.fog_depth_begin = 28.0
-	env.fog_depth_end = 105.0
+	env.fog_light_color = Color("ede8dc")
+	env.fog_depth_begin = 45.0
+	env.fog_depth_end = 140.0
 	env.fog_depth_curve = 1.4
-	env.glow_enabled = true
+	env.glow_enabled = false
 	env.glow_intensity = 0.5
 	env.glow_bloom = 0.08
 	env.glow_hdr_threshold = 1.2
 	env.adjustment_enabled = true
-	env.adjustment_saturation = 1.2
-	env.adjustment_contrast = 1.06
+	env.adjustment_saturation = 1.0
+	env.adjustment_contrast = 1.0
 	environment.environment = env
 	add_child(environment)
 	var sun := DirectionalLight3D.new()
@@ -359,6 +356,8 @@ func _build_hud() -> void:
 	top_spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(top_spacer)
 	scrap_label = text_label("0", 48, Color("93671f"))
+	scrap_label.custom_minimum_size.x = 128
+	scrap_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	row.add_child(pill("coin", scrap_label))
 	var pause_button := round_button("", 112, "panel", show_pause)
 	pause_button.add_child(UiIcon.make("pause", 60))
@@ -418,7 +417,7 @@ func _build_hud() -> void:
 	boss_panel.add_child(boss_label)
 	boss_bar = bar(MeshFactory.RED, 24)
 	boss_panel.add_child(boss_bar)
-	toast_label = text_label("", 64)
+	toast_label = text_label("", 36)
 	toast_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	toast_label.offset_left = -480
 	toast_label.offset_right = 480
@@ -427,7 +426,7 @@ func _build_hud() -> void:
 	toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	toast_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	hud.add_child(toast_label)
-	combo_label = text_label("", 84, MeshFactory.YELLOW)
+	combo_label = text_label("", 28, Color("446750"))
 	combo_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	combo_label.offset_left = -400
 	combo_label.offset_right = 400
@@ -435,10 +434,10 @@ func _build_hud() -> void:
 	combo_label.offset_bottom = 760
 	combo_label.pivot_offset = Vector2(400, 60)
 	combo_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	combo_label.add_theme_constant_override("outline_size", 14)
+	combo_label.add_theme_constant_override("outline_size", 0)
 	combo_label.add_theme_color_override("font_outline_color", NAVY)
 	hud.add_child(combo_label)
-	chain_label = text_label("", 44, MeshFactory.YELLOW)
+	chain_label = text_label("", 28, Color("736544"))
 	chain_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	chain_label.offset_left = -400
 	chain_label.offset_right = 400
@@ -446,16 +445,16 @@ func _build_hud() -> void:
 	chain_label.offset_bottom = 640
 	chain_label.pivot_offset = Vector2(400, 40)
 	chain_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	chain_label.add_theme_constant_override("outline_size", 10)
+	chain_label.add_theme_constant_override("outline_size", 0)
 	chain_label.add_theme_color_override("font_outline_color", NAVY)
 	hud.add_child(chain_label)
-	hint_label = text_label("DRAG TO STEER\nChoose a gate. Build something bigger.", 38)
+	hint_label = text_label("DRAG TO STEER\nChoose a gate. Build something bigger.", 30)
 	hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	hint_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	hint_label.offset_left = 40
 	hint_label.offset_right = -40
-	hint_label.offset_top = -760 - safe_bottom
-	hint_label.offset_bottom = -620 - safe_bottom
+	hint_label.offset_top = -435 - safe_bottom
+	hint_label.offset_bottom = -335 - safe_bottom
 	hud.add_child(hint_label)
 	for floating in [hint_label, toast_label, boss_label]:
 		floating.add_theme_constant_override("outline_size", 5)
@@ -617,7 +616,9 @@ func start_run(is_daily := false) -> void:
 	combo_timer = 0
 	best_combo = 0
 	run_kills = 0
-	scrap_acc = 0
+	pickup_glow = 0.0
+	scrap_label.modulate = Color.WHITE
+	flash.color.a = 0.0
 	hp_display = 100.0
 	run_min_hp = 1.0
 	combo_label.text = ""
@@ -631,18 +632,36 @@ func start_run(is_daily := false) -> void:
 	hud.visible = true
 	world.boss_root.scale = Vector3.ONE
 	world.player.rotation = Vector3.ZERO
-	camera.position.x = 0.0
+	_reset_camera()
 	world.gate_signature = ""
 	world.reset_run_feedback()
 	audio.music("run_music")
 	world.sync(sim, 0)
 
+# One camera update owns the transform. Rewards never change projection, offsets or simulation timing.
+func _reset_camera() -> void:
+	camera.position = Vector3(0, 7.8, 9.5)
+	camera_focus = Vector3(0, 0.7, -7.5)
+	camera.look_at(camera_focus)
+	camera.fov = 62.0
+	camera.h_offset = 0.0
+	camera.v_offset = 0.0
+
+func _update_camera(delta: float) -> void:
+	var in_boss := sim.boss != null
+	var blend := 1.0 - exp(-maxf(0.0, delta) * 5.0)
+	camera.position = camera.position.lerp(Vector3(0, 8.5, 11) if in_boss else Vector3(0, 7.8, 9.5), blend)
+	camera_focus = camera_focus.lerp(Vector3(0, 0.7, -8.0) if in_boss else Vector3(0, 0.7, -7.5), blend)
+	camera.look_at(camera_focus)
+	camera.fov = 62.0
+	camera.h_offset = 0.0
+	camera.v_offset = 0.0
+
 func toast(value: String) -> void:
 	toast_label.text = value
 	toast_timer = 1.8
 	toast_label.pivot_offset = toast_label.size / 2
-	toast_label.scale = Vector2.ONE * 1.35
-	toast_label.create_tween().tween_property(toast_label, "scale", Vector2.ONE, 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	toast_label.scale = Vector2.ONE
 
 func bump_combo() -> void:
 	combo_count += 1
@@ -650,10 +669,8 @@ func bump_combo() -> void:
 	best_combo = maxi(best_combo, combo_count)
 	combo_timer = 2.4
 	if combo_count >= 3:
-		combo_label.text = "x%d  COMBO" % combo_count
-		combo_label.scale = Vector2.ONE * 1.4
-		combo_label.create_tween().tween_property(combo_label, "scale", Vector2.ONE, 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		combo_label.add_theme_color_override("font_color", MeshFactory.YELLOW if combo_count < 10 else (MeshFactory.ORANGE if combo_count < 20 else MeshFactory.RED))
+		combo_label.text = "COMBO ×%d" % combo_count
+		combo_label.scale = Vector2.ONE
 
 func _events() -> void:
 	for event in sim.events:
@@ -665,31 +682,23 @@ func _events() -> void:
 				toast(GameData.table("parts")[id].levels[int(event.level) - 1].name.to_upper() + "  +")
 				audio.play("upgrade" if event.t == "part_upgraded" else "attach")
 				haptics.tap(20, 0.4)
-				world.burst(Vector3(sim.x, 1.3, 0), 14, MeshFactory.YELLOW)
-				world.popup("+ " + GameData.table("parts")[id].levels[int(event.level) - 1].name.to_upper(), Vector3(sim.x, 3.2, 0), MeshFactory.YELLOW, 60)
-				fov_kick = 5.0
-				shake = 0.15
-				hit_stop = 0.04
+				world.burst(Vector3(sim.x, 1.3, 0), 6, MeshFactory.GREEN, 0.65)
 			"stage_up":
 				toast("BATTLE BOT" if event.stage == 2 else "SCRAP MONSTER")
 				audio.play("stage")
 				haptics.tap(60, 0.7)
-				world.burst(Vector3(sim.x, 0.5, 0), 40, MeshFactory.BLUE, 1.6)
-				fov_kick = 12.0
-				shake = 0.4
+				world.burst(Vector3(sim.x, 0.5, 0), 12, MeshFactory.GREEN, 0.8)
 			"part_broken", "part_stolen", "part_replaced":
 				toast(("PART STOLEN" if event.t == "part_stolen" else "PART LOST") + "\n" + GameData.table("parts")[event.id].name)
 				audio.play("break")
 				haptics.tap(80, 0.8)
 				world.burst(Vector3(sim.x, 1.3, 0), 16, MeshFactory.STEEL, 1.3)
-				hit_stop = 0.06
 				combo_count = 0
 			"player_hit":
 				audio.play("hit")
 				haptics.tap(40, 0.6)
 				world.player.flash()
-				flash.color.a = 0.3
-				shake = 0.4
+				flash.color.a = 0.12
 				combo_count = 0
 				combo_label.text = ""
 				world.burst(Vector3(sim.x, 1.2, 0), 8, MeshFactory.RED)
@@ -704,18 +713,13 @@ func _events() -> void:
 				bump_combo()
 				if event.id == "bruiser":
 					world.popup("SMASH!", kill_pos + Vector3(0, 1.5, 0), MeshFactory.ORANGE, 90)
-					shake = maxf(shake, 0.25)
 			"scrap":
 				audio.play("scrap")
-				scrap_acc += int(event.amount)
+				pickup_glow = 0.18
 				if event.has("chain"):
 					last_chain = int(event.chain)
 					if bool(event.gold):
-						world.popup("GOLD +%d" % int(event.amount), Vector3(sim.x, 3.4, 0), MeshFactory.ORANGE, 70)
-						world.burst(Vector3(sim.x, 1.0, 0), 10, MeshFactory.YELLOW, 1.2)
-					if last_chain >= 5 and last_chain % 5 == 0:
-						chain_label.scale = Vector2.ONE * 1.35
-						chain_label.create_tween().tween_property(chain_label, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+						world.burst(Vector3(sim.x, 1.0, 0), 4, MeshFactory.YELLOW, 0.4)
 			"healed":
 				toast("QUICK REPAIR")
 				audio.play("upgrade")
@@ -723,7 +727,6 @@ func _events() -> void:
 			"frenzy":
 				toast("COIN FRENZY\nCoins x2 · wider magnet")
 				audio.play("stage")
-				fov_kick = 6.0
 			"surge":
 				toast("OVERDRIVE CHARGED")
 				audio.play("special")
@@ -731,17 +734,12 @@ func _events() -> void:
 			"hauler_spawn":
 				toast("SCRAP HAULER!\nChase it · shoot the crate")
 				audio.play("warning")
-				shake = 0.2
 			"hauler_destroyed":
 				toast("JACKPOT!")
 				audio.play("victory")
 				haptics.tap(60, 0.7)
 				var loot_pos := Vector3(event.x, 1.8, sim.z - float(event.z))
-				world.burst(loot_pos, 60, MeshFactory.YELLOW, 2.2)
-				world.burst(loot_pos, 24, MeshFactory.ORANGE, 1.6)
-				world.popup("JACKPOT", loot_pos + Vector3(0, 2.5, 0), MeshFactory.YELLOW, 110)
-				fov_kick = 8.0
-				shake = 0.4
+				world.burst(loot_pos, 16, MeshFactory.YELLOW, 1.0)
 			"hauler_missed":
 				toast("IT GOT AWAY...")
 			"salvage_spawn":
@@ -762,32 +760,24 @@ func _events() -> void:
 				toast("LOOT!")
 				audio.play("victory")
 				var crate_pos := Vector3(event.x, 1.2, sim.z - float(event.z))
-				world.burst(crate_pos, 36, MeshFactory.YELLOW, 1.8)
-				world.popup("LOOT!", crate_pos + Vector3(0, 2.0, 0), MeshFactory.YELLOW, 100)
-				fov_kick = 5.0
-				shake = 0.25
+				world.burst(crate_pos, 8, MeshFactory.YELLOW, 0.8)
 			"gate_level_up":
 				var bonus_text := "LEVEL %d" % (1 + int(event.bonus))
 				audio.play("upgrade")
 				haptics.tap(15, 0.3)
 				world.popup("CHARGED  " + bonus_text, Vector3(sim.x, 3.4, 0), MeshFactory.YELLOW, 70)
-				fov_kick = 3.0
 			"boss_exposed":
 				world.popup("EXPOSED  x1.5", Vector3(0, 5.5, -16), MeshFactory.YELLOW, 90)
 				audio.play("dodge")
-				fov_kick = 4.0
 			"weapon_fire":
 				audio.play("fire")
 				world.player.fire_kick = 1.0
-				if world.fx_items.size() < 70:
-					world.burst(Vector3(sim.x, 1.25, -1.0), 1, MeshFactory.YELLOW, 0.25)
 			"telegraph", "enemy_warning":
 				audio.play("warning")
 				audio.duck(true)
 			"boss_attack":
 				audio.duck(false)
 				audio.play("hit")
-				shake = 0.5
 			"buy_offer":
 				if sim.state == "choosing":
 					show_purchase()
@@ -795,31 +785,24 @@ func _events() -> void:
 			"boss_phase":
 				toast("CORE EXPOSED" if event.phase == 2 else "ENRAGED")
 				audio.play("stage")
-				shake = 0.5
 			"clean_dodge": audio.play("dodge")
 			"mob_champion":
 				audio.play("champion")
 				haptics.tap(70, 0.8)
-				shake = maxf(shake, 0.3)
-				fov_kick = maxf(fov_kick, 9.0)
-				world.popup("CHAMPION!", Vector3(0, 3.4, -2.0), Color("5fd0ff"), 72)
-				world.burst(Vector3(sim.x, 1.3, -1.0), 24, Color("5fd0ff"), 1.6)
+				world.popup("CHAMPION!", Vector3(0, 3.4, -2.0), Color("5fd0ff"), 54)
+				world.burst(Vector3(sim.x, 1.3, -1.0), 12, Color("5fd0ff"), 1.0)
 			"mob_gate_pass":
 				var pass_type := str(event.type)
 				var pass_color := world._mob_panel_color(pass_type)
-				var gain: float = float(event.gain)
 				var pop_key := int(event.ord) * 4 + int(event.lane)
 				if runtime - float(mob_popup_at.get(pop_key, -9.0)) >= 1.2:
 					mob_popup_at[pop_key] = runtime
-					world.popup(world._mob_panel_text({"t": pass_type, "v": event.v}), Vector3(float(event.x), 3.0, sim.z - float(event.z)), pass_color if pass_type != "trap" else Color("ff6b7a"), 96 if gain > 0 or pass_type == "trap" else 72)
+					world.popup(world._mob_panel_text({"t": pass_type, "v": event.v}), Vector3(float(event.x), 3.0, sim.z - float(event.z)), Color("43b975") if pass_type != "trap" else Color("ff6b7a"), 56)
 					audio.play("trap" if pass_type == "trap" else "multiply")
 					haptics.tap(12, 0.3)
-					if pass_type != "trap":
-						fov_kick = maxf(fov_kick, 2.5)
-				world.burst(Vector3(float(event.x), 1.3, sim.z - float(event.z)), 6 + mini(14, int(event.count) * 2), pass_color, 1.3)
+					world.burst(Vector3(float(event.x), 1.3, sim.z - float(event.z)), 4 + mini(4, int(event.count)), pass_color, 0.7)
 			"special_used":
 				toast("OVERDRIVE" if event.id == "overdrive" else GameData.table("combos")[event.id].name.to_upper())
-				fov_kick = 10.0
 				world.burst(Vector3(sim.x, 1.2, -1), 30, MeshFactory.BLUE, 2.0)
 				audio.play("special")
 				haptics.tap(50, 0.6)
@@ -835,7 +818,6 @@ func _events() -> void:
 				audio.play("victory")
 				haptics.tap(150, 1)
 				world.burst(Vector3(0, 3.5, -17), 70, MeshFactory.ORANGE, 2.2)
-				fov_kick = 14.0
 				kill_timer = 1.2
 				toast("TITAN DOWN")
 			"station_unavailable":
@@ -855,23 +837,20 @@ func _process(delta: float) -> void:
 		return
 	if screen == "run" and not paused:
 		var frame_delta := minf(delta, 0.1)
-		if hit_stop > 0:
-			hit_stop -= frame_delta
-		else:
-			accumulator += frame_delta
-			while accumulator >= 1.0 / 60:
-				if bot != null:
-					bot.control(sim)
-				if stress_mode:
-					sim.robot.hp = sim.robot.max_hp
-					sim.spawn_pack("scrapper", maxi(0, 20 - sim.enemies.size()), sim.z + 15)
-					for enemy in sim.enemies:
-						if float(enemy.z) - sim.z < 5:
-							enemy.z = sim.z + 15
-					for shot in maxi(0, 40 - sim.bullets.size()):
-						sim._fire({"id": "stress", "type": "projectile", "damage": 14, "speed": 36})
-				sim.step(1.0 / 60)
-				accumulator -= 1.0 / 60
+		accumulator += frame_delta
+		while accumulator >= 1.0 / 60:
+			if bot != null:
+				bot.control(sim)
+			if stress_mode:
+				sim.robot.hp = sim.robot.max_hp
+				sim.spawn_pack("scrapper", maxi(0, 20 - sim.enemies.size()), sim.z + 15)
+				for enemy in sim.enemies:
+					if float(enemy.z) - sim.z < 5:
+						enemy.z = sim.z + 15
+				for shot in maxi(0, 40 - sim.bullets.size()):
+					sim._fire({"id": "stress", "type": "projectile", "damage": 14, "speed": 36})
+			sim.step(1.0 / 60)
+			accumulator -= 1.0 / 60
 		_events()
 		world.sync(sim, frame_delta * (0.25 if kill_timer > 0 else 1))
 		perf.sample()
@@ -882,31 +861,21 @@ func _process(delta: float) -> void:
 		if runtime - last_perf_save > 5:
 			perf.write()
 			last_perf_save = runtime
-		var offset := Vector3(0, 8.5, 11) if sim.boss != null else Vector3(0, 7.8, 9.5)
-		if kill_timer > 0:
-			var angle := (1.2 - kill_timer) / 1.2 * PI / 3
-			offset = Vector3(sin(angle) * 10, 7.5, cos(angle) * 10)
-		camera.position = camera.position.lerp(offset, 1 - exp(-delta * 5))
-		camera.look_at(Vector3(0, 0.7, -8 if sim.boss != null else -7.5))
-		shake = maxf(0, shake - delta * 2.5)
-		var motion := 0.3 if save.data.settings.get("reduce_motion", false) else 1.0
-		camera.h_offset = sin(runtime * 95) * shake * 0.2 * motion
-		camera.v_offset = cos(runtime * 83) * shake * 0.15 * motion
+		_update_camera(delta)
 		toast_timer -= delta
 		if toast_timer <= 0:
 			toast_label.text = ""
 		flash.color.a = maxf(0, flash.color.a - delta * 1.5)
 		var hp_fraction: float = sim.robot.hp / sim.robot.max_hp
 		run_min_hp = minf(run_min_hp, hp_fraction)
-		if hp_fraction < 0.3 and sim.state in ["running", "boss"]:
-			flash.color.a = maxf(flash.color.a, 0.06 + (sin(runtime * 7.0) + 1.0) * 0.045)
+		hp_label.modulate = Color("c44840") if hp_fraction < 0.3 else Color.WHITE
 		hp_display = lerpf(hp_display, hp_fraction * 100.0, minf(1.0, delta * 8.0))
 		hp_bar.value = hp_display
 		combo_timer -= delta
 		if sim.chain >= 3 or sim.frenzy_time > 0:
 			var text := ""
 			if sim.chain >= 3:
-				text = "COIN CHAIN x%d  +%d%%" % [sim.chain, int(minf(sim.chain, 40) * 1.5)]
+				text = "CHAIN ×%d  +%d%%" % [sim.chain, int(minf(sim.chain, 40) * 1.5)]
 			if sim.frenzy_time > 0:
 				text += ("   " if not text.is_empty() else "") + "FRENZY %ds" % ceili(sim.frenzy_time)
 			chain_label.text = text
@@ -915,14 +884,8 @@ func _process(delta: float) -> void:
 		if combo_timer <= 0:
 			combo_count = 0
 			combo_label.text = ""
-		scrap_timer -= delta
-		if scrap_timer <= 0 and scrap_acc > 0:
-			world.popup("+%d" % scrap_acc, Vector3(sim.x, 2.6, 0), MeshFactory.YELLOW, 64)
-			scrap_acc = 0
-			scrap_timer = 0.35
-		fov_kick = lerpf(fov_kick, 0.0, minf(1.0, delta * 6.0))
-		camera.fov = 62.0 + fov_kick
-		camera.position.x = lerpf(camera.position.x, sim.x * 0.3, minf(1.0, delta * 5.0))
+		pickup_glow = maxf(0.0, pickup_glow - delta)
+		scrap_label.modulate = Color.WHITE.lerp(Color(1.0, 0.85, 0.5), pickup_glow / 0.18)
 		ui_tick += delta
 		if ui_tick > 0.1:
 			_update_hud()
@@ -979,24 +942,30 @@ func _update_hud() -> void:
 			child.queue_free()
 		if sim.robot.parts.is_empty():
 			parts_row.add_child(text_label("TINY BOT  ·  BUILD YOUR MACHINE", 26, MUTED))
+		var equipment := 0
 		for id in sim.robot.parts:
+			if GameData.table("parts")[id].category != "weapon":
+				equipment += 1
+				continue
 			var chip := PanelContainer.new()
 			chip.add_theme_stylebox_override("panel", chip_style(str(GameData.table("parts")[id].category)))
 			chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			chip.add_child(text_label("%s %d" % [str(GameData.table("parts")[id].name).to_upper(), int(sim.robot.parts[id])], 24))
 			parts_row.add_child(chip)
+		if equipment > 0:
+			parts_row.add_child(text_label("+%d EQUIPMENT" % equipment, 24, MUTED))
 	progress_bar.value = sim.z / sim.boss_z * 100
 	var elite_guard = null
 	for enemy in sim.enemies:
 		if enemy.id == "hauler" and enemy.hp > 0 and float(enemy.z) - sim.z < 60:
 			elite_guard = enemy
 	boss_panel.offset_top = maxf(340, top_bar.offset_top + top_bar.size.y + 20)
-	toast_label.offset_top = boss_panel.offset_top + (150 if sim.boss != null or elite_guard != null else 40)
-	toast_label.offset_bottom = toast_label.offset_top + 150
+	toast_label.offset_top = boss_panel.offset_top + (120 if sim.boss != null or elite_guard != null else 0)
+	toast_label.offset_bottom = toast_label.offset_top + 85
 	chain_label.offset_top = toast_label.offset_bottom
-	chain_label.offset_bottom = chain_label.offset_top + 80
+	chain_label.offset_bottom = chain_label.offset_top + 36
 	combo_label.offset_top = chain_label.offset_bottom
-	combo_label.offset_bottom = combo_label.offset_top + 120
+	combo_label.offset_bottom = combo_label.offset_top + 36
 	boss_panel.visible = sim.boss != null or elite_guard != null
 	parts_row.visible = not boss_panel.visible
 	if elite_guard != null and sim.boss == null:
@@ -1010,14 +979,12 @@ func _update_hud() -> void:
 		boss_bar.value = sim.boss.hp / sim.boss.max_hp * 100
 	var combos := sim.robot.combos()
 	var ready := sim.robot.overdrive >= 100
-	var available_combo := ""
 	var minimum := 99.0
 	for id in combos:
 		var cooldown := float(sim.robot.cooldowns.get(id, 0))
 		minimum = minf(minimum, cooldown)
 		if cooldown <= 0:
 			ready = true
-			available_combo = id
 	special_button.disabled = not ready
 	special_ring.value = 1.0 if ready else (sim.robot.overdrive / 100.0 if combos.is_empty() else 1.0 - clampf(minimum / 12.0, 0, 1))
 	special_ring.glow = ready
@@ -1035,23 +1002,10 @@ func _update_hud() -> void:
 		hint_label.text = "SHOOT THE CRATE  ·  WATCH THE BARRELS"
 	elif _gate_charging():
 		hint_label.text = "HOLD YOUR LANE  ·  SHOOT THE GATE TO CHARGE IT"
-	elif sim.flags.weapon_evolution and sim.robot.combos().has("burst_volley") and not sim.evolution_active():
-		hint_label.text = "ROCKET LV%d NEEDED  →  CLUSTER ROCKETS" % int(sim.flags.tuning.evolution_rocket_level)
-	elif not available_combo.is_empty():
-		hint_label.text = GameData.table("combos")[available_combo].name.to_upper() + " READY"
+	elif sim.robot.overdrive >= 100:
+		hint_label.text = "OVERDRIVE READY"
 	else:
 		hint_label.text = ""
-		for id in GameData.table("combos"):
-			var def: Dictionary = GameData.table("combos")[id]
-			if def.get("stretch", false):
-				continue
-			var owned := int(sim.robot.parts.has(def.needs[0])) + int(sim.robot.parts.has(def.needs[1]))
-			if owned == 1:
-				var missing: String = def.needs[1] if sim.robot.parts.has(def.needs[0]) else def.needs[0]
-				hint_label.text = "%s + ?  →  %s" % [missing.to_upper(), def.name.to_upper()]
-				if sim.flags.weapon_evolution and id == "burst_volley":
-					hint_label.text += "  ·  CLUSTER ROCKETS"
-				break
 	debug_label.text = "%d FPS  ·  %d DRAWS  ·  %s" % [Engine.get_frames_per_second(), RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME), sim.state]
 	debug_label.visible = debug_label.visible and OS.is_debug_build() and not capture
 

@@ -24,6 +24,8 @@ const DIRT = Color("8b6a47")
 static var material: ShaderMaterial
 static var ground_material: StandardMaterial3D
 static var crowd_material: ShaderMaterial
+static var road_material: ShaderMaterial
+static var scenery_material: ShaderMaterial
 static var cache: Dictionary = {}
 
 const TOON_SHADER := """
@@ -85,6 +87,47 @@ static func crowd_palette() -> ShaderMaterial:
 		crowd_material.shader = shader
 		crowd_material.next_pass = palette().next_pass
 	return crowd_material
+
+static func road_palette() -> ShaderMaterial:
+	if road_material == null:
+		var shader := Shader.new()
+		shader.code = """
+shader_type spatial;
+render_mode unshaded;
+uniform float travel = 0.0;
+varying vec3 tint;
+varying vec2 ground;
+void vertex() {
+ tint = pow(COLOR.rgb, vec3(2.2));
+ ground = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xz;
+}
+void fragment() {
+ // Broad, very faint wear: no tiny noise texture to shimmer as the road scrolls.
+ float wear = sin(ground.x * 1.7 + sin((ground.y - travel) * 0.35)) * 0.012;
+ ALBEDO = clamp(tint * (1.0 + wear), vec3(0.0), vec3(1.0));
+}
+"""
+		road_material = ShaderMaterial.new()
+		road_material.shader = shader
+	return road_material
+
+static func scenery_palette() -> ShaderMaterial:
+	if scenery_material == null:
+		var shader := Shader.new()
+		shader.code = """
+shader_type spatial;
+render_mode unshaded;
+varying vec3 tint;
+void vertex() {
+ vec3 color = pow(COLOR.rgb, vec3(2.2));
+ float gray = dot(color, vec3(0.299, 0.587, 0.114));
+ tint = mix(mix(vec3(gray), color, 0.15), vec3(0.65, 0.61, 0.51), 0.72);
+}
+void fragment() { ALBEDO = tint; }
+"""
+		scenery_material = ShaderMaterial.new()
+		scenery_material.shader = shader
+	return scenery_material
 
 static func flat_material() -> StandardMaterial3D:
 	if ground_material == null:
