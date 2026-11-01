@@ -46,10 +46,20 @@ var flag_overrides: Dictionary = {}
 var engage: EngagementLog
 var aim_target = null
 var payoff_id := ""
+var focus_hold := 0.0
+var last_target_x := 0.0
 var payoff_paid := false
 
+static func _deep_merge(base: Dictionary, over: Dictionary) -> Dictionary:
+	for key in over:
+		if base.get(key) is Dictionary and over[key] is Dictionary:
+			base[key] = _deep_merge(base[key], over[key])
+		else:
+			base[key] = over[key]
+	return base
+
 func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count := 0, early_unlocks: Array = []) -> void:
-	flags = GameData.flags().merged(flag_overrides, true)
+	flags = _deep_merge(GameData.flags().duplicate(true), flag_overrides)
 	if flags.engagement_metrics:
 		engage = EngagementLog.new()
 		engage.setup(float(flags.tuning.lane_half_width))
@@ -66,10 +76,22 @@ func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count :
 	boss_z = float(GameData.table("gates_level1").boss_z)
 	if level > 1:
 		_generate_beats()
+	if flags.post_gate_payoff and level == 1 and not flags.tuning.level1_first_gate.is_empty():
+		# Content fix: Cannon vs Wheels is not a fair first choice (a weapon against no weapon).
+		for beat in beats:
+			if beat.type == "gate":
+				beat.options = flags.tuning.level1_first_gate.map(func(id): return {"kind": "part", "id": id})
+				break
 	if flags.guarded_salvage:
 		_add_salvage_beats()
+	var gate_index := 0
 	for beat in beats:
 		beat.resolved = false
+		if beat.type == "gate":
+			# Moving gates: from the third gate on, every other two-panel pair slides sideways.
+			if flags.moving_gates and gate_index >= 2 and gate_index % 2 == 0 and beat.options.size() == 2:
+				beat.moving = true
+			gate_index += 1
 		if flags.gate_charge and beat.type == "gate":
 			beat.charge = []
 			for option in beat.options:
@@ -293,7 +315,7 @@ func _resolve_gates() -> void:
 		beat.resolved = true
 		if beat.has("options"):
 			var opts: Array = beat.options
-			var lane := clampi(int(floor((x + float(GameData.constants().road_half_width)) / (2 * float(GameData.constants().road_half_width)) * opts.size())), 0, opts.size() - 1)
+			var lane := _panel_lane(beat, x)
 			var bonus := charge_bonus(beat, lane)
 			apply_option(opts[lane], bonus)
 			if bonus > 0:
@@ -316,16 +338,41 @@ func _resolve_gates() -> void:
 func chargeable(option: Dictionary) -> bool:
 	return option.kind in ["part", "upgrade_random_owned"]
 
+# Weaker parts level up on less charge, stronger ones need more, so aiming at either panel is a real trade.
+func charge_cost(option: Dictionary) -> float:
+	return float(flags.tuning.charge_cost.get(str(option.get("id", "")), 1.0))
+
 func charge_bonus(beat: Dictionary, lane: int) -> int:
 	if not beat.has("charge") or not chargeable(beat.options[lane]):
 		return 0
 	var amount: float = beat.charge[lane]
-	return int(amount >= float(flags.tuning.charge_t1)) + int(amount >= float(flags.tuning.charge_t2))
+	var cost := charge_cost(beat.options[lane])
+	return int(amount >= float(flags.tuning.charge_t1) * cost) + int(amount >= float(flags.tuning.charge_t2) * cost)
 
 func _panel_lane(gate: Dictionary, at_x: float) -> int:
-	var half := float(GameData.constants().road_half_width)
 	var count: int = gate.options.size()
+	if gate.get("moving", false):
+		# Moving panels: the nearest panel centre wins, so crossing between panels never loses the pick.
+		var best := 0
+		for lane in count:
+			if absf(at_x - panel_center(gate, lane, t)) < absf(at_x - panel_center(gate, best, t)):
+				best = lane
+		return best
+	var half := float(GameData.constants().road_half_width)
 	return clampi(int(floor((at_x + half) / (2 * half) * count)), 0, count - 1)
+
+# Sideways slide of a moving gate pair; a pure function of time so it is deterministic and telegraphed.
+func gate_offset(gate: Dictionary, at_t: float) -> float:
+	if not gate.get("moving", false):
+		return 0.0
+	return float(flags.tuning.moving_amplitude) * sin(TAU * at_t / float(flags.tuning.moving_period) + float(gate.z) * 0.37)
+
+func panel_center(gate: Dictionary, lane: int, at_t: float) -> float:
+	var count: int = gate.options.size()
+	if gate.get("moving", false):
+		return (float(lane) - (count - 1) / 2.0) * float(flags.tuning.moving_spacing) + gate_offset(gate, at_t)
+	var half := float(GameData.constants().road_half_width)
+	return -half + 2.0 * half / count * (lane + 0.5)
 
 func _add_charge(gate: Dictionary, lane: int, amount: float) -> void:
 	var before := charge_bonus(gate, lane)
@@ -343,6 +390,8 @@ func _charge_gate(bullet: Dictionary, prev_z: float) -> bool:
 	if prev_z >= gz or float(bullet.z) < gz or gz - z > float(flags.tuning.charge_range):
 		return false
 	var lane := _panel_lane(gate, float(bullet.x))
+	if gate.get("moving", false) and absf(float(bullet.x) - panel_center(gate, lane, t)) > float(flags.tuning.moving_half):
+		return false
 	if not chargeable(gate.options[lane]):
 		return false
 	_add_charge(gate, lane, float(bullet.get("charge", 0.0)))
@@ -385,6 +434,13 @@ func _spawn_payoff(option: Dictionary, gate_z: float) -> void:
 			# Collectors: a wide scatter of coins that the bigger magnet or storage clearly pays off.
 			for i in 16:
 				scrap_nodes.append({"x": -2.8 + float(i % 8) * 0.8, "z": at_z - 4.0 + float(i / 8) * 3.0, "alive": true, "gold": i % 5 == 0, "bonus": true})
+
+# Focus fire (A/B hypothesis): holding a lane without steering ramps fire rate; any steering resets it.
+func focus_multiplier() -> float:
+	if not flags.focus_fire:
+		return 1.0
+	var ramp := clampf((focus_hold - float(flags.tuning.focus_hold_s)) / float(flags.tuning.focus_ramp_s), 0.0, 1.0)
+	return 1.0 + float(flags.tuning.focus_max_bonus) * ramp
 
 func tap_special() -> bool:
 	var combos := robot.combos()
@@ -498,7 +554,7 @@ func _combat(dt: float) -> void:
 			continue
 		fire_timers[id] = float(fire_timers.get(id, 0)) - dt
 		if float(fire_timers[id]) <= 0:
-			fire_timers[id] = 1.0 / (float(weapon.rate) * (2.0 if special_time > 0 else 1.0))
+			fire_timers[id] = 1.0 / (float(weapon.rate) * (2.0 if special_time > 0 else 1.0) * focus_multiplier())
 			for barrel in int(weapon.get("barrels", 1)):
 				_fire(weapon, barrel * 0.15)
 	for i in range(bullets.size() - 1, -1, -1):
@@ -657,6 +713,9 @@ func _tick(dt: float) -> void:
 		chain_timer -= dt
 		if chain_timer <= 0:
 			chain = 0
+	if flags.focus_fire:
+		focus_hold = focus_hold + dt if absf(target_x - last_target_x) < 0.002 else 0.0
+		last_target_x = target_x
 	x = lerpf(x, target_x, 1 - exp(-float(GameData.constants().lateral_follow_rate) * float(robot.stats.steer_mult) * dt))
 	if state == "running":
 		var speed: float = float(GameData.constants().forward_speed) * float(robot.stats.fwd_mult) * (0.6 if oil_time > 0 else 1.0)

@@ -1,0 +1,18 @@
+{
+  "context": "Desktop",
+  "draw_calls_max": 145,
+  "draw_calls_median": 113,
+  "p50_ms": 16.661,
+  "p95_ms": 17.317,
+  "p99_ms": 17.876,
+  "primitives_max": 160382,
+  "renderer": "gl_compatibility",
+  "samples": 2673,
+  "scene_init_to_first_playable_ms": 26.312,
+  "share_over_16.7_ms": 0.405162738496072,
+  "share_over_20.0_ms": 0.00523756079311635,
+  "share_over_25.0_ms": 0.00299289188178077,
+  "share_over_33.0_ms": 0.00224466891133558,
+  "static_memory_bytes": 77142996,
+  "worst_ms": 632.377
+}

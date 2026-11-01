@@ -49,7 +49,7 @@ var result_reward := 0
 var result_texture: ImageTexture
 var daily := false
 var daily_key := ""
-var bot: BotController
+var bot
 var flag_overrides: Dictionary = {}
 var capture := false
 var snapshot_at := -1.0
@@ -576,7 +576,7 @@ func start_run(is_daily := false) -> void:
 	sim = RunSim.new()
 	sim.flag_overrides = flag_overrides
 	sim.setup(level, seed_arg, {} if daily else save.data.part_tiers, 0 if daily else int(save.data.losses_on_level), [] if daily else save.data.unlocked_parts)
-	bot = BotController.new(seed_arg, "perfect", 0) if capture else null
+	bot = (AimBot.new(seed_arg, 0.15) if sim.flags.aim_mode == "lane" else BotController.new(seed_arg, "perfect", 0)) if capture else null
 	perf = PerfLog.new()
 	reward_doubled = false
 	run_paid = 0
@@ -971,6 +971,8 @@ func _update_hud() -> void:
 		hint_label.text = "MOVE OUT OF THE RED" if not sim.boss.attack.is_empty() else ("BREAK THE ARM TO RECOVER YOUR PART" if sim.boss.arm_hp > 0 else "AUTO-FIRE ACTIVE  ·  DODGE & BUILD OVERDRIVE")
 	elif elite_guard != null:
 		hint_label.text = "SHOOT THE CRATE  ·  WATCH THE BARRELS"
+	elif _gate_charging():
+		hint_label.text = "HOLD YOUR LANE  ·  SHOOT THE GATE TO CHARGE IT"
 	elif not available_combo.is_empty():
 		hint_label.text = GameData.table("combos")[available_combo].name.to_upper() + " READY"
 	else:
@@ -986,6 +988,13 @@ func _update_hud() -> void:
 				break
 	debug_label.text = "%d FPS  ·  %d DRAWS  ·  %s" % [Engine.get_frames_per_second(), RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME), sim.state]
 	debug_label.visible = debug_label.visible and OS.is_debug_build() and not capture
+
+func _gate_charging() -> bool:
+	var gate := sim.next_gate()
+	if sim.state != "running" or gate.is_empty() or not gate.has("charge"):
+		return false
+	var gap := float(gate.z) - sim.z
+	return gap > 2.0 and gap < float(sim.flags.tuning.charge_range) + 6.0
 
 func _finish_run() -> void:
 	if not result_recorded:

@@ -40,6 +40,9 @@ func run() -> void:
 				done = not gate.is_empty() and gate.has("charge") and gate.charge.any(func(c): return c >= 1.2) and float(gate.z) - game.sim.z < 14
 			"salvage":
 				done = game.sim.enemies.any(func(e): return e.get("salvage", "") == "blast" and float(e.z) - game.sim.z < 33 and e.hp > 0)
+			"moving":
+				var next_gate: Dictionary = game.sim.next_gate()
+				done = not next_gate.is_empty() and next_gate.get("moving", false) and float(next_gate.z) - game.sim.z < 26
 			"aim":
 				done = game.sim.aim_target != null and float(game.sim.aim_target.z) - game.sim.z < 14 and game.sim.z > 100
 			"evolution":

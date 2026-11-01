@@ -1,0 +1,89 @@
+{
+  "flags": {
+    "aim_mode": "lane",
+    "gate_charge": true,
+    "post_gate_payoff": true
+  },
+  "rows": [
+    {
+      "a": "Cannon",
+      "a_payoff": 0.283333333333347,
+      "a_payoff_seen": 12,
+      "a_score": 1139.07222222222,
+      "a_share": 0.416666666666667,
+      "a_share_noise_aware": 0.521975767416742,
+      "a_win": 1.0,
+      "b": "Storage Pack",
+      "b_payoff": 0.0833333333333375,
+      "b_payoff_seen": 12,
+      "b_score": 1137.81805555556,
+      "b_win": 1.0,
+      "gate_z": 80,
+      "score_gap_pct": 0.110225590158486
+    },
+    {
+      "a": "Heavy Armour",
+      "a_payoff": -1.0,
+      "a_payoff_seen": 0,
+      "a_score": 1139.07222222222,
+      "a_share": 0.0,
+      "a_share_noise_aware": 0.114385358018506,
+      "a_win": 1.0,
+      "b": "Scrap Magnet",
+      "b_payoff": -1.0,
+      "b_payoff_seen": 0,
+      "b_score": 1167.16666666667,
+      "b_win": 1.0,
+      "gate_z": 180,
+      "score_gap_pct": -2.40706363939264
+    },
+    {
+      "a": "Rocket Launcher",
+      "a_payoff": -1.0,
+      "a_payoff_seen": 0,
+      "a_score": 1139.07222222222,
+      "a_share": 1.0,
+      "a_share_noise_aware": 0.767081972016621,
+      "a_win": 1.0,
+      "b": "Merge part",
+      "b_payoff": -1.0,
+      "b_payoff_seen": 0,
+      "b_score": 1122.69722222222,
+      "b_win": 1.0,
+      "gate_z": 290,
+      "score_gap_pct": 1.45854106306489
+    },
+    {
+      "a": "Overclock",
+      "a_payoff": -1.0,
+      "a_payoff_seen": 0,
+      "a_score": 1139.07222222222,
+      "a_share": 1.0,
+      "a_share_noise_aware": 0.543277421299661,
+      "a_win": 1.0,
+      "b": "Plating",
+      "b_payoff": -1.0,
+      "b_payoff_seen": 0,
+      "b_score": 1136.60138888889,
+      "b_win": 1.0,
+      "gate_z": 400,
+      "score_gap_pct": 0.217387850964088
+    },
+    {
+      "a": "Mystery crate",
+      "a_payoff": -1.0,
+      "a_payoff_seen": 0,
+      "a_score": 1149.83888888889,
+      "a_share": 1.0,
+      "a_share_noise_aware": 0.681753138914647,
+      "a_win": 1.0,
+      "b": "Heavy Armour",
+      "b_payoff": -1.0,
+      "b_payoff_seen": 0,
+      "b_score": 1139.07222222222,
+      "b_win": 1.0,
+      "gate_z": 520,
+      "score_gap_pct": 0.945213697307262
+    }
+  ]
+}

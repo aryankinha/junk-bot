@@ -306,6 +306,117 @@ func run() -> void:
 			if capped.state in ["won", "lost"]:
 				break
 		check(cap_ok, "projectile and enemy caps hold with lane aiming (delay %.2f)" % delay)
+	# E2: shots that cross a gate panel charge it; thresholds raise the granted part level.
+	var charged := RunSim.new()
+	charged.flag_overrides = {"gate_charge": true, "post_gate_payoff": true}
+	charged.setup(1, 41)
+	var first_gate: Dictionary = charged.next_gate()
+	check(first_gate.has("charge") and first_gate.charge.size() == 2, "gate_charge gives each panel a charge counter")
+	charged.z = 60.0
+	var cannon_cost: float = charged.charge_cost({"kind": "part", "id": "cannon"})
+	var t1 := float(charged.flags.tuning.charge_t1) * cannon_cost
+	var t2 := float(charged.flags.tuning.charge_t2) * cannon_cost
+	check(charged._charge_gate({"x": -1.7, "z": 80.2, "charge": 0.4}, 79.5), "bullet crossing a chargeable panel is absorbed")
+	check(is_equal_approx(float(first_gate.charge[0]), 0.4) and float(first_gate.charge[1]) == 0.0, "charge goes to the panel the bullet crossed")
+	check(not charged._charge_gate({"x": 1.7, "z": 79.0, "charge": 1.0}, 78.5), "bullet short of the gate does not charge it")
+	charged.z = 30.0
+	check(not charged._charge_gate({"x": 1.7, "z": 80.2, "charge": 1.0}, 79.5), "gate beyond charge range cannot be charged")
+	charged.z = 60.0
+	check(charged.charge_bonus(first_gate, 0) == 0, "below the first threshold grants no bonus level")
+	charged._charge_gate({"x": -1.7, "z": 80.2, "charge": t1}, 79.5)
+	check(charged.charge_bonus(first_gate, 0) == 1, "first threshold adds a level")
+	charged._charge_gate({"x": -1.7, "z": 80.2, "charge": t2}, 79.5)
+	check(charged.charge_bonus(first_gate, 0) == 2, "second threshold adds another level")
+	var window := float(charged.flags.tuning.charge_range) / (float(GameData.constants().forward_speed))
+	check(window >= 3.0 and window <= 4.0, "charge window is 3-4 s at base speed (%.2f s)" % window)
+	check(window < 2.0 * t2 and t1 < window, "approach cannot max both panels but can reach level 2")
+	# For every pair of parts that can share a gate, the charge window cannot max both panels.
+	var pair_ok := true
+	var ids: Array = GameData.table("parts").keys()
+	for first_id in ids:
+		for second_id in ids:
+			if first_id != second_id and GameData.table("parts")[first_id].category != GameData.table("parts")[second_id].category:
+				var both: float = (charged.charge_cost({"id": first_id}) + charged.charge_cost({"id": second_id})) * float(charged.flags.tuning.charge_t2)
+				pair_ok = pair_ok and both > window
+	check(pair_ok, "no part pair can have both panels maxed in one approach")
+	charged.x = -1.7
+	charged.target_x = -1.7
+	charged.z = 80.1
+	charged._resolve_gates()
+	check(int(charged.robot.parts.get("cannon", 0)) == 3, "fully charged panel grants level 3 and respects the cap")
+	check(charged.enemies.filter(func(e): return e.id == "scrapper").size() == 4, "cannon choice spawns a scrapper cluster to shred")
+	check(charged.events.any(func(e): return e.t == "gate_charged" and e.bonus == 2), "gate_charged event reports the bonus")
+	var wheels_sim := RunSim.new()
+	wheels_sim.flag_overrides = {"post_gate_payoff": true}
+	wheels_sim.flag_overrides = {"post_gate_payoff": true, "tuning": {"level1_first_gate": []}}
+	wheels_sim.setup(1, 42)
+	wheels_sim.x = 1.7
+	wheels_sim.z = 80.1
+	wheels_sim._resolve_gates()
+	var bonus_coins := wheels_sim.scrap_nodes.filter(func(n): return n.get("bonus", false))
+	check(wheels_sim.robot.parts.has("wheels") and bonus_coins.size() >= 10, "wheels choice spawns a bonus coin route")
+	wheels_sim.pickup_coin(bonus_coins[0])
+	check(wheels_sim.events.any(func(e): return e.t == "payoff" and e.source == "wheels"), "first bonus coin reports the wheels payoff")
+	var uncharged := RunSim.new()
+	uncharged.setup(1, 41)
+	check(not uncharged.next_gate().has("charge"), "no charge counters with the flag off")
+	var flame := RunSim.new()
+	flame.flag_overrides = {"gate_charge": true}
+	flame.setup(1, 43)
+	flame.robot.add_part("flame", flame)
+	flame.z = 76.0
+	flame.x = -1.7
+	var flame_gate: Dictionary = flame.next_gate()
+	flame._charge_cone(flame.robot.stats.weapons[flame.robot.stats.weapons.size() - 1], 0.5)
+	check(float(flame_gate.charge[0]) > 0.0, "flame sweep charges the panel in front of it")
+	# E3: moving gates slide on a telegraphed path; focus fire ramps only while the lane is held.
+	var sliding := RunSim.new()
+	sliding.flag_overrides = {"moving_gates": true}
+	sliding.setup(1, 51)
+	var moving_z: Array = []
+	for beat in sliding.beats:
+		if beat.get("moving", false):
+			moving_z.append(int(beat.z))
+	check(moving_z == [290, 520], "level 1 moves the third and fifth gate pairs (got %s)" % str(moving_z))
+	var moving_gate: Dictionary = sliding.beats.filter(func(b): return int(b.z) == 290)[0]
+	var peak := 0.0
+	var peak_speed := 0.0
+	var last_offset := sliding.gate_offset(moving_gate, 0.0)
+	for step_index in range(1, 1000):
+		var offset := sliding.gate_offset(moving_gate, step_index * 0.01)
+		peak = maxf(peak, absf(offset))
+		peak_speed = maxf(peak_speed, absf(offset - last_offset) / 0.01)
+		last_offset = offset
+	check(peak <= float(sliding.flags.tuning.moving_amplitude) + 0.001 and peak > 0.5, "gate slide stays within its amplitude")
+	check(peak_speed < 1.5, "gates slide slowly enough to read (%.2f m/s)" % peak_speed)
+	check(is_equal_approx(sliding.gate_offset(moving_gate, 1.7), sliding.gate_offset(moving_gate, 1.7)), "gate slide is a pure function of time")
+	var left_center: float = sliding.panel_center(moving_gate, 0, 2.0)
+	var right_center: float = sliding.panel_center(moving_gate, 1, 2.0)
+	check(is_equal_approx(right_center - left_center, float(sliding.flags.tuning.moving_spacing)), "moving panels keep their spacing")
+	sliding.t = 2.0
+	check(sliding._panel_lane(moving_gate, left_center) == 0 and sliding._panel_lane(moving_gate, right_center) == 1, "panel pick follows the moving panel centre")
+	check(not sliding.beats.filter(func(b): return int(b.z) == 400)[0].get("moving", false), "other gates stay static")
+	var still := RunSim.new()
+	still.setup(1, 51)
+	check(not still.beats.any(func(b): return b.get("moving", false)), "no moving gates with the flag off")
+	var focus := RunSim.new()
+	focus.flag_overrides = {"focus_fire": true}
+	focus.setup(1, 52)
+	check(is_equal_approx(focus.focus_multiplier(), 1.0), "focus fire starts at normal rate")
+	for tick in 60:
+		focus.step(1.0 / 60)
+	check(focus.focus_multiplier() > 1.0, "holding the lane ramps the fire rate")
+	for tick in 90:
+		focus.step(1.0 / 60)
+	check(is_equal_approx(focus.focus_multiplier(), 1.0 + float(focus.flags.tuning.focus_max_bonus)), "focus fire caps at +30 percent")
+	focus.target_x = 1.5
+	focus.step(1.0 / 60)
+	check(is_equal_approx(focus.focus_multiplier(), 1.0), "any steering resets focus fire")
+	var no_focus := RunSim.new()
+	no_focus.setup(1, 52)
+	for tick in 120:
+		no_focus.step(1.0 / 60)
+	check(is_equal_approx(no_focus.focus_multiplier(), 1.0), "focus fire is inert with the flag off")
 	# Exercise the actual scene tree and persistent services as part of the main runner.
 	var integration = load("res://tests/integration_suite.gd").new()
 	var integration_failures: Array = await integration.run(self)

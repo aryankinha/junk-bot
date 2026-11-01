@@ -24,6 +24,11 @@ var gate_root: Node3D
 var aim_ring: MeshInstance3D
 var aim_beam: MeshInstance3D
 var salvage_tags: Dictionary = {}
+var charge_panels: Array = []
+var gate_rail: MeshInstance3D
+var sim_t1 := 1.0
+var sim_cost: Callable
+var sim_t2 := 2.5
 var gate_signature := ""
 var boss_root: Node3D
 var boss_core: MeshInstance3D
@@ -129,6 +134,18 @@ func _ready() -> void:
 	boss_root.add_child(boss_arm)
 	boss_root.visible = false
 	_build_aim_feedback()
+	var rail_material := StandardMaterial3D.new()
+	rail_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	rail_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	rail_material.albedo_color = Color(MeshFactory.ORANGE, 0.4)
+	var rail_mesh := BoxMesh.new()
+	rail_mesh.size = Vector3(1.0, 0.03, 0.9)
+	gate_rail = MeshInstance3D.new()
+	gate_rail.mesh = rail_mesh
+	gate_rail.material_override = rail_material
+	gate_rail.position.y = 0.03
+	gate_rail.visible = false
+	add_child(gate_rail)
 
 # Lane-aiming feedback: a ring under the locked target, a soft beam to it, and tags on salvage targets.
 func _build_aim_feedback() -> void:
@@ -216,13 +233,15 @@ func label3d(text: String, pos: Vector3, size := 64) -> Label3D:
 func rebuild_gate(gate: Dictionary, robot: RobotState = null) -> void:
 	for child in gate_root.get_children():
 		child.queue_free()
+	charge_panels.clear()
 	if gate.is_empty():
 		return
 	var options: Array = gate.options
-	var width := 6.8 / options.size()
+	var moving: bool = gate.get("moving", false)
+	var width := (2.4 if moving else 6.8 / options.size())
 	for i in options.size():
 		var option: Dictionary = options[i]
-		var dx: float = -3.4 + width * (i + 0.5)
+		var dx: float = (float(i) - (options.size() - 1) / 2.0) * 2.8 if moving else -3.4 + width * (i + 0.5)
 		var tone := Color("43b975") if option.kind == "part" else (Color("9b72c7") if option.kind in ["gamble", "surge"] else (MeshFactory.YELLOW if option.kind == "frenzy" else (Color("ff6b81") if option.kind == "heal" else MeshFactory.ORANGE)))
 		var mesh := MeshFactory.instance(MeshFactory.merged([
 			MeshFactory.rbox(Vector3(width - 0.12, 0.16, 0.16), Vector3(dx, 3.2, 0), tone),
@@ -231,9 +250,9 @@ func rebuild_gate(gate: Dictionary, robot: RobotState = null) -> void:
 			MeshFactory.rbox(Vector3(0.1, 3.2, 0.15), Vector3(dx + width / 2 - 0.08, 1.6, 0), tone),
 			MeshFactory.rbox(Vector3(width - 0.15, 0.04, 0.6), Vector3(dx, 0.04, 0), tone)]))
 		gate_root.add_child(mesh)
-		var name_label := label3d(GateGen.label(option).to_upper().replace(" ", "\n") if options.size() == 3 else GateGen.label(option).to_upper(), Vector3(dx, 2.72, 0.12), 34 if options.size() == 3 else 56)
+		var name_label := label3d(GateGen.label(option).to_upper().replace(" ", "\n") if options.size() == 3 else GateGen.label(option).to_upper(), Vector3(dx, 2.72, 0.12), 34 if options.size() == 3 else (42 if moving else 56))
 		gate_root.add_child(name_label)
-		var desc := label3d(GateGen.description(option), Vector3(dx, 2.08, 0.12), 20 if options.size() == 3 else 30)
+		var desc := label3d(GateGen.description(option), Vector3(dx, 2.08, 0.12), 20 if options.size() == 3 else (24 if moving else 30))
 		gate_root.add_child(desc)
 		if option.kind == "part":
 			var icon := MeshFactory.instance(MeshFactory.part(str(option.id), 1))
@@ -244,12 +263,71 @@ func rebuild_gate(gate: Dictionary, robot: RobotState = null) -> void:
 			if not tag.is_empty():
 				gate_root.add_child(label3d(tag, Vector3(dx, 3.62, 0.12), 40))
 				gate_root.get_child(gate_root.get_child_count() - 1).modulate = MeshFactory.YELLOW
-		elif option.kind in ["heal", "frenzy", "surge"]:
+		if gate.has("charge") and option.kind in ["part", "upgrade_random_owned"]:
+			charge_panels.append(_charge_panel(i, dx, width, option))
+		if option.kind in ["heal", "frenzy", "surge"]:
 			var icon := MeshFactory.instance(MeshFactory.icon(str(option.kind)))
 			icon.position = Vector3(dx, 1.2, 0)
 			icon.scale = Vector3.ONE * 1.1
 			icon.set_meta("spin", true)
 			gate_root.add_child(icon)
+
+# Charge bar and next-level preview over a chargeable panel (gate_charge flag).
+func _charge_panel(lane: int, dx: float, width: float, option: Dictionary) -> Dictionary:
+	var bar_material := StandardMaterial3D.new()
+	bar_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	bar_material.albedo_color = MeshFactory.DARK
+	var back := MeshInstance3D.new()
+	var back_mesh := BoxMesh.new()
+	back_mesh.size = Vector3(width - 0.5, 0.5, 0.1)
+	back.mesh = back_mesh
+	back.material_override = bar_material
+	back.position = Vector3(dx, 4.0, 0.0)
+	gate_root.add_child(back)
+	var fill_material := StandardMaterial3D.new()
+	fill_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	fill_material.albedo_color = MeshFactory.ORANGE
+	var fill := MeshInstance3D.new()
+	var fill_mesh := BoxMesh.new()
+	fill_mesh.size = Vector3(width - 0.62, 0.34, 0.12)
+	fill.mesh = fill_mesh
+	fill.material_override = fill_material
+	fill.position = Vector3(dx, 4.0, 0.04)
+	gate_root.add_child(fill)
+	var tick_x := (float(sim_t1) / float(sim_t2) - 0.5) * (width - 0.62)
+	var tick := MeshInstance3D.new()
+	var tick_mesh := BoxMesh.new()
+	tick_mesh.size = Vector3(0.1, 0.56, 0.14)
+	tick.mesh = tick_mesh
+	tick.material_override = bar_material
+	tick.position = Vector3(dx + tick_x, 4.0, 0.05)
+	gate_root.add_child(tick)
+	var level_label := label3d("", Vector3(dx, 4.95, 0.12), 54)
+	level_label.modulate = MeshFactory.YELLOW
+	gate_root.add_child(level_label)
+	return {"lane": lane, "fill": fill, "label": level_label, "width": width - 0.62, "x": dx, "option": option, "material": fill_material}
+
+func _update_charge(gate: Dictionary, robot: RobotState) -> void:
+	if not gate.has("charge"):
+		return
+	for panel in charge_panels:
+		var amount: float = gate.charge[panel.lane]
+		var cost: float = sim_cost.call(panel.option)
+		var fraction := clampf(amount / (float(sim_t2) * cost), 0.0, 1.0)
+		var fill: MeshInstance3D = panel.fill
+		fill.scale.x = maxf(0.001, fraction)
+		fill.position.x = panel.x - panel.width * (1.0 - fraction) / 2.0
+		panel.material.albedo_color = MeshFactory.ORANGE.lerp(MeshFactory.YELLOW, fraction)
+		var bonus := int(amount >= float(sim_t1) * cost) + int(amount >= float(sim_t2) * cost)
+		var option: Dictionary = panel.option
+		var text := ""
+		if option.kind == "part":
+			var id := str(option.id)
+			var granted := mini(3, int(robot.parts.get(id, 0)) + 1 + bonus)
+			text = "LV %d%s\n%s" % [granted, " MAX" if granted == 3 else "", str(GameData.table("parts")[id].levels[granted - 1].name).to_upper()]
+		else:
+			text = "+%d LEVEL%s" % [1 + bonus, "S" if bonus > 0 else ""]
+		panel.label.text = text
 
 # Hint above a gate: does picking it finish a combo or upgrade a part?
 func _gate_tag(option: Dictionary, robot: RobotState) -> String:
@@ -477,12 +555,22 @@ func sync(sim: RunSim, dt: float) -> void:
 	if sig != gate_signature:
 		gate_signature = sig
 		rebuild_gate(gate, sim.robot)
+	sim_cost = sim.charge_cost
+	sim_t1 = float(sim.flags.tuning.charge_t1)
+	sim_t2 = float(sim.flags.tuning.charge_t2)
+	_update_charge(gate, sim.robot)
 	for child in gate_root.get_children():
 		if child.has_meta("spin"):
 			child.rotation.y = elapsed * 2.0
 	gate_root.visible = not gate.is_empty() and sim.state == "running"
 	if not gate.is_empty():
 		gate_root.position.z = sim.z - float(gate.z)
+		gate_root.position.x = sim.gate_offset(gate, sim.t)
+	gate_rail.visible = gate_root.visible and gate.get("moving", false)
+	if gate_rail.visible:
+		gate_rail.position.z = sim.z - float(gate.z)
+		var travel: float = 2.0 * (float(sim.flags.tuning.moving_amplitude) + 1.4 + float(sim.flags.tuning.moving_half))
+		gate_rail.scale = Vector3(travel, 1, 1)
 	boss_root.visible = sim.boss != null
 	if boss_root.visible:
 		boss_root.position.y = sin(elapsed * 2) * 0.06
