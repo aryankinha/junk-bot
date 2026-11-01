@@ -3,9 +3,10 @@
 > **Document Type**: Exhaustive Codebase, Systems & Verification Audit  
 > **Repository Path**: `/Users/aryankinha/Downloads/junk-bot`  
 > **Engine / Platform**: Godot Engine 4.7.2.stable (`gl_compatibility`), Portrait Android & Desktop  
-> **Automated Test Status**: **25,177 automated checks passed (0 assertion failures)**  
+> **Automated Test Status**: **25,320 automated checks passed (0 assertion failures)**  
+> **UI Multi-Resolution Status**: **1,419 checks passed across 3 mobile resolutions (360×640, 432×768, 600×960)**  
 > **Engine Runtime Status**: **1 handled GDScript script runtime error in `tests/integration_suite.gd:53`**  
-> **Simulation Trace Status**: **TRACE MATCH** (`results/interactivity_trace_baseline.txt`)  
+> **Simulation Trace Status**: **TRACE MATCH** (`results/interactivity_trace_baseline.txt`, `results/focus_trace.txt`)  
 > **Last Verification Date**: 2026-11-01  
 
 ---
@@ -16,10 +17,10 @@
 3. [Core Simulation Layer (`src/sim/` & `src/core/`)](#3-core-simulation-layer-srcsim--srccore)
 4. [Authoritative Data Tables & Ground Truth (`data/*.json`)](#4-authoritative-data-tables--ground-truth-datajson)
 5. [Procedural Level & Gate Generation System](#5-procedural-level--gate-generation-system)
-6. [Presentation & View Layer (`src/view/` & `src/ui/`)](#6-presentation--view-layer-srcview--srcui)
+6. [Presentation, Visual Focus & Camera Stabilization Layer (`src/view/` & `src/ui/`)](#6-presentation-visual-focus--camera-stabilization-layer-srcview--srcui)
 7. [Procedural Art & Audio Pipelines](#7-procedural-art--audio-pipelines)
 8. [Services, Persistence & AdMob Integration (`src/services/`)](#8-services-persistence--admob-integration-srcservices)
-9. [Interactivity Experiments E1–E5 & Feature Flags](#9-interactivity-experiments-e1e5--feature-flags)
+9. [Interactivity Experiments E1–E5, Mob Stream & Feature Flags](#9-interactivity-experiments-e1e5-mob-stream--feature-flags)
 10. [Automated Testing Suite & Engine Runtime Audit](#10-automated-testing-suite--engine-runtime-audit)
 11. [Simulation Bot Sweep & Balance Datasets](#11-simulation-bot-sweep--balance-datasets)
 12. [Android Build Pipeline & Packaging](#12-android-build-pipeline--packaging)
@@ -67,37 +68,38 @@ The project strictly enforces decoupling between simulation logic and visual ren
 ├── LICENSES.md                       # Open font (OFL) and MIT library download ledger
 ├── icon.svg                          # Default project vector icon
 │
-├── src/                              # Core GDScript source files (16 scripts, 1 scene)
+├── src/                              # Core GDScript source files (23 scripts, 1 scene, 5,818 lines)
 │   ├── core/
-│   │   ├── game_data.gd              # JSON database loader (static caching of 13 data files)
-│   │   └── rng_streams.gd            # 4 independent deterministic RNG streams (gates, spawns, boss, loot)
+│   │   ├── game_data.gd              # JSON database loader (static caching of 14 data files, 23 lines)
+│   │   └── rng_streams.gd            # 4 independent deterministic RNG streams (10 lines)
 │   ├── sim/
-│   │   ├── run_sim.gd                # Main runner sim: movement, beats, collision, combat (846 lines)
-│   │   ├── robot_state.gd            # Robot stats, sockets, parts, HP, breaks, repairs (189 lines)
-│   │   ├── boss_sim.gd               # Scrap Titan 3-phase state machine & attacks (241 lines)
-│   │   ├── stat_calc.gd              # Stat aggregation from chassis, parts, combos, tradeoffs (39 lines)
-│   │   ├── gate_gen.gd               # Deterministic gate pair generation & rules (72 lines)
-│   │   ├── economy.gd                # Reward formula & hangar tier upgrade cost functions (14 lines)
-│   │   └── engagement_log.gd         # Telemetry logger for player-decided engagement intervals (120 lines)
+│   │   ├── run_sim.gd                # Main runner sim: movement, beats, collision, combat (931 lines)
+│   │   ├── mob_sim.gd                # Struct-of-arrays drone simulation, live cap 200, merge (562 lines)
+│   │   ├── robot_state.gd            # Robot stats, sockets, parts, HP, breaks, repairs (191 lines)
+│   │   ├── boss_sim.gd               # Scrap Titan 3-phase state machine & attacks (172 lines)
+│   │   ├── engagement_log.gd         # Telemetry logger for player-decided engagement intervals (166 lines)
+│   │   ├── gate_gen.gd               # Deterministic gate pair generation & rules (71 lines)
+│   │   ├── stat_calc.gd              # Stat aggregation from chassis, parts, combos, tradeoffs (38 lines)
+│   │   └── economy.gd                # Reward formula & hangar tier upgrade cost functions (11 lines)
 │   ├── services/
-│   │   ├── save_store.gd             # Atomic save persistence (user://save.json, 126 lines)
-│   │   ├── ads.gd                    # High-level ad broker (rewards, offline fallback, 42 lines)
-│   │   ├── admob_provider.gd         # Native Poing Godot AdMob wrapper (63 lines)
-│   │   ├── audio.gd                  # 12-channel pooled procedural SFX & looping music (83 lines)
-│   │   ├── haptics.gd                # Android handheld vibration throttle (50ms rate limit, 9 lines)
-│   │   ├── perf_log.gd               # Frame time percentiles, draw call & memory sampler (51 lines)
-│   │   └── telemetry.gd              # JSONL append logger (user://telemetry.jsonl, 8 lines)
+│   │   ├── audio.gd                  # 12-channel pooled procedural SFX & looping music (76 lines)
+│   │   ├── save_store.gd             # Atomic save persistence (user://save.json, 67 lines)
+│   │   ├── admob_provider.gd         # Native Poing Godot AdMob wrapper (62 lines)
+│   │   ├── perf_log.gd               # Frame time percentiles, draw call & memory sampler (50 lines)
+│   │   ├── ads.gd                    # High-level ad broker (rewards, offline fallback, 41 lines)
+│   │   ├── haptics.gd                # Android handheld vibration throttle (50ms rate limit, 8 lines)
+│   │   └── telemetry.gd              # JSONL append logger (user://telemetry.jsonl, 7 lines)
 │   ├── view/
 │   │   ├── Boot.tscn                 # Primary entry scene (holds ScrapDragon Node3D)
-│   │   ├── run_view.gd               # Master UI controller, HUD, menus, hangar, inputs (728 lines)
-│   │   ├── world_view.gd             # 3D highway, multimeshes, enemies, boss, camera, VFX (581 lines)
-│   │   ├── robot_builder.gd          # Procedural 3D robot assembly, sockets, animations (392 lines)
-│   │   └── mesh_factory.gd           # Procedural rounded 3D toy geometry & toon shaders (456 lines)
+│   │   ├── run_view.gd               # Master UI controller, HUD, menus, fixed 62° camera, visual focus (1,621 lines)
+│   │   ├── world_view.gd             # 3D highway, multimeshes, enemies, boss, camera, drones (770 lines)
+│   │   ├── mesh_factory.gd           # Procedural rounded 3D toy geometry & toon shaders (636 lines)
+│   │   └── robot_builder.gd          # Procedural 3D robot assembly, sockets, animations (199 lines)
 │   └── ui/
-│       ├── ui_icon.gd                # Procedural 2D vector icons (coin, heart, bolt, star, etc.)
-│       └── ui_ring.gd                # Circular progress ring for overdrive & special buttons
+│       ├── ui_icon.gd                # Procedural 2D vector icons (coin, heart, bolt, star, etc., 87 lines)
+│       └── ui_ring.gd                # Circular progress ring for overdrive & special buttons (19 lines)
 │
-├── data/                             # Authoritative JSON databases (13 files)
+├── data/                             # Authoritative JSON databases (14 files)
 │   ├── constants.json                # Speed, road width, sim Hz, chassis stats, break points
 │   ├── parts.json                    # 9 parts x 3 levels, sockets, stats, weights, replaces
 │   ├── combos.json                   # 5 combo definitions (Burst Volley, Ram Charge, Vacuum, Strafe, Inferno)
@@ -105,6 +107,7 @@ The project strictly enforces decoupling between simulation logic and visual ren
 │   ├── boss_scrap_titan.json         # Scrap Titan base HP, scaling, assist, 3 phases, 6 attacks
 │   ├── gates_level1.json             # Authored level 1 beat sequence (boss at z=720)
 │   ├── level_generator.json          # Procedural generation rules for levels 2–5
+│   ├── mob.json                      # Mob Stream gates, 12 authored rows, multipliers, add, trap, champion
 │   ├── economy.json                  # Cogs conversion, upgrade costs, unlock costs, repair bay
 │   ├── tradeoffs.json                # Overclock, Plating, Crate mystery gamble
 │   ├── zones.json                    # Zone visual themes (Junkyard, Desert, Factory, Snow)
@@ -113,30 +116,40 @@ The project strictly enforces decoupling between simulation logic and visual ren
 │   └── blocks.json                   # Rhythm wave & coin arc placement definitions
 │
 ├── assets/                           # Shipped project assets
-│   ├── audio/                        # 14 procedural WAV SFX + 2 OGG music loops
+│   ├── audio/                        # 18 procedural WAV SFX (incl. champion, multiply, swarm_hit, trap) + 2 OGG music loops
 │   ├── fonts/                        # LilitaOne-Regular, Barlow-SemiBold, Rajdhani-Bold (OFL)
 │   ├── parts/                        # 27 part scene wrappers (*_lv*.tscn)
 │   ├── materials/                    # Shared materials
 │   └── ASSET_MANIFEST.md             # Triangle budgets, source recipes, and provenance
 │
-├── tests/                            # Automated test suites & bot simulators
-│   ├── run_all.gd                    # Master test runner (505 lines, 25,177 checks)
-│   ├── integration_suite.gd          # Actual SceneTree, UI navigation, and service checks (129 lines)
+├── tests/                            # Automated test suites & bot simulators (29 scripts)
+│   ├── run_all.gd                    # Master test runner (508 lines, 25,320 checks, 0 failures)
+│   ├── integration_suite.gd          # Actual SceneTree, UI navigation, and service checks (128 lines, 59 checks)
+│   ├── test_visual_focus.gd          # Verifies fixed 62° FOV, 0 shake, 0 offset across 120 reward frames (94 lines)
+│   ├── test_ui_review.gd             # Multi-resolution UI layout audit across 360, 432, 600 widths (1,419 checks)
+│   ├── mob_suite.gd                  # Mob Stream damage parity, live cap, merge conservation tests (232 lines)
+│   ├── shot_interactivity.gd         # Shot density, bullet latency and travel checks
+│   ├── mob_only.gd                   # Standalone mob stream test fixture
+│   ├── mob_draws.gd                  # Draw call counter under drone load
 │   ├── bots/
 │   │   ├── run_balance.gd            # Multi-seed bot balance sweep (perfect, random, no_dodge)
-│   │   ├── bot_controller.gd         # Baseline simulation bot agent
+│   │   ├── mob_bot.gd                # Command-delayed mob-aware bot agent
 │   │   ├── aim_bot.gd                # Lane-aiming & gate-charging bot agent
-│   │   ├── trace_hash.gd             # Event trace baseline regression validator
+│   │   ├── bot_controller.gd         # Baseline simulation bot agent
+│   │   ├── trace_hash.gd             # Event trace baseline regression validator (TRACE MATCH)
 │   │   ├── pair_audit.gd             # Level 1 gate viability audit
 │   │   ├── pair_pick.gd              # Noise-aware gate pick share simulation
 │   │   ├── focus_check.gd            # Standing-still vs aiming dominance verifier
 │   │   ├── moving_fairness.gd        # Moving gate latency & fairness verification
+│   │   ├── mob_measure.gd            # Mob gate engagement and latency measurement
+│   │   ├── mob_level_smoke.gd        # Levels 2–5 smoke test across seeds
 │   │   └── measure_engagement.gd     # Engagement interval & payoff latency profiler
 │   ├── render_review.gd              # Headless/desktop render capture & draw call validator
 │   └── test_display_quality.gd       # Mac/desktop window sizing and visual audit
 │
-├── tools/                            # Build automation, asset generators, and phone harness
+├── tools/                            # Build automation, asset generators, and phone harness (20 tools)
 │   ├── build_android.sh              # CLI build script for debug, ads, and release APK/AAB
+│   ├── play_mob_stream.sh            # Manual isolated A/B comparison runner
 │   ├── phone_perf_session.sh         # Device performance capture, logcat, thermal guards
 │   ├── check_phone_allowlist.py      # ADB command safety allowlist enforcement
 │   ├── configure_android.gd          # EditorSettings Android SDK/keystore config script
@@ -144,6 +157,7 @@ The project strictly enforces decoupling between simulation logic and visual ren
 │   ├── fetch_admob.py                # Downloader for Poing Godot AdMob release zip
 │   ├── install_admob_runtime.py      # Gradle build plugin injector
 │   ├── generate_audio.py             # Math-based procedural sound and music synthesizer
+│   ├── verify_exports.py             # Verifies APK/AAB 16 KB page alignment and permissions
 │   └── write_interactivity_report.py # Automated report markdown generator
 │
 ├── addons/                           # Godot editor and runtime plugins
@@ -151,16 +165,23 @@ The project strictly enforces decoupling between simulation logic and visual ren
 │   └── scrap_ads_export/             # Custom export plugin stripping/enabling ad flags
 │
 ├── build/                            # Compiled binaries & video proofs
-│   ├── scrap_dragon_debug.apk        # Offline debug APK (VIBRATE only, 29 MB)
-│   ├── scrap_dragon_test_ads.apk     # Native test-ad APK (AdMob test IDs, 39.5 MB)
-│   ├── scrap_dragon_release.aab      # Android App Bundle Play Store package (28.9 MB)
+│   ├── scrap_bot_focus.apk           # Visual focus & camera stabilized review APK (28 MB, VIBRATE only)
+│   ├── scrap_bot_mob_review.apk      # Mob Stream standalone review APK (28 MB)
+│   ├── scrap_dragon_debug.apk        # Baseline offline debug APK (28 MB, VIBRATE only)
+│   ├── scrap_dragon_test_ads.apk     # Native test-ad APK (AdMob test IDs, 38 MB)
+│   ├── scrap_dragon_pipeline_debug.aab# Android App Bundle pipeline proof (28 MB)
+│   ├── scrap_dragon_ui_refresh.apk   # UI refresh APK (28 MB)
 │   └── *.mp4 / *.avi                 # First transformation, part loss, and boss kill proofs
 │
 ├── reports/                          # Formal milestone & verification reports
-│   ├── COMPREHENSIVE_PROJECT_REPORT.md # This authoritative document
-│   ├── FINAL_REPORT.md               # End-of-implementation audit & physical device gap log
+│   ├── COMPREHENSIVE_PROJECT_REPORT.md# Authoritative master project audit
+│   ├── CAMERA_AND_VISUAL_FOCUS_20261101.md # Camera overhaul & visual uncluttering review
+│   ├── MOB_STREAM_REPORT.md          # Complete MOB-0 to MOB-5 verification report
 │   ├── INTERACTIVITY_REPORT.md       # Full evaluation of experiments E1–E5
+│   ├── FINAL_REPORT.md               # End-of-implementation audit & physical device gap log
 │   └── M0_REPORT.md - M7_REPORT.md   # Milestone historical reports
+│
+└── results/                          # Benchmark results, JSON profiles, CSV frame logs, and screenshots
 │
 └── results/                          # Benchmark results, JSON profiles, and screenshot proofs
 ```
@@ -236,6 +257,17 @@ The Scrap Titan Boss fight begins at $z = 720\text{ m}$:
   - **Phase 2 ($66\% \rightarrow 33\%$ HP)**: Roar transition (1.5s invulnerable). Introduces `grabber_arm` and `laser_sweep`. `grabber_arm` steals the player's highest-level part; player has 5.0s to destroy the arm (HP 250) to recover the stolen part.
   - **Phase 3 ($33\% \rightarrow 0\%$ HP)**: Exposed core takes $1.5\times$ damage (`core_multiplier_phase3`). Introduces `double_slam` and `call_scrappers`.
 - **Clean Dodge & Overdrive**: Evading an attack telegraph without taking damage triggers `clean_dodge`, awarding $+15$ Overdrive gauge and exposing the boss for $3.0\text{s}$ ($1.5\times$ damage). Sustained firing also accrues $+1$ Overdrive per $0.5\text{s}$. At $100\%$ Overdrive, tapping Special triggers combo overload or $2\times$ fire rate for $4.0\text{s}$.
+
+### 3.6 Mob Stream Simulation Subsystem (`mob_sim.gd`)
+Implemented in `src/sim/mob_sim.gd` (562 lines, inherits `RefCounted`) behind the `mob_stream` flag:
+- **Struct-of-Arrays Architecture**: Tracks hundreds of projectiles efficiently without allocating Godot Node instances. Maintains parallel arrays for position ($x, y, z$), velocity ($vx, vy, vz$), damage, weapon family, drone kind (`bolt`, `bomb`, `torch`, `champion`), gate interaction bitmasks, and historical target hit sets.
+- **Volley Dispatch & Damage Split**: Weapon firing spawns volleys based on weapon level (Blaster: 3; Cannon: 2/3/4; Rocket: 1/2/3; Torch: 3/4/5 volleys/s). Total per-shot weapon damage is split evenly across volley units, achieving identical baseline DPS parity ($1.00\times$ across all standard builds).
+- **Lateral Velocity Inheritance**: Drones inherit $0.4\times$ of the robot's lateral velocity at launch, causing bullet and drone streams to visually bend organically during aggressive steering.
+- **Nominal Socket Origins**: Sockets are computed from nominal chassis coordinates (Blaster `[0, 1, 0.95]`, Top Center `[0, 1.3, 1.15]`, Side Left/Right `[±1.35, 1, 0.8]`, etc.) scaled by stage tier ($0.85\times, 1.12\times, 1.4\times$), ensuring simulation independence from animated view meshes.
+- **Damage-Conserving Live Cap & Compaction**:
+  - Live cap: 200 drones $\times$ density governor scale (giving $120 \dots 200$ active budget).
+  - When new spawns or multiplier gates threaten the cap, `_merge_overflow()` compacts compatible nearby drones of identical weapon and gate masks first, then unions masks and scales up visual size (up to $2.2\times$ scale) while conserving total numeric damage and carried charge.
+- **Champion Drone**: Launched at 100% Overdrive simultaneously with any active synergy combo. Possesses 12 direct pierces, immune to gate traps, smashes enemy lines, and deals 225 base damage $\times$ build DPS multiplier directly through the Scrap Titan's front armor plate.
 
 ---
 
@@ -321,6 +353,20 @@ Five synergy combos defined:
   - $p = 0.15$: Rare part.
   - $p = 0.25$: Scrap burst (+40 scrap).
 
+### 4.7 Mob Stream Gates & Drone Specifications (`mob.json`)
+- **Gate Types**:
+  - `mult`: Multiplies passing drone count by $N$ (e.g., $\times 2, \times 3$). Dividends divide carried charge evenly among copies.
+  - `add`: Spawns $+N$ additional drones per 5 passing drones, retaining fractional progression per panel.
+  - `power`: Increases drone damage percentage (e.g., $+50\%, +80\%$).
+  - `speed`: Increases drone velocity by percentage (e.g., $+40\%, +60\%$).
+  - `trap`: Reduces drone count or damages drone payload ($ -N $ or $-50\%$).
+- **Authored Level 1 Mob Rows**: 12 static rows from $z=35\text{ m}$ to $z=690\text{ m}$, providing 8 rows within the first 45 seconds of road travel.
+- **Drone Classes**:
+  - `bolt`: Radius 0.85m, lifetime 1.6s, 0 pierces, base scale 1.25.
+  - `bomb`: Radius 0.85m, lifetime 2.0s, 0 pierces, base scale 1.35, bypasses boss plate.
+  - `torch`: Radius 1.5m, lifetime derived from reach, 2 direct pierces, base scale 1.1.
+  - `champion`: Radius 1.7m, lifetime 4.0s, 12 direct pierces, base scale 3.0, immune to trap destruction.
+
 ---
 
 ## 5. Procedural Level & Gate Generation System
@@ -366,27 +412,52 @@ The gate generation engine dynamically builds valid upgrade panels while enforci
 
 ---
 
-## 6. Presentation & View Layer (`src/view/` & `src/ui/`)
+## 6. Presentation, Visual Focus & Camera Stabilization Layer (`src/view/` & `src/ui/`)
 
-### 6.1 Main UI & Flow Controller (`run_view.gd`)
+### 6.1 Main UI, Flow Controller & Camera Ownership (`run_view.gd`)
 - **Screen States**: `run`, `pause`, `result`, `hangar`, `settings`, `repair_offer`, `purchase`.
 - **First Launch Direct-to-Play**: Players with `tutorial_done == false` bypass menus and boot directly into a Level 1 run within 1 frame. Returning players launch into Hangar.
+- **Camera Stabilization Overhaul (`_reset_camera` & `_update_camera`)**:
+  - **Fixed Projection & Center Framing**: Locked strictly to a centered road camera with a constant **62° FOV**, zero horizontal/vertical screen offsets, and smoothly interpolated boss framing.
+  - **Elimination of Disruptive Impulses**: Removed all camera shakes and jarring FOV surges during rewards (previously +5° FOV on gate passage, +12° on stage growth, 0.15–0.4 camera shake).
+  - **Zero Hit-Stop Freezes**: Removed all 40ms hit-stop pauses on gate passage, guaranteeing uninterrupted 60 Hz simulation progression.
+  - **Removal of Split Lateral Tracking**: Consolidated camera positioning into a single unified update per frame, eliminating camera jitter caused by separate lateral-follow updates.
+  - **Damage & Low-Health Presentation**: Replaced screen-shaking and continuous low-health pulsing with robot white flash, HUD health bar alerts, and a brief 0.12s edge overlay that immediately clears on run restart.
+- **HUD & Visual Hierarchy Streamlining**:
+  - Replaced the exhaustive list of every mounted part with concise **weapon-level chips plus a single equipment count** badge; full part details remain inspectable in the Hangar and directly on the 3D robot model.
+  - Upgrade confirmations consolidated into a single, compact floating toast rather than duplicate screen headline and world popups.
+  - Combo synergy and streak counters converted to compact, static indicators below the HUD; removed obstructive speculative recipes that previously covered the road.
+  - In-world popups capped at font size 64 with no scaling that obscures targets.
 - **Dynamic Performance Governor (`_govern_density`)**: Continuously monitors rendering performance. If p95 frame time exceeds $18.5\text{ ms}$ or draw calls exceed $135$, it dials down `sim.density_limit` toward $0.6$, reducing spawn counts to preserve a solid 60 FPS on low-spec hardware.
 - **Result Screen 3D Portrait**: Captures a live $1200\times 1200$ anti-aliased viewport texture of the player's customized robot on run end, displaying the exact assembled loadout alongside performance stars ($1\star$ Boss Kill, $2\star$ HP $\ge 50\%$, $3\star$ 0 Parts Lost).
 
-### 6.2 3D World Rendering & MultiMesh Batching (`world_view.gd`)
-The world is rendered using batched `MultiMeshInstance3D` nodes sharing procedurally generated materials:
-- Road debris & asphalt rocks: 70 instances.
-- Tire skid marks: 26 instances.
-- Roadside junk props (wrecks, oil drums, scrap piles): 6 meshes $\times$ 14 instances = 84 props.
-- Scrap coins: 400 instances.
-- Gold coins: 40 instances.
-- Player projectiles: 64 instances.
-- Enemy bolts: 16 instances.
-- Cluster bomblets: 16 instances.
-- Blob shadows: 26 instances.
-- Hit spark particles: 128 instances.
-- **Atmospheric Pipeline**: Directional sunlight (`Color("fff1d6")`, real-time shadows disabled to conserve mobile fillrate), procedural gradient skybox, depth fog ($28\text{m} \rightarrow 105\text{m}$), and filmic tonemapping.
+### 6.2 3D World Rendering & Visual Focus Pipeline (`world_view.gd`)
+The visual presentation underwent a comprehensive decluttering overhaul inspired by mobile runner benchmarks (e.g., *Count Masters*, *Mob Control*):
+- **Complete Removal of High-Frequency Road Clutter**:
+  - Road debris & asphalt rocks: 70 instances $\rightarrow$ **0 instances**.
+  - Tire skid marks: 26 instances $\rightarrow$ **0 instances**.
+  - Playable road rendered with pale edges and a clean, muted sage-gray surface with a subtle procedural 1.2% scrolling wear shader (zero downloaded bitmap textures).
+- **Reduced Roadside Decorative Props**:
+  - Roadside junk props reduced from 84 instances across 6 sets down to **12 instances** across 3 sets (wrecked cars, tire stacks, salvage heaps).
+  - All props pushed outward to $\ge 10\text{ m}$ from the road centerline, keeping the driving lane visually pristine.
+  - Props receive a dedicated matte material with a 72% sand tint mix, stripping glossy toy speculars and actor-style ink outlines so noninteractive scenery recedes naturally.
+- **Atmospheric Pipeline & Lighting**:
+  - Directional sunlight (`Color("fff1d6")`), real-time dynamic shadows disabled to preserve mobile fillrate.
+  - Ivory sky/horizon with warm ambient fill; bloom disabled; global contrast and saturation normalized to 1.0 (down from 1.2 / 1.06).
+  - Depth fog start pushed outward from $28\text{m}$ to **$45\text{m}$** ($45\text{m} \rightarrow 105\text{m}$), ensuring upcoming gate signs and enemies are immediately legible against the horizon.
+- **Strict Projectile & Entity Color Roles**:
+  - Friendly projectiles and bolt drones: **Blue**.
+  - Bomb drones: **Periwinkle**.
+  - Torch drones: **Amber**.
+  - Hostile enemy projectiles: **Red**.
+  - Scrap coins & rewards: **Gold**.
+  - Part level-ups: **Green**.
+- **Throttled Feedback & Particles**:
+  - Attachment particles reduced from 14 to 6; stage growth burst from 40 to 12; gold pickup particles from 10 to 4; ground dust puffs from 14 to 6 (lifetime shortened from 0.55s to 0.3s).
+  - Drone swarm MultiMesh: 256 instances pooled into a single shared draw call.
+- **Render Profiling Improvements (`results/focus_perf_after.json`)**:
+  - Desktop Compatibility renderer median draw calls reduced from **101 down to 79** (peak draw calls reduced from **118 down to 96**).
+  - Static Godot memory allocation reduced from **67.8 MB down to 57.4 MB**.
 
 ### 6.3 Procedural Robot Builder (`robot_builder.gd`)
 Dynamically constructs the 3D robot model from 16 named chassis sockets:
@@ -466,9 +537,9 @@ Saves player state locally to `user://save.json`:
 
 ---
 
-## 9. Interactivity Experiments E1–E5 & Feature Flags
+## 9. Interactivity Experiments E1–E5, Mob Stream & Feature Flags
 
-Following an interactivity audit (`docs/INTERACTIVITY_AUDIT.md`), five interactivity enhancements were implemented under default-off switches in `data/flags.json`. When all flags are false, the sim reproduces the baseline trace identically (`TRACE MATCH`).
+Following an interactivity audit (`docs/INTERACTIVITY_AUDIT.md`) and subsequent drone swarm design brief (`docs/MOB_AUDIT.md`), gameplay enhancements were implemented under default-off switches in `data/flags.json`. When all flags are false, the sim reproduces the baseline trace identically (`TRACE MATCH`).
 
 ```json
 {
@@ -480,11 +551,13 @@ Following an interactivity audit (`docs/INTERACTIVITY_AUDIT.md`), five interacti
   "moving_gates": false,
   "focus_fire": false,
   "dense_blocks": false,
-  "weapon_evolution": false
+  "weapon_evolution": false,
+  "mob_stream": false,
+  "mob_enemy_streams": false
 }
 ```
 
-### 9.1 Experiment Descriptions
+### 9.1 Experiment Descriptions (E1–E5)
 - **E1: Steering is Aiming & Guarded Salvage**:
   - `aim_mode`: `"lane"` vs `"nearest"`. In lane mode, auto-fire narrows to a $12^\circ$ half-cone directly ahead of the robot. Weapons continue firing straight ahead when no target is present. A targeting reticle locks onto the targeted enemy.
   - `guarded_salvage`: Spawns two distinct parallel options:
@@ -511,6 +584,16 @@ Simulated across 30 seeds with bot reaction models:
 - **Runs with Decision Gaps $\le 4\text{s}$**: Increases from **$0.0\%$** (Baseline) to **$86.7\%$** (All Flags Active).
 - **Time to First Part Payoff**: Drops from **$3.28\text{s}$** down to **$0.28\text{s}$** due to immediate post-gate challenges.
 
+### 9.3 Mob Stream Subsystem (Milestones MOB-0 through MOB-5)
+Completed under `reports/MOB_STREAM_REPORT.md` across six sequential development milestones:
+1. **MOB-0 (Audit & Baseline)**: Full baseline audit across projectiles, render pools, and bot balance.
+2. **MOB-1 (Drone Core)**: Implemented packed drone arrays, weapon damage splitting (total weapon damage divided evenly across volley drones; 1.00 parity across all builds), lateral velocity bending ($0.4\times$ inheritance), and shared MultiMesh rendering.
+3. **MOB-2 (Static Mob Gates & Merging)**: 12 authored mob rows in Level 1 (first multiplication at 1.2s). Implemented once-per-gate mask tracking, damage-conserving overflow merging, and MultiMesh pooled signs ($\le 4$ draw calls per gate).
+4. **MOB-3 (Moving/Trap Gates & Champion)**: Added sinusoidal moving mob gates, trap penalty gates, speed gates, and the Overdrive Champion Drone (launches with combo specials at full Overdrive, has 12 direct pierces, immune to trap gates, pierces Scrap Titan front armor plate).
+5. **MOB-4 (Procedural Levels & Streams)**: Procedural mob gate generation for Levels 2–5, optional enemy stream columns (`mob_enemy_streams`), and bot reaction testing across 30 seeds.
+6. **MOB-5 (Crowd Batching & Packaging Validation)**: MultiMesh crowd batching, headless packaged startup verification, and standalone APK export verification (`build/scrap_bot_mob_review.apk`).
+*Current Recommendation*: Keep `mob_stream` and `mob_enemy_streams` set to **false** by default until physical on-device playtesting and combined experiment tuning are completed.
+
 ---
 
 ## 10. Automated Testing Suite & Engine Runtime Audit
@@ -522,21 +605,32 @@ Execution command:
 ```
 Output:
 ```
-25177 checks; 0 failures
+25320 checks; 0 failures
 ```
 
 The test runner rigorously validates:
-- Static schema integrity across all 13 JSON databases.
+- Static schema integrity across all 14 JSON databases (including `mob.json`).
 - Part socket matching and recursive relocation algorithms.
 - Stage progression (Tiny $\rightarrow$ Battle $\rightarrow$ Monster) and combo activations.
 - Hit invulnerability, shield blocking, and one-time part break thresholds.
 - Last-weapon preservation guarantee (never leaves robot unarmed).
 - 5,000 generated gate pairs across levels 1–5 for valid category opposition and level cap rules.
-- 7,200 simulation ticks for deterministic event log equivalence across identical seeds.
+- 7,200 simulation ticks for deterministic event log equivalence across identical seeds (`TRACE MATCH`).
 - Independent RNG streams across boss and loot rolls.
 - Boss plate half-damage reduction, rocket plate bypass, and 1.5x exposed core damage.
 - Dynamic loss assist capping at 30% reduction.
 - Grabber arm part theft and full recovery.
+- Miniboss Hauler chase and barrel drop behavior.
+- All E1–E5 experiment behaviors, caps, and edge cases.
+- Mob Stream suite (`tests/mob_suite.gd`): damage parity across 11 builds, cap/merge conservation, moving/trap/champion cases, and beat determinism.
+- SceneTree integration suite (`tests/integration_suite.gd`, 59 checks): save store persistence, corrupted save recovery, economy payouts, and AdMob provider mocks.
+
+### 10.2 Visual Focus & Camera Stability Validation Suite (`tests/test_visual_focus.gd`)
+- Validates that across **120 consecutive real update-loop reward frames** (coin pickups, part attachments, stage growth, multiplier gates), the camera transform, FOV (62.0°), and horizontal/vertical offsets remain completely static with zero jitter or hit-stop freeze (`results/focus_visual_final.txt`).
+- Confirms ground litter (0 instances) and skid marks (0 instances) remain absent, and decorative props equal exactly 12 instances.
+
+### 10.3 Multi-Resolution UI Layout Validation (`tests/test_ui_review.gd`)
+- Executes **1,419 automated UI checks with 0 failures** across three mobile screen resolutions (360×640, 432×768, and 600×960) covering Home, Armoury, Upgrades, Codex, Settings, In-game HUD, Pause, and Result screens (`results/focus_ui_checks.json`).
 - Miniboss Hauler chase and barrel drop behavior.
 - All E1–E5 experiment behaviors, caps, and edge cases.
 - SceneTree integration suite: save store persistence, corrupted save recovery, economy payouts, and AdMob provider mocks.
@@ -643,15 +737,18 @@ Both datasets exist in the repository and are documented below with complete fid
 
 ## 12. Android Build Pipeline & Packaging
 
-### 12.1 Export Presets (`export_presets.cfg`)
-Four dedicated Android export presets:
-1. **`Android Debug`** (`build/scrap_dragon_debug.apk`, 29 MB): Standalone offline APK. Requests `VIBRATE` permission only. Offline mode automatically hides all ad buttons.
-2. **`Android Sideload (arm64)`** (`build/scrap_dragon_sideload.apk`): Release sideload package.
-3. **`Android Release AAB`** (`build/scrap_dragon_release.aab`, 28.9 MB): Gradle App Bundle formatted for Google Play Store distribution. Target SDK 36, min SDK 24, arm64-v8a only.
-4. **`Android Test Ads`** (`build/scrap_dragon_test_ads.apk`, 39.5 MB): Custom feature `ads_test` enabled. Bundles native Google Mobile Ads SDK and Poing Godot AdMob plugin. Requests `INTERNET`, `ACCESS_NETWORK_STATE`, and ad ID permissions.
+### 12.1 Export Presets & Verified Packages (`export_presets.cfg`)
+Dedicated Android export presets and verified builds:
+1. **`Android Debug`** (`build/scrap_dragon_debug.apk`, 28 MB): Standalone offline APK. Requests `VIBRATE` permission only. Offline mode automatically hides all ad buttons.
+2. **`Visual Focus Review APK`** (`build/scrap_bot_focus.apk`, 28 MB, 29,181,994 bytes, SHA-256 `d4d1ec9b25fb389c163f0abe0aef17b061215cb6ba6d087c6cb5394a1b168ec0`): Validates camera stabilization, zero reward FOV/shake impulses, zero road clutter, and 12 matte props. Extracted package boots outside repo with zero script errors (`results/focus_apk_smoke.txt`).
+3. **`Mob Review APK`** (`build/scrap_bot_mob_review.apk`, 28 MB): Standalone offline package configured for Mob Stream review.
+4. **`UI Refresh APK`** (`build/scrap_dragon_ui_refresh.apk`, 28 MB): Validates light theme home and responsive layouts.
+5. **`Android Sideload (arm64)`** (`build/scrap_dragon_sideload.apk`): Release sideload package.
+6. **`Android Release AAB`** (`build/scrap_dragon_pipeline_debug.aab`, 28 MB): Gradle App Bundle verifying Play Store structure (Target SDK 36, min SDK 24, arm64-v8a).
+7. **`Android Test Ads`** (`build/scrap_dragon_test_ads.apk`, 38 MB): Custom feature `ads_test` enabled. Bundles native Google Mobile Ads SDK and Poing Godot AdMob plugin with Google test IDs.
 
 ### 12.2 Technical Compliance & 16 KB Page Alignment
-- **Native Library Alignment**: Built native shared libraries adhere to 16 KB LOAD-segment alignment, successfully passing `zipalign -c -P 16 -v 4` (mandated by Google Play for Android 15+).
+- **Native Library Alignment**: Built native shared libraries (`libc++_shared.so`, `libgodot_android.so`) adhere to 16 KB LOAD-segment alignment, successfully passing `zipalign -c -P 16 -v 4` (mandated by Google Play for Android 15+).
 - **Automation Scripts**:
   - `tools/build_android.sh`: Command-line interface to export debug, test ads, or release builds.
   - `tools/check_phone_allowlist.py`: Enforces security allowlists, ensuring only owned package identifiers (`com.aryankinha.scrapdragon`) and safe ADB inspection commands are executed.
@@ -665,7 +762,7 @@ An exhaustive audit of the codebase revealed several historical naming artifacts
 
 1. **Title Branding vs Package Identity**:
    - User-visible text on the home screen, window header, and documentation refers to **"Scrap Bot"**.
-   - The underlying Android package identifier remains `com.aryankinha.scrapdragon`, the Godot application name is `"Scrap Dragon"` in `project.godot:4` (retained to prevent orphaning user data directories on desktop), the root Node3D in `Boot.tscn` is `"ScrapDragon"`, and export artifacts are named `scrap_dragon_*.apk`.
+   - The underlying Android package identifier remains `com.aryankinha.scrapdragon`, the Godot application name is `"Scrap Dragon"` in `project.godot:4` (retained to prevent orphaning user data directories on desktop), the root Node3D in `Boot.tscn` is `"ScrapDragon"`, and export artifacts are named `scrap_dragon_*.apk` or `scrap_bot_*.apk`.
 2. **Authored Level 1 Gate 1 Discrepancy**:
    - `reports/COMPREHENSIVE_PROJECT_REPORT.md` previously claimed that Gate 1 was changed from Cannon vs Wheels to Cannon vs Storage Pack to avoid weapon asymmetry.
    - Ground truth in `data/gates_level1.json` (lines 14–24) proves Gate 1 remains **Cannon vs Extra Wheels**. Storage Pack requires unlock level 3 and is not offered.
@@ -692,9 +789,11 @@ While the simulation logic, 3D rendering pipeline, procedural generation, and ex
 
 | Acceptance Criterion | Verification Status | Ground Truth Evidence & Remaining Gaps |
 |---|:---:|---|
-| **Simulation Determinism & Logic** | **VERIFIED** | 25,177 checks pass; `tests/bots/trace_hash.gd` outputs `TRACE MATCH` against stored baseline. |
-| **Asset & Geometry Synthesis** | **VERIFIED** | 100% procedural `SurfaceTool` meshes; 14 synthesized WAV SFX + 2 OGG music loops; zero external 3D asset dependencies. |
-| **Android Export Packaging** | **VERIFIED** | Debug APK (29 MB), Test Ads APK (39.5 MB), and Release AAB (28.9 MB) successfully built; 16 KB LOAD-segment alignment confirmed via `zipalign`. |
+| **Simulation Determinism & Logic** | **VERIFIED** | 25,320 checks pass (0 failures); `tests/bots/trace_hash.gd` outputs `TRACE MATCH` against stored baseline. |
+| **Camera & Visual Focus Invariance** | **VERIFIED** | 120 update-loop reward frames assert fixed 62° FOV, 0 camera shake, 0 offset, and 0 hit-stops; road clutter verified at 0 instances, props at 12 instances. |
+| **Multi-Resolution UI Layout** | **VERIFIED** | 1,419 checks pass across 360×640, 432×768, and 600×960 screen resolutions without text clipping or button overlap. |
+| **Asset & Geometry Synthesis** | **VERIFIED** | 100% procedural `SurfaceTool` meshes; 18 synthesized WAV SFX + 2 OGG music loops; zero external 3D asset dependencies. |
+| **Android Export Packaging** | **VERIFIED** | Focus APK (28 MB), Mob Review APK (28 MB), Debug APK (28 MB), Test Ads APK (38 MB), and Release AAB (28 MB) built; 16 KB LOAD-segment alignment confirmed via `zipalign`. |
 | **Physical Phone 60 FPS & Jitter** | **NOT RUN** | Requires connecting physical Android hardware via USB debugging; execute `tools/phone_perf_session.sh SERIAL run 180`. |
 | **Cold Boot Latency (<2.5s to Playable Frame)** | **NOT RUN** | Requires measuring physical device cold start via ADB logcat timestamps. |
 | **Physical Memory (<400MB PSS) & Thermals (<43°C)** | **NOT RUN** | Requires profiling sustained device memory consumption and battery temperature across 3 consecutive runs. |
