@@ -776,6 +776,13 @@ func _events() -> void:
 				audio.play("stage")
 				shake = 0.5
 			"clean_dodge": audio.play("dodge")
+			"mob_champion":
+				audio.play("champion")
+				haptics.tap(70, 0.8)
+				shake = maxf(shake, 0.3)
+				fov_kick = maxf(fov_kick, 9.0)
+				world.popup("CHAMPION!", Vector3(sim.x, 3.4, -2.0), Color("5fd0ff"), 110)
+				world.burst(Vector3(sim.x, 1.3, -1.0), 24, Color("5fd0ff"), 1.6)
 			"mob_gate_pass":
 				var pass_type := str(event.type)
 				var pass_color := world._mob_panel_color(pass_type)

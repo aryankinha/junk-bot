@@ -544,6 +544,9 @@ func tap_special() -> bool:
 		return false
 	if overcharged:
 		robot.overdrive = 0
+		if mob != null:
+			# Mob Stream: a full Overdrive also launches one champion drone, whether or not a combo special fires.
+			mob.launch_champion(self, true)
 	if not chosen.is_empty():
 		var def: Dictionary = GameData.table("combos")[chosen]
 		robot.cooldowns[chosen] = float(def.cooldown_s)

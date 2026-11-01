@@ -1,0 +1,72 @@
+[
+  {
+    "chosen": 0.9,
+    "delay_ms": 0.0,
+    "lane": 0,
+    "missed": 0.1,
+    "other": 0.0
+  },
+  {
+    "chosen": 0.933333333333333,
+    "delay_ms": 0.0,
+    "lane": 1,
+    "missed": 0.0666666666666667,
+    "other": 0.0
+  },
+  {
+    "chosen": 0.933333333333333,
+    "delay_ms": 150.0,
+    "lane": 0,
+    "missed": 0.0666666666666667,
+    "other": 0.0
+  },
+  {
+    "chosen": 0.966666666666667,
+    "delay_ms": 150.0,
+    "lane": 1,
+    "missed": 0.0333333333333333,
+    "other": 0.0
+  },
+  {
+    "chosen": 0.966666666666667,
+    "delay_ms": 250.0,
+    "lane": 0,
+    "missed": 0.0333333333333333,
+    "other": 0.0
+  },
+  {
+    "chosen": 0.966666666666667,
+    "delay_ms": 250.0,
+    "lane": 1,
+    "missed": 0.0333333333333333,
+    "other": 0.0
+  },
+  {
+    "chosen": 1.0,
+    "delay_ms": 400.0,
+    "lane": 0,
+    "missed": 0.0,
+    "other": 0.0
+  },
+  {
+    "chosen": 1.0,
+    "delay_ms": 400.0,
+    "lane": 1,
+    "missed": 0.0,
+    "other": 0.0
+  },
+  {
+    "chosen": 1.0,
+    "delay_ms": 600.0,
+    "lane": 0,
+    "missed": 0.0,
+    "other": 0.0
+  },
+  {
+    "chosen": 1.0,
+    "delay_ms": 600.0,
+    "lane": 1,
+    "missed": 0.0,
+    "other": 0.0
+  }
+]

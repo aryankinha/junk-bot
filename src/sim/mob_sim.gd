@@ -68,8 +68,8 @@ func _grow() -> int:
 	return i
 
 # Adds a drone, or folds its damage into the last drone when the live cap is reached (heavier drone, no lost damage).
-func add_drone(k: int, x: float, z: float, svx: float, svz: float, damage: float, charge: float, life_s: float, weight := 1.0, weapon_id := "", burn_dps := 0.0, splash := 0.0, mask := 0) -> int:
-	if n >= live_cap():
+func add_drone(k: int, x: float, z: float, svx: float, svz: float, damage: float, charge: float, life_s: float, weight := 1.0, weapon_id := "", burn_dps := 0.0, splash := 0.0, mask := 0, force := false) -> int:
+	if n >= live_cap() and not force:
 		stats.merges += 1
 		var last := n - 1
 		dmg[last] += damage
@@ -157,6 +157,19 @@ func _aim_target(sim):
 			break
 	return target
 
+# Overdrive champion: one big drone down the lane. It smashes through a column of enemies (splash on contact), is boosted by
+# mob gates and cannot be destroyed by traps. It is exempt from the live cap (a small reserve above it).
+func launch_champion(sim, overcharged: bool) -> void:
+	var spec: Dictionary = cfg.champion
+	var kind_spec: Dictionary = cfg.kinds.champion
+	var damage := float(spec.damage) * float(sim.robot.stats.dps_mult) * (1.5 if overcharged else 1.0)
+	var reserve_ok := n < live_cap() + int(spec.reserve)
+	if not reserve_ok:
+		return
+	add_drone(Kind.CHAMPION, sim.x, sim.z + 1.4, robot_vx * float(cfg.lateral_inherit), float(spec.speed), damage, 0.0, float(kind_spec.life_s), 1.0, "champion", 0.0, float(spec.splash), 0, true)
+	stats["champions"] = int(stats.get("champions", 0)) + 1
+	sim.emit("mob_champion", {"damage": snappedf(damage, 0.1)})
+
 # Flame cone becomes a burst of short-lived torch drones. Per-second damage equals the old cone dps.
 func flame(sim, weapon: Dictionary, dt: float) -> bool:
 	flame_timer -= dt
@@ -226,6 +239,11 @@ func step(sim, dt: float) -> void:
 				if prev_z < gz and pz[i] >= gz and (gmask[i] & bit) == 0:
 					gmask[i] |= bit
 					var lane := panel_lane(g, px[i], sim.t, gate_tuning)
+					g.crossed += 1
+					if lane < 0:
+						g.missed += 1
+					else:
+						g.state[lane].total = int(g.state[lane].get("total", 0)) + 1
 					if lane >= 0 and _apply_panel(sim, i, g, lane):
 						dead = true
 						break
@@ -277,8 +295,8 @@ func _hit_enemy(sim, i: int, enemy: Dictionary, targets: Array) -> void:
 	if kind[i] == Kind.TORCH:
 		enemy.burn_left = torch_burn_s
 		enemy.burn_dps = burn[i]
-	if kind[i] == Kind.BOMB:
-		if sim.flags.weapon_evolution and sim.evolution_active():
+	if kind[i] == Kind.BOMB or kind[i] == Kind.CHAMPION:
+		if kind[i] == Kind.BOMB and sim.flags.weapon_evolution and sim.evolution_active():
 			sim._split_rocket({"damage": damage}, enemy)
 		if rad[i] > 0:
 			for other in targets:
@@ -316,6 +334,8 @@ func register_gates(beats: Array) -> void:
 		if str(beat.type) == "mob_gate":
 			beat["ord"] = ordinal
 			ordinal += 1
+			beat["crossed"] = 0
+			beat["missed"] = 0
 			beat["state"] = []
 			for panel in beat.panels:
 				beat.state.append({"acc": 0.0, "count": 0, "gain": 0.0, "next": 0.0, "sx": 0.0})
@@ -379,6 +399,9 @@ func _apply_panel(sim, i: int, gate: Dictionary, lane: int) -> bool:
 	var removed := false
 	state.count += 1
 	state.sx += px[i]
+	if kind[i] == Kind.CHAMPION:
+		_boost_champion(i, panel, state, before)
+		return false
 	match str(panel.t):
 		"mult":
 			_multiply(i, int(value) - 1, sim.shot_count + i)
@@ -405,6 +428,26 @@ func _apply_panel(sim, i: int, gate: Dictionary, lane: int) -> bool:
 				removed = true
 	return removed
 
+# A champion is boosted by good gates and only dented by traps; it never splits or dies at a gate.
+func _boost_champion(i: int, panel: Dictionary, state: Dictionary, before: float) -> void:
+	var value := float(panel.v)
+	var spec: Dictionary = cfg.champion
+	match str(panel.t):
+		"mult":
+			dmg[i] *= value
+			wgt[i] *= value
+		"add":
+			dmg[i] *= 1.0 + value * float(spec.gate_add_scale)
+			wgt[i] *= 1.0 + value * float(spec.gate_add_scale)
+		"power":
+			dmg[i] *= 1.0 + value / 100.0
+			wgt[i] *= 1.0 + value / 100.0
+		"speed":
+			vz[i] *= 1.0 + value / 100.0
+		"trap":
+			dmg[i] *= 1.0 - value * float(spec.gate_trap_scale)
+	state.gain += dmg[i] - before
+
 # Emits at most one mob_gate_pass per panel per pop_interval so the log and the pop-ups stay readable.
 func _flush_passes(sim) -> void:
 	for gate in gates:
@@ -420,6 +463,8 @@ func _flush_passes(sim) -> void:
 				var typ := str(panel.t)
 				stats.passes[typ] = int(stats.passes.get(typ, 0)) + int(state.count)
 				stats.gain += float(state.gain)
+				if sim.state == "running" and float(state.gain) > 0.0:
+					sim.robot.overdrive = minf(100.0, sim.robot.overdrive + float(state.gain) * float(cfg.champion.overdrive_per_gain))
 				if first_multiply_t < 0.0 and typ in ["mult", "add"]:
 					first_multiply_t = sim.t
 				sim.emit("mob_gate_pass", {"ord": gate.ord, "lane": lane, "type": typ, "v": panel.v, "count": state.count, "gain": snappedf(state.gain, 0.01), "x": snappedf(float(state.sx) / state.count, 0.01), "z": gz})

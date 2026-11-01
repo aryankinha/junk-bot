@@ -58,7 +58,7 @@
   },
   "launch": {
     "aim_spread_rad": 0.025,
-    "straight_spread_mps": 0.55,
+    "straight_spread_mps": 0.35,
     "jitter_mps": 0.12,
     "muzzle_spread_m": 0.12
   },
@@ -269,5 +269,15 @@
         ]
       }
     ]
+  },
+  "champion": {
+    "_note": "One champion per full Overdrive (the existing special button). Passes mob gates and is boosted, never destroyed, by them. Mob gate passes fill Overdrive while running so a champion appears in Level 1 without a new meter.",
+    "damage": 150.0,
+    "speed": 18.0,
+    "splash": 2.4,
+    "gate_add_scale": 0.1,
+    "gate_trap_scale": 0.005,
+    "overdrive_per_gain": 0.03,
+    "reserve": 8
   }
 }

@@ -5,7 +5,7 @@ class_name MobBot extends RefCounted
 var aim: AimBot
 var delay := 0.0
 var mode := "best"
-var steer_window := 48.0
+var steer_window := 60.0
 var rng := RandomNumberGenerator.new()
 
 func _init(seed_arg := 1, reaction := 0.0, build: Array = [], inner_mode := "perfect", gate_mode := "best") -> void:
@@ -55,4 +55,6 @@ func control(sim: RunSim) -> void:
 	for enemy in sim.enemies:
 		if (enemy.warning or float(enemy.charge_left) > 0) and (float(enemy.timer) < 0.55 or float(enemy.charge_left) > 0):
 			return
-	sim.target_x = clampf(mob.panel_center(gate, int(gate.bot_lane), sim.t - delay, sim.flags.tuning), -3.0, 3.0)
+	# A moving panel is led: aim where it will be when the stream arrives (about gap / 27 m/s later), seen `delay` late.
+	var lead := (float(gate.z) - sim.z) / 27.0 if gate.get("moving", false) else 0.0
+	sim.target_x = clampf(mob.panel_center(gate, int(gate.bot_lane), sim.t + lead - delay, sim.flags.tuning), -3.0, 3.0)

@@ -15,6 +15,7 @@ func run() -> void:
 	var stop_event := ""
 	var stop_extra := 0
 	var outfile := ""
+	var overdrive := -1.0
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--scenario="):
 			scenario = arg.get_slice("=", 1)
@@ -30,6 +31,8 @@ func run() -> void:
 			stop_event = arg.get_slice("=", 1)
 		elif arg.begins_with("--extra="):
 			stop_extra = arg.get_slice("=", 1).to_int()
+		elif arg.begins_with("--overdrive="):
+			overdrive = arg.get_slice("=", 1).to_float()
 		elif arg.begins_with("--outfile="):
 			outfile = arg.get_slice("=", 1)
 	game = load("res://src/view/Boot.tscn").instantiate()
@@ -53,13 +56,15 @@ func run() -> void:
 			game.sim.enemies.back().hp = 400.0
 	for entry in parts.split(",", false):
 		game.sim.robot.add_part(entry.get_slice(":", 0), game.sim, entry.get_slice(":", 1).to_int())
+	if overdrive >= 0.0:
+		game.sim.robot.overdrive = overdrive
 	var bot = MobBot.new(20261031, 0.0) if flags.get("mob_stream", false) else AimBot.new(20261031, 0.0)
 	var done := false
 	var seen_event := 0
 	for i in 20000:
 		bot.control(game.sim)
 		game.sim.step(1.0 / 60)
-		if not stop_event.is_empty() and game.sim.events.any(func(e): return e.t == stop_event):
+		if not stop_event.is_empty() and (seen_event > 0 or game.sim.events.any(func(e): return e.t == stop_event)):
 			seen_event += 1
 		if scenario not in ["evolution", "event"]:
 			game.sim.events.clear()

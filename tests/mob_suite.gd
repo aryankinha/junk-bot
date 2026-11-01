@@ -121,6 +121,7 @@ func run() -> void:
 	check(flag_off.mob == null, "no mob state with the flag off")
 
 	_gate_tests()
+	_champion_tests()
 
 # Sim with one mob gate at z=20 and a single drone aimed straight at it.
 func gate_sim(panels: Array, moving := false) -> RunSim:
@@ -228,3 +229,82 @@ func _gate_tests() -> void:
 	var plain := RunSim.new()
 	plain.setup(1, 5)
 	check(not plain.beats.any(func(b): return b.type == "mob_gate"), "no mob gates with the flag off")
+
+func _champion_tests() -> void:
+	var spec: Dictionary = GameData.table("mob").champion
+	# Overdrive launches a champion; below 100 it does nothing extra.
+	var sim := RunSim.new()
+	sim.flag_overrides = {"mob_stream": true}
+	sim.setup(1, 61)
+	sim.robot.overdrive = 60.0
+	check(not sim.tap_special() and sim.mob.n == 0, "no champion below full Overdrive")
+	sim.robot.overdrive = 100.0
+	check(sim.tap_special(), "full Overdrive can be spent")
+	check(sim.mob.n == 1 and sim.mob.kind[0] == MobSim.Kind.CHAMPION and sim.robot.overdrive == 0.0, "Overdrive launches one champion and empties the bar")
+	check(sim.events.any(func(e): return e.t == "mob_champion"), "champion launch is an event")
+	# Champion gets through a gate: boosted by x3, ignores a trap, never splits.
+	var boosted := gate_sim([{"t": "mult", "v": 3}])
+	boosted.mob.launch_champion(boosted, true)
+	boosted.mob.pz[0] = 19.5
+	var base := boosted.mob.dmg[0]
+	boosted.step(0.1)
+	check(boosted.mob.n == 1 and absf(boosted.mob.dmg[0] - base * 3.0) < 0.01, "champion is boosted x3 by a mob gate and does not split")
+	var trapped := gate_sim([{"t": "trap", "v": 50}])
+	trapped.mob.launch_champion(trapped, true)
+	trapped.mob.pz[0] = 19.5
+	trapped.step(0.1)
+	check(trapped.mob.n == 1 and trapped.mob.dmg[0] > 0.9 * float(spec.damage), "a trap gate cannot destroy the champion")
+	# Smash: the champion pierces a column and splashes neighbours.
+	var smash := RunSim.new()
+	smash.flag_overrides = {"mob_stream": true}
+	smash.setup(1, 62)
+	smash.robot.stats.weapons = []
+	for i in 4:
+		smash.spawn_pack("crate", 1, 8.0 + float(i) * 3.0)
+		smash.enemies.back().hp = 100.0
+		smash.enemies.back().x = 0.0
+	smash.enemies.append({"uid": 99, "id": "crate", "x": 1.5, "z": 8.0, "hp": 100.0, "max_hp": 100.0, "timer": 99.0, "warning": false, "aim_x": 0.0, "windup": 0.0, "charge_left": 0.0, "charges_remaining": 0, "burn_left": 0.0, "burn_dps": 0.0})
+	smash.mob.launch_champion(smash, true)
+	for tick in 120:
+		smash.step(1.0 / 60.0)
+		for e in smash.enemies:
+			e.timer = 99.0
+	var hurt := smash.enemies.filter(func(e): return float(e.hp) < 100.0).size() + (4 - smash.enemies.filter(func(e): return int(e.uid) != 99).size())
+	check(hurt >= 4, "champion smashes through a column and splashes the neighbour (%d hurt)" % hurt)
+	# Champion + combo special in the same tap.
+	var combo := RunSim.new()
+	combo.flag_overrides = {"mob_stream": true}
+	combo.setup(1, 63)
+	combo.robot.add_part("cannon", combo, 1)
+	combo.robot.add_part("rocket", combo, 1)
+	combo.robot.overdrive = 100.0
+	check(combo.tap_special() and combo.events.any(func(e): return e.t == "special_used" and e.id == "burst_volley") and combo.events.any(func(e): return e.t == "mob_champion"), "a combo special and a champion launch together at full Overdrive")
+	var combo_only := RunSim.new()
+	combo_only.flag_overrides = {"mob_stream": true}
+	combo_only.setup(1, 63)
+	combo_only.robot.add_part("cannon", combo_only, 1)
+	combo_only.robot.add_part("rocket", combo_only, 1)
+	combo_only.robot.overdrive = 30.0
+	check(combo_only.tap_special() and not combo_only.events.any(func(e): return e.t == "mob_champion"), "a combo special alone launches no champion")
+	# Boss: the champion hits the Titan through the plate (it counts as a rocket-type hit).
+	var boss := RunSim.new()
+	boss.flag_overrides = {"mob_stream": true}
+	boss.setup(1, 64)
+	boss.robot.stats.weapons = []
+	boss.state = "boss"
+	boss.boss = BossSim.new()
+	boss.boss.setup(1, 0)
+	boss.boss.roar = 0.0
+	boss.boss.phase = 1
+	boss.mob.launch_champion(boss, false)
+	var hp_before: float = boss.boss.hp
+	for tick in 120:
+		boss.mob.step(boss, 1.0 / 60.0)
+	check(hp_before - boss.boss.hp > float(spec.damage) * 0.9, "champion damages the Titan through the phase 1 plate (%.0f)" % (hp_before - boss.boss.hp))
+	# Mob gate passes fill Overdrive while running.
+	var fill := gate_sim([{"t": "mult", "v": 3}])
+	fill.robot.overdrive = 0.0
+	send(fill, 0.0, 20, 40.0)
+	fill.step(0.1)
+	fill.step(0.5)
+	check(fill.robot.overdrive > 0.0, "gate gain fills Overdrive (%.1f)" % fill.robot.overdrive)
