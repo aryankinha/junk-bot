@@ -3,139 +3,134 @@
     "boss_median_s": 12.6666666666669,
     "bot": "perfect",
     "level": 1,
-    "monster_share": 0.25,
+    "monster_share": 0.2,
     "outcomes": {
-      "won": 60
+      "won": 20
     },
-    "parts_lost_mean": 0.883333333333333,
-    "runs": 60,
+    "parts_lost_mean": 0.9,
+    "runs": 20,
     "win_rate": 1.0,
-    "wins": 60
+    "wins": 20
   },
   {
     "boss_median_s": 27.683333333333,
     "bot": "random",
     "level": 1,
-    "monster_share": 0.0333333333333333,
+    "monster_share": 0.05,
     "outcomes": {
-      "ground_slam": 7,
-      "rocket_barrage": 1,
-      "won": 52
+      "ground_slam": 1,
+      "won": 19
     },
-    "parts_lost_mean": 1.23333333333333,
-    "runs": 60,
-    "win_rate": 0.866666666666667,
-    "wins": 52
+    "parts_lost_mean": 1.2,
+    "runs": 20,
+    "win_rate": 0.95,
+    "wins": 19
   },
   {
-    "boss_median_s": 17.2333333333336,
+    "boss_median_s": 17.216666666667,
     "bot": "no_dodge",
     "level": 1,
     "monster_share": 0.0,
     "outcomes": {
-      "ground_slam": 13,
-      "laser_sweep": 11,
-      "rocket_barrage": 9,
-      "won": 27
+      "ground_slam": 3,
+      "laser_sweep": 3,
+      "rocket_barrage": 4,
+      "won": 10
     },
-    "parts_lost_mean": 1.95,
-    "runs": 60,
-    "win_rate": 0.45,
-    "wins": 27
+    "parts_lost_mean": 1.85,
+    "runs": 20,
+    "win_rate": 0.5,
+    "wins": 10
   },
   {
-    "boss_median_s": 24.2999999999999,
+    "boss_median_s": 24.0999999999999,
     "bot": "perfect",
     "level": 3,
-    "monster_share": 0.783333333333333,
+    "monster_share": 0.8,
     "outcomes": {
-      "won": 60
+      "won": 20
     },
     "parts_lost_mean": 0.0,
-    "runs": 60,
+    "runs": 20,
     "win_rate": 1.0,
-    "wins": 60
+    "wins": 20
   },
   {
-    "boss_median_s": 33.2166666666661,
+    "boss_median_s": 29.0166666666663,
     "bot": "random",
     "level": 3,
-    "monster_share": 0.4,
+    "monster_share": 0.3,
     "outcomes": {
-      "boss": 1,
-      "double_slam": 4,
-      "ground_slam": 5,
-      "laser_sweep": 6,
-      "rocket_barrage": 5,
-      "won": 39
+      "double_slam": 1,
+      "ground_slam": 4,
+      "laser_sweep": 3,
+      "rocket_barrage": 1,
+      "won": 11
     },
-    "parts_lost_mean": 1.5,
-    "runs": 60,
-    "win_rate": 0.65,
-    "wins": 39
+    "parts_lost_mean": 1.85,
+    "runs": 20,
+    "win_rate": 0.55,
+    "wins": 11
   },
   {
-    "boss_median_s": 35.7499999999993,
+    "boss_median_s": -1.0,
     "bot": "no_dodge",
     "level": 3,
-    "monster_share": 0.0333333333333333,
+    "monster_share": 0.0,
     "outcomes": {
-      "bruiser": 1,
-      "double_slam": 9,
-      "ground_slam": 24,
-      "laser_sweep": 8,
-      "rocket_barrage": 15,
-      "won": 3
+      "double_slam": 2,
+      "ground_slam": 11,
+      "laser_sweep": 4,
+      "rocket_barrage": 3
     },
-    "parts_lost_mean": 3.0,
-    "runs": 60,
-    "win_rate": 0.05,
-    "wins": 3
+    "parts_lost_mean": 2.9,
+    "runs": 20,
+    "win_rate": 0.0,
+    "wins": 0
   },
   {
-    "boss_median_s": 32.3833333333328,
+    "boss_median_s": 32.0666666666661,
     "bot": "perfect",
     "level": 5,
     "monster_share": 0.9,
     "outcomes": {
-      "won": 60
+      "won": 20
     },
     "parts_lost_mean": 0.0,
-    "runs": 60,
+    "runs": 20,
     "win_rate": 1.0,
-    "wins": 60
+    "wins": 20
   },
   {
-    "boss_median_s": 44.5666666666654,
+    "boss_median_s": 40.9333333333323,
     "bot": "random",
     "level": 5,
-    "monster_share": 0.316666666666667,
+    "monster_share": 0.3,
     "outcomes": {
-      "double_slam": 2,
-      "ground_slam": 5,
-      "laser_sweep": 17,
-      "rocket_barrage": 6,
-      "won": 30
+      "double_slam": 1,
+      "ground_slam": 3,
+      "laser_sweep": 5,
+      "rocket_barrage": 3,
+      "won": 8
     },
-    "parts_lost_mean": 2.05,
-    "runs": 60,
-    "win_rate": 0.5,
-    "wins": 30
+    "parts_lost_mean": 2.2,
+    "runs": 20,
+    "win_rate": 0.4,
+    "wins": 8
   },
   {
     "boss_median_s": -1.0,
     "bot": "no_dodge",
     "level": 5,
-    "monster_share": 0.0666666666666667,
+    "monster_share": 0.15,
     "outcomes": {
-      "bruiser": 1,
-      "double_slam": 10,
-      "ground_slam": 16,
-      "laser_sweep": 28,
-      "rocket_barrage": 5
+      "double_slam": 3,
+      "ground_slam": 4,
+      "laser_sweep": 12,
+      "rocket_barrage": 1
     },
-    "parts_lost_mean": 3.0,
-    "runs": 60,
+    "parts_lost_mean": 2.95,
+    "runs": 20,
     "win_rate": 0.0,
     "wins": 0
   }
