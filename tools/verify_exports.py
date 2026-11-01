@@ -1,9 +1,14 @@
 from pathlib import Path
-import zipfile,struct,json,hashlib,subprocess
+import zipfile,struct,json,hashlib,subprocess,argparse
 root=Path(__file__).resolve().parents[1]
 tools=Path('/Users/aryankinha/Library/Android/sdk/build-tools/36.1.0')
+parser=argparse.ArgumentParser()
+parser.add_argument('files',nargs='*')
+parser.add_argument('--output',default='results/export_verification.json')
+args=parser.parse_args()
 rows=[]
-for file in sorted((root/'build').glob('scrap_dragon*')):
+files=[root/name for name in args.files] if args.files else (root/'build').glob('scrap_dragon*')
+for file in sorted(files):
  if file.suffix not in ['.apk','.aab']:continue
  row={'file':str(file.relative_to(root)),'bytes':file.stat().st_size,'sha256':hashlib.sha256(file.read_bytes()).hexdigest(),'debug_signed':True,'native_libraries':[]}
  with zipfile.ZipFile(file) as z:
@@ -19,6 +24,9 @@ for file in sorted((root/'build').glob('scrap_dragon*')):
     if ph[0]==1:alignments.append(ph[7])
    row['native_libraries'].append({'name':name,'load_segment_alignments':alignments,'supports_16k_pages':bool(alignments) and min(alignments)>=16384})
  if file.suffix=='.apk':
+  signature=subprocess.run([str(tools/'apksigner'),'verify','--print-certs',str(file)],capture_output=True,text=True)
+  row['signature_verified']=signature.returncode==0
+  (root/f'results/{file.stem}_signature.txt').write_text(signature.stdout+signature.stderr)
   for command,label in [('badging','badging'),('permissions','permissions')]:
    r=subprocess.run([str(tools/'aapt2'),'dump',command,str(file)],capture_output=True,text=True)
    (root/f'results/{file.stem}_{label}.txt').write_text(r.stdout)
@@ -26,5 +34,5 @@ for file in sorted((root/'build').glob('scrap_dragon*')):
   row['zipalign_16k_ok']=r.returncode==0
   (root/f'results/{file.stem}_zipalign.txt').write_text(r.stdout+r.stderr)
  rows.append(row)
-(root/'results/export_verification.json').write_text(json.dumps(rows,indent=2))
+(root/args.output).write_text(json.dumps(rows,indent=2))
 print(json.dumps(rows,indent=2))

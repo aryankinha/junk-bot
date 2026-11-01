@@ -7,7 +7,7 @@ func check(ok: bool, message: String) -> void:
 func _initialize() -> void: call_deferred("run")
 func run() -> void:
 	var g = load("res://src/view/Boot.tscn").instantiate()
-	g.flag_overrides = {"ui_v2": true, "mob_stream": true}; root.add_child(g); g.set_process(false)
+	g.flag_overrides = {"ui_v2": true, "mob_stream": true}; g.capture = true; root.add_child(g); g.set_process(false)
 	g.capture = true; g.save.path = "user://ui_v2_tests.json"; g.save.data = g.save.defaults(); g.start_run(false); g.paused = true; g.bot = null
 	check(not bool(GameData.flags().ui_v2), "ui_v2 defaults off")
 	check(g.audio.streams.ready != null, "procedural ready sound imported")
@@ -43,6 +43,16 @@ func run() -> void:
 	check(not g.world.dust_fx.emitting and not g.world.flame_fx.emitting and g.world.player.reduced_motion, "Reduce Motion reaches world and robot")
 	check(g.special_button.scale == Vector2.ONE, "Reduce Motion disables ready scale")
 	check(not g.flash.visible, "no full-screen saturated flash")
+	g.sim.boss = BossSim.new(); g.sim.boss.setup(1, 0); g.sim.state = "boss"
+	g.sim.boss.phase = 2; g.sim.boss.zones = [{"shape": "circle", "x": 0.0, "radius": 1.2}]
+	g.world.sync(g.sim, 0)
+	check(g.world.ui_feedback.weakpoint.visible, "exposed core has one persistent target ring")
+	check(g.world.warnings[0].visible and g.world.warnings[0].position.z < -10, "danger shape remains ahead of the robot silhouette")
+	check(g.world.warnings[0].position.x == 0 and is_equal_approx(g.world.warnings[0].scale.x, 2.4), "danger shape retains actual horizontal hit range")
+	for action in ["player_hit", "part_broken", "part_stolen", "part_replaced"]:
+		g.combo_count = 4
+		g.sim.emit(action, {"id": "cannon", "amount": 2}); g._events()
+		check(g.combo_count == 0, "v2 preserves legacy combo reset: " + action)
 	g.audio.apply_volumes(0, 0)
 	check(AudioServer.is_bus_mute(AudioServer.get_bus_index("SFX")) and AudioServer.is_bus_mute(AudioServer.get_bus_index("Music")), "zero volumes mute audio buses")
 	g.audio.apply_volumes(1, 1)
@@ -53,6 +63,15 @@ func run() -> void:
 	check(save.data.settings.has("left_handed") and save.data.settings.has("sfx_volume"), "optional preference defaults merged into v1")
 	var drag := InputEventScreenDrag.new(); drag.relative = Vector2(20, 0); g.paused = false; g._unhandled_input(drag)
 	check(g.ui_v2.feedback_counts.has("steer"), "actual drag input produces steering feedback")
+	g.save.data.settings.reduce_motion = false
+	g.result_reward = 240; g.sim.state = "won"; g.show_result()
+	check(g.hangar_model != null, "result includes live final build")
+	await create_timer(1.5).timeout
+	check(g.reward_label.text == "240", "result reward count finishes at actual payout")
+	g.save.data.settings.reduce_motion = true; g.show_result()
+	check(g.reward_label.text == "240" and g.hangar_model.reduced_motion, "Reduced Motion settles result reward and model immediately")
+	check(not g.world.visible, "opaque menus do not render the hidden battlefield")
+	g.resume_run(); check(g.world.visible, "resuming restores the battlefield")
 	var report := {"checks": checks, "failures": failures, "feedback_classes": cases.keys(), "flash_starts": g.ui_v2.flash_times, "camera_fov": g.camera.fov}
 	FileAccess.open("res://results/ui_v2_feedback_checks.json", FileAccess.WRITE).store_string(JSON.stringify(report, "  "))
 	print("UI V2: ", checks, " checks, ", failures.size(), " failures")

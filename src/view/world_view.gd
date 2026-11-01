@@ -769,11 +769,11 @@ func sync(sim: RunSim, dt: float) -> void:
 					node = warnings[warning_index]
 					node.visible = true
 					node.mesh = box_warning
-					node.position = Vector3((edge + outer) / 2, 0.04, -1.5)
+					node.position = Vector3((edge + outer) / 2, 0.04, -10.5 if ui_v2_enabled else -1.5)
 					node.scale = Vector3(maxf(0.1, absf(outer - edge)), 0.025, 7)
 					warning_index += 1
 			else:
-				node.position = Vector3(zone.x, 0.045, -1.2)
+				node.position = Vector3(zone.x, 0.045, -10.5 if ui_v2_enabled else -1.2)
 				node.mesh = circle_warning if zone.shape == "circle" else box_warning
 				node.scale = Vector3(width, 0.025, width if zone.shape == "circle" else 5.5)
 				warning_index += 1
@@ -782,7 +782,7 @@ func sync(sim: RunSim, dt: float) -> void:
 			var node := warnings[warning_index]
 			node.visible = true
 			node.mesh = box_warning
-			node.position = Vector3(enemy.aim_x, 0.05, -1.8)
+			node.position = Vector3(enemy.aim_x, 0.05, -10.5 if ui_v2_enabled else -1.8)
 			node.scale = Vector3(1.8, 0.025, 6)
 			warning_index += 1
 	for i in warning_index:

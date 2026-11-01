@@ -12,6 +12,7 @@ var support: Control
 var dock: Control
 var charge: ProgressBar
 var receipt: Label
+var counter_row: HBoxContainer
 var ready_before := false
 var ready_time := 0.0
 var last_parts := ""
@@ -73,8 +74,10 @@ func build(game) -> void:
 	hero_panel.add_theme_stylebox_override("panel", game.style(Color("edf3ec"), Color("4c6a5a"), 6, 0)); hero_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	game.toast_label = label(game, "", 42); game.toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; game.toast_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART; hero_panel.add_child(game.toast_label); hero_panel.visible = false
 	game.chain_label = label(game, "", 30, Color("936d24")); game.combo_label = label(game, "", 30, GREEN)
+	counter_row = HBoxContainer.new(); counter_row.add_theme_constant_override("separation", 24); column.add_child(counter_row)
 	for text in [game.chain_label, game.combo_label]:
-		text.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP); text.offset_left = -400; text.offset_right = 400; text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; support.add_child(text)
+		text.custom_minimum_size = Vector2(240, 40); counter_row.add_child(text)
+	counter_row.visible = false
 	game.hint_label = label(game, "", 34); game.hint_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE); game.hint_label.offset_left = 90; game.hint_label.offset_right = -90; game.hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; game.hud.add_child(game.hint_label)
 	dock = Control.new(); dock.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); dock.mouse_filter = Control.MOUSE_FILTER_IGNORE; support.add_child(dock)
 	game.special_button = game.make_button("SPECIAL", func(): game.sim.tap_special(), true); game.special_button.add_theme_font_size_override("font_size", 38); dock.add_child(game.special_button)
@@ -92,7 +95,9 @@ func build(game) -> void:
 	layout(game)
 
 func add_tick(bar: Control, fraction: float) -> void:
-	var marker := ColorRect.new(); marker.color = INK; marker.anchor_left = fraction; marker.anchor_right = fraction; marker.anchor_bottom = 1; marker.offset_left = -2; marker.offset_right = 2; marker.mouse_filter = Control.MOUSE_FILTER_IGNORE; bar.add_child(marker)
+	var marker := ColorRect.new(); marker.color = INK; marker.mouse_filter = Control.MOUSE_FILTER_IGNORE; bar.add_child(marker)
+	var place := func(): marker.position = Vector2(bar.size.x * fraction - 3, 0); marker.size = Vector2(6, bar.size.y)
+	bar.resized.connect(place); place.call()
 
 func layout(game) -> void:
 	var v: Vector2 = game.get_viewport().get_visible_rect().size
@@ -110,8 +115,6 @@ func layout(game) -> void:
 	game.boss_panel.offset_top = y
 	var boss_visible: bool = game.sim != null and (game.sim.boss != null or game.sim.enemies.any(func(e): return e.id == "hauler" and e.hp > 0))
 	hero_panel.offset_top = y + (108 if boss_visible else 4); hero_panel.offset_bottom = hero_panel.offset_top + 90
-	game.chain_label.offset_top = hero_panel.offset_bottom + 8; game.chain_label.offset_bottom = game.chain_label.offset_top + 48
-	game.combo_label.offset_top = game.chain_label.offset_bottom; game.combo_label.offset_bottom = game.combo_label.offset_top + 48
 
 func reset(game) -> void:
 	hero_time = 0; hero_priority = 0; hero_panel.visible = false; ready_before = false; ready_time = 0; last_parts = ""; lost_time = 0; receipt.text = ""; feedback_log.clear(); log_cursor = 0; last_steer_frame = -1; feedback_counts.clear(); flash_times.clear(); last_player_flash = -10; last_pickup = -10; pending_scrap = 0; frame = 0; gesture_seen = false
@@ -134,6 +137,7 @@ func sync_hud(game) -> void:
 			game.parts_row.add_child(label(game, "%s  L%d" % [text, s.robot.parts[id]], 32, BLUE))
 		if equipment > 0: game.parts_row.add_child(label(game, "+%d EQUIPMENT" % equipment, 30, Color("64716a")))
 		if lost_time > 0: game.parts_row.add_child(label(game, "× " + lost_id.to_upper(), 30, RED))
+	counter_row.visible = not game.chain_label.text.is_empty() or not game.combo_label.text.is_empty()
 	game.boss_panel.visible = s.boss != null
 	if s.boss != null:
 		game.boss_label.text = "SCRAP TITAN / " + ["ARMOURED", "CORE OPEN", "ENRAGED"][s.boss.phase - 1]
@@ -188,9 +192,11 @@ func on_event(game, event: Dictionary) -> void:
 		"buy_offer": record(game, action, "purchase screen", 1)
 		"station_unavailable": hero(game, "NOT ENOUGH SCRAP", 50, INK); record(game, action, "unavailable receipt / optional offer", 1)
 		"scrap":
+			if event.has("chain"): game.last_chain = int(event.chain)
 			pending_scrap += int(event.amount)
 			if not reduced and rate > 0 and s.t - last_pickup >= 1.0 / rate + 0.002:
 				game.pickup_glow = 0.18; receipt.text = "+%d" % pending_scrap; pending_scrap = 0; last_pickup = s.t
+			if reduced or rate == 0: pending_scrap = 0
 			game.audio.play("scrap")
 			if int(event.get("chain", 0)) > 0 and int(event.get("chain", 0)) % 10 == 0: game.haptics.tap(8, 0.18)
 			record(game, action, "counter / grouped receipt", 0)
@@ -204,6 +210,7 @@ func on_event(game, event: Dictionary) -> void:
 			world.ui_feedback.ring(Vector3(s.x, 0.06, 0), GREEN, s.z); game.audio.play("stage"); game.haptics.tap(55, 0.6)
 			record(game, action, "evolution ring / frame receipt", 3)
 		"part_replaced":
+			game.combo_count = 0
 			record(game, action, "socket replacement / updated chip", 1)
 		"enemy_death":
 			game.bump_combo(); world.ui_feedback.ring(point, BLUE, s.z); game.audio.play("explosion")
@@ -211,12 +218,14 @@ func on_event(game, event: Dictionary) -> void:
 		"weapon_fire":
 			world.player.fire_kick = 1; game.audio.play("fire"); record(game, action, "muzzle recoil / visible projectile", 0)
 		"player_hit":
+			game.combo_count = 0; game.combo_label.text = ""
 			hero(game, "HULL HIT / −%d" % int(event.amount), 80, RED)
 			if not reduced and rate > 0 and s.t - last_player_flash >= 1.0 / rate + 0.002:
 				world.player.flash(); last_player_flash = s.t; flash_times.append(s.t)
 			game.audio.play("hit"); game.haptics.tap(40, 0.6)
 			record(game, action, "local hull flash / health receipt", 3)
 		"part_broken", "part_stolen":
+			game.combo_count = 0
 			lost_id = str(event.id); lost_time = 1.5
 			hero(game, ("PART STOLEN / " if action == "part_stolen" else "PART LOST / ") + lost_id.to_upper(), 85, RED)
 			game.audio.play("break"); game.haptics.tap(60, 0.7); record(game, action, "crossed lost-part chip", 3)

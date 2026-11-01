@@ -223,7 +223,7 @@ func _ready() -> void:
 		sim.boss_z = 100000
 		for id in ["cannon", "rocket", "wheels", "armour"]:
 			sim.robot.add_part(id, null, 3)
-	if bool(save.data.tutorial_done) and not capture and not stress_mode:
+	if (bool(save.data.tutorial_done) or not ui_review_variant.is_empty()) and not capture and not stress_mode:
 		show_hangar()
 
 func style(color: Color, border := Color.TRANSPARENT, radius := 26, lip := 8) -> StyleBoxFlat:
@@ -534,6 +534,7 @@ func _build_hud() -> void:
 	canvas.add_child(overlay)
 
 func _clear_overlay() -> void:
+	if ui_v2_enabled: world.visible = false
 	for child in overlay.get_children():
 		overlay.remove_child(child)
 		child.queue_free()
@@ -654,6 +655,7 @@ func start_run(is_daily := false) -> void:
 	toast_timer = 0
 	toast_label.text = ""
 	overlay.visible = false
+	world.visible = true
 	hud.visible = true
 	world.boss_root.scale = Vector3.ONE
 	world.player.rotation = Vector3.ZERO
@@ -870,6 +872,37 @@ func _events() -> void:
 					show_repair_offer()
 	sim.events.clear()
 
+# Shared by gameplay and deterministic UI measurement; no simulation advancement.
+func _tick_run_hud(delta: float) -> void:
+	toast_timer -= delta
+	if toast_timer <= 0:
+		toast_label.text = ""
+	flash.color.a = maxf(0, flash.color.a - delta * 1.5)
+	var hp_fraction: float = sim.robot.hp / sim.robot.max_hp
+	run_min_hp = minf(run_min_hp, hp_fraction)
+	hp_label.modulate = Color("c44840") if hp_fraction < 0.3 else Color.WHITE
+	hp_display = lerpf(hp_display, hp_fraction * 100.0, minf(1.0, delta * 8.0))
+	hp_bar.value = hp_display
+	combo_timer -= delta
+	if sim.chain >= 3 or sim.frenzy_time > 0:
+		var text := ""
+		if sim.chain >= 3:
+			text = "CHAIN ×%d  +%d%%" % [sim.chain, int(minf(sim.chain, 40) * 1.5)]
+		if sim.frenzy_time > 0:
+			text += ("   " if not text.is_empty() else "") + "FRENZY %ds" % ceili(sim.frenzy_time)
+		chain_label.text = text
+	else:
+		chain_label.text = ""
+	if combo_timer <= 0:
+		combo_count = 0
+		combo_label.text = ""
+	pickup_glow = maxf(0.0, pickup_glow - delta)
+	scrap_label.modulate = Color.WHITE.lerp(Color(1.0, 0.85, 0.5), pickup_glow / 0.18)
+	ui_tick += delta
+	if ui_tick > (0.05 if ui_v2_enabled else 0.1):
+		_update_hud()
+		ui_tick = 0
+
 func _process(delta: float) -> void:
 	# Raw wall-time logging stays enabled in gameplay; movie replay advances by frame.
 	if capture and OS.get_cmdline_args().has("--write-movie"):
@@ -906,34 +939,7 @@ func _process(delta: float) -> void:
 			perf.write()
 			last_perf_save = runtime
 		_update_camera(delta)
-		toast_timer -= delta
-		if toast_timer <= 0:
-			toast_label.text = ""
-		flash.color.a = maxf(0, flash.color.a - delta * 1.5)
-		var hp_fraction: float = sim.robot.hp / sim.robot.max_hp
-		run_min_hp = minf(run_min_hp, hp_fraction)
-		hp_label.modulate = Color("c44840") if hp_fraction < 0.3 else Color.WHITE
-		hp_display = lerpf(hp_display, hp_fraction * 100.0, minf(1.0, delta * 8.0))
-		hp_bar.value = hp_display
-		combo_timer -= delta
-		if sim.chain >= 3 or sim.frenzy_time > 0:
-			var text := ""
-			if sim.chain >= 3:
-				text = "CHAIN ×%d  +%d%%" % [sim.chain, int(minf(sim.chain, 40) * 1.5)]
-			if sim.frenzy_time > 0:
-				text += ("   " if not text.is_empty() else "") + "FRENZY %ds" % ceili(sim.frenzy_time)
-			chain_label.text = text
-		else:
-			chain_label.text = ""
-		if combo_timer <= 0:
-			combo_count = 0
-			combo_label.text = ""
-		pickup_glow = maxf(0.0, pickup_glow - delta)
-		scrap_label.modulate = Color.WHITE.lerp(Color(1.0, 0.85, 0.5), pickup_glow / 0.18)
-		ui_tick += delta
-		if ui_tick > (0.05 if ui_v2_enabled else 0.1):
-			_update_hud()
-			ui_tick = 0
+		_tick_run_hud(delta)
 		if sim.state in ["won", "lost"]:
 			if kill_timer > 0:
 				kill_timer -= delta
@@ -1170,7 +1176,7 @@ func show_result() -> void:
 	var won := sim.state == "won"
 	var column := menu("TITAN DOWN!" if won else "SO CLOSE!", "")
 	if ui_v2_enabled:
-		_hangar_preview(column, 500)
+		_hangar_preview(column, 500, true)
 	elif result_texture != null:
 		var image := TextureRect.new()
 		image.texture = result_texture
@@ -1414,8 +1420,11 @@ func _hangar_page(tab: String) -> void:
 				var card := card_row(badge, str(def.name).to_upper(), "", false)
 				var pips := HBoxContainer.new()
 				pips.add_theme_constant_override("separation", 4)
-				for i in 5:
-					pips.add_child(UiIcon.make("star", 40, Color("ffd23f") if i < tier else Color("d5dacf")))
+				if ui_v2_enabled:
+					pips.add_child(text_label("TIER %d / 5" % tier, 30, MUTED))
+				else:
+					for i in 5:
+						pips.add_child(UiIcon.make("star", 40, Color("ffd23f") if i < tier else Color("d5dacf")))
 				card.get_child(0).get_child(1).add_child(pips)
 				card.get_child(0).get_child(1).get_child(1).text = "+8% MAIN STAT" if cost > 0 else "MAX TIER"
 				if cost > 0:
@@ -1456,7 +1465,7 @@ func card_row(badge: Control, title: String, caption: String, done: bool) -> Pan
 	texts.add_child(detail)
 	return card
 
-func _hangar_preview(column: VBoxContainer, height := 290) -> void:
+func _hangar_preview(column: VBoxContainer, height := 290, actual_build := false) -> void:
 	var container := SubViewportContainer.new()
 	container.custom_minimum_size.y = height
 	container.size_flags_vertical = Control.SIZE_EXPAND_FILL if height > 400 else Control.SIZE_FILL
@@ -1497,7 +1506,7 @@ func _hangar_preview(column: VBoxContainer, height := 290) -> void:
 	var preview := RobotState.new()
 	preview.parts = sim.robot.parts.duplicate()
 	preview.slots = sim.robot.slots.duplicate()
-	preview.tiers = save.data.part_tiers.duplicate()
+	preview.tiers = sim.robot.tiers.duplicate() if actual_build else save.data.part_tiers.duplicate()
 	preview.refresh()
 	hangar_model.sync(preview, false)
 	var cam := Camera3D.new()
@@ -1534,6 +1543,7 @@ func resume_run() -> void:
 	paused = false
 	screen = "run"
 	overlay.visible = false
+	world.visible = true
 	hud.visible = true
 	accumulator = 0
 	perf.previous = 0

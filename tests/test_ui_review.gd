@@ -2,11 +2,13 @@ extends SceneTree
 var game
 var failures: Array = []
 var checks := 0
+var v2 := false
 var output_prefix := "ui_20261101"
 func check(value: bool, message: String) -> void:
 	checks += 1
 	if not value: failures.append(message)
 func _initialize() -> void:
+	v2 = OS.get_cmdline_user_args().has("--v2")
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--out-prefix="):
 			output_prefix = arg.substr(13)
@@ -19,11 +21,17 @@ func audit_controls(node: Node, bounds: Rect2) -> void:
 		if child is ScrollContainer:
 			check(child.get_global_rect().size.x <= bounds.size.x, "Scroll page fits viewport width")
 			continue
+		if child is Label and child.is_visible_in_tree() and not child.text.is_empty():
+			check(bounds.grow(2).encloses(child.get_global_rect()), "Label outside viewport: " + child.text)
+			if child.autowrap_mode == TextServer.AUTOWRAP_OFF:
+				check(child.size.x + 2 >= child.get_minimum_size().x, "Label text width fits: " + child.text)
 		if child is Button and child.is_visible_in_tree():
 			check(bounds.grow(2).encloses(child.get_global_rect()), "Button outside viewport: " + child.text)
 		audit_controls(child, bounds)
 func run() -> void:
 	game = load("res://src/view/Boot.tscn").instantiate()
+	game.flag_overrides = {"ui_v2": v2}
+	game.capture = true
 	root.add_child(game)
 	game.capture = true
 	game.save.path = "user://ui_review_20261101.json"
@@ -91,6 +99,9 @@ func run() -> void:
 	game.paused = true
 	game.overlay.visible = false
 	game.hud.visible = true
+	if v2:
+		game.chain_label.text = "CHAIN ×20"; game.combo_label.text = "COMBO ×15"
+	game.world.visible = true
 	game.world.sync(game.sim, 0)
 	for dimensions in [Vector2i(432,768), Vector2i(360,640), Vector2i(600,960)]:
 		root.size = dimensions
@@ -101,6 +112,29 @@ func run() -> void:
 		check(not game.top_bar.get_global_rect().intersects(game.boss_panel.get_global_rect()), "Boss bar clears wrapped inventory")
 		check(not game.boss_panel.get_global_rect().intersects(game.toast_label.get_global_rect()), "Toast clears boss bar")
 		check(not game.chain_label.get_global_rect().intersects(game.combo_label.get_global_rect()), "Combo and pickup chain do not overlap")
+		if v2:
+			check(game.top_bar.get_global_rect().encloses(game.chain_label.get_global_rect()) and game.top_bar.get_global_rect().encloses(game.combo_label.get_global_rect()), "active counters remain inside stable header")
+			for marker in game.boss_bar.get_children():
+				check(marker.size.y == game.boss_bar.size.y and marker.size.x >= 4, "boss phase marker spans visible bar")
+			for left in [false, true]:
+				game.save.data.settings.left_handed = left
+				for insets in [Vector2.ZERO, Vector2(140, 100)]:
+					game.ui_v2.safe_override = insets
+					game._update_hud(); await settle(); game._update_hud(); await settle()
+					var a: Rect2 = game.special_button.get_global_rect()
+					var b: Rect2 = game.reroll_button.get_global_rect()
+					var bounds: Rect2 = game.get_viewport().get_visible_rect()
+					check(a.size.x >= 120 and a.size.y >= 120 and b.size.x >= 120 and b.size.y >= 120, "120px logical targets")
+					check(not a.intersects(b), "handedness controls do not overlap")
+					check(bounds.encloses(a) and bounds.encloses(b), "safe-area controls fit")
+					var x := a.get_center().x / bounds.size.x
+					var y := a.get_center().y / bounds.size.y
+					check(x >= 0.25 and x <= 0.75 and y >= 0.65 and y <= 0.92, "special in lower-middle thumb zone")
+					check((x < 0.5) == left, "special mirrors handedness")
+			game.save.data.settings.reduce_motion = true; game._apply_settings(); game.ui_v2.tick(game, 0.1)
+			check(game.world.reduce_motion and game.special_button.scale == Vector2.ONE, "Reduce Motion applied to layout and world")
+			game.save.data.settings.left_handed = false; game.save.data.settings.reduce_motion = false
+			game.ui_v2.safe_override = Vector2.ZERO; game._apply_settings(); game._update_hud(); await settle()
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png("res://results/%s_hud_%d.png" % [output_prefix,dimensions.x])
 	print("UI REVIEW: %d checks, %d failures" % [checks, failures.size()])

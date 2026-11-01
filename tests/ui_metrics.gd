@@ -26,7 +26,7 @@ static func controls(node: Node, bounds: Rect2, rows: Array, rects: Array) -> vo
 	for child in node.get_children():
 		if child is Control and child.is_visible_in_tree() and child.modulate.a > 0.01:
 			var text := str(child.text) if child is Label or child is BaseButton else ""
-			var painted := child is BaseButton or child is ProgressBar or child is PanelContainer or child is UiIcon or child is UiRing or (child is Label and not text.is_empty())
+			var painted := child is BaseButton or child is Range or child is PanelContainer or child is UiIcon or child is UiRing or (child is Label and not text.is_empty())
 			var r: Rect2 = child.get_global_rect().intersection(bounds)
 			# Scroll clipping is included in the inventory, never counted outside its visible container.
 			var ancestor := child.get_parent()
@@ -34,7 +34,7 @@ static func controls(node: Node, bounds: Rect2, rows: Array, rects: Array) -> vo
 				if ancestor.clip_contents: r = r.intersection(ancestor.get_global_rect())
 				ancestor = ancestor.get_parent()
 			if painted and r.has_area():
-				rows.append({"path": str(child.get_path()), "class": child.get_class(), "text": text, "rect": [r.position.x, r.position.y, r.size.x, r.size.y], "font_px": child.get_theme_font_size("font_size") if child is Label or child is BaseButton else 0, "tappable": child is BaseButton, "color": str(child.modulate)})
+				rows.append({"path": str(child.get_path()), "class": child.get_class(), "text": text, "rect": [r.position.x, r.position.y, r.size.x, r.size.y], "font_px": child.get_theme_font_size("font_size") if child is Label or child is BaseButton else 0, "tappable": child is BaseButton or child is Slider, "color": str(child.modulate)})
 				if not (child is PanelContainer and child.get_theme_stylebox("panel") is StyleBoxEmpty): rects.append(r)
 		controls(child, bounds, rows, rects)
 
@@ -54,6 +54,6 @@ static func measure(game) -> Dictionary:
 			rects.append(Rect2(center - Vector2(width / 2, 22), Vector2(width, 44)).intersection(bounds))
 	var hero_count := 0
 	if game.get("ui_v2") != null and game.get("ui_v2_enabled"):
-		hero_count = int(game.ui_v2.hero_time > 0)
+		hero_count = int(active_play and game.ui_v2.hero_time > 0)
 	var full_screen := int(active_play and game.flash.visible and game.flash.color.a > 0.01)
-	return {"logical_size": [bounds.size.x, bounds.size.y], "hud_area_pct": 100.0 * hud_area / bounds.get_area(), "hud_popup_area_pct": 100.0 * rect_union(rects) / bounds.get_area(), "popups": popup_count, "hero_events": hero_count, "full_screen_effects": full_screen, "attention_groups": popup_count + hero_count + full_screen + int(not game.toast_label.text.is_empty()) + int(not game.world.fx_items.is_empty()), "inventory": rows}
+	return {"logical_size": [bounds.size.x, bounds.size.y], "hud_area_pct": 100.0 * hud_area / bounds.get_area(), "hud_popup_area_pct": 100.0 * rect_union(rects) / bounds.get_area(), "popups": popup_count, "hero_events": hero_count, "full_screen_effects": full_screen, "attention_groups": popup_count + hero_count + full_screen + int(active_play and hero_count == 0 and not game.toast_label.text.is_empty()) + int(not game.world.fx_items.is_empty()), "inventory": rows}

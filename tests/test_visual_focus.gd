@@ -7,7 +7,12 @@ func _initialize() -> void:
 func run() -> void:
 	var baseline := OS.get_cmdline_user_args().has("--baseline")
 	var label := "before" if baseline else "after"
+	var v2 := OS.get_cmdline_user_args().has("--v2")
+	if v2: label = "ui_v2"
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--label="): label = arg.substr(8); assert(label.is_valid_filename())
 	game = load("res://src/view/Boot.tscn").instantiate()
+	game.capture = true
 	root.add_child(game)
 	game.capture = true
 	game.save.path = "user://visual_focus_test.json"
@@ -15,7 +20,7 @@ func run() -> void:
 	game.save.data.tutorial_done = true
 	var evidence: Dictionary = {}
 	for mob_mode in [false, true]:
-		game.flag_overrides = {"mob_stream": mob_mode}
+		game.flag_overrides = {"mob_stream": mob_mode, "ui_v2": v2}
 		game.start_run(false)
 		game.paused = true
 		game.bot = null

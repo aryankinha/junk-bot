@@ -26,6 +26,12 @@ func summary() -> Dictionary:
 	var calls := draws.duplicate()
 	calls.sort()
 	var out := {"context": "Headless" if DisplayServer.get_name() == "headless" else ("Android" if OS.has_feature("android") else "Desktop"), "renderer": RenderingServer.get_current_rendering_method(), "samples": sorted.size(), "scene_init_to_first_playable_ms": first_playable_ms, "worst_ms": sorted.back(), "draw_calls_median": calls[calls.size() / 2], "draw_calls_max": calls.back(), "primitives_max": max_primitives, "static_memory_bytes": OS.get_static_memory_usage()}
+	out["engine_max_fps"] = Engine.max_fps
+	if DisplayServer.get_name() != "headless":
+		out["vsync_mode"] = DisplayServer.window_get_vsync_mode()
+		out["window_size"] = [DisplayServer.window_get_size().x, DisplayServer.window_get_size().y]
+		out["screen_scale"] = DisplayServer.screen_get_scale()
+		out["screen_refresh_hz"] = DisplayServer.screen_get_refresh_rate()
 	for percentile in [50, 95, 99]:
 		out["p%d_ms" % percentile] = sorted[mini(sorted.size() - 1, int(sorted.size() * percentile / 100.0))]
 	for threshold in [16.7, 20.0, 25.0, 33.0]:

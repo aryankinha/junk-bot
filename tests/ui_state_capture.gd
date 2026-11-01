@@ -74,6 +74,7 @@ func run() -> void:
 	DirAccess.make_dir_recursive_absolute("res://results/" + output)
 	game = load("res://src/view/Boot.tscn").instantiate()
 	game.flag_overrides = {"ui_v2": variant}
+	game.capture = true
 	root.add_child(game)
 	game.capture = true
 	game.save.path = "user://ui_state_fixtures.json"
@@ -94,8 +95,15 @@ func run() -> void:
 				var menu_inventory: Array = []; var rectangles: Array = []
 				metrics.controls(game.overlay, game.get_viewport().get_visible_rect(), menu_inventory, rectangles)
 				row["menu_inventory"] = menu_inventory
+			row["render_draw_calls"] = RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME)
 			row["state"] = state; row["window_size"] = [size.x, size.y]
 			rows.append(row)
+	if variant:
+		for row in rows:
+			assert(int(row.render_draw_calls) <= 135, "per-state draw budget " + row.state)
+			assert(row.hud_popup_area_pct <= 22 and row.popups <= 3 and row.hero_events <= 1 and row.full_screen_effects <= 1, "peak attention budget " + row.state)
+			if row.state in ["first_launch", "run_start", "mid_run", "part_gate", "repair_bay"]:
+				assert(row.hud_popup_area_pct <= 15, "rest HUD budget " + row.state)
 	FileAccess.open("res://results/%s/inventory.json" % output, FileAccess.WRITE).store_string(JSON.stringify(rows, "  "))
 	print("UI STATE CAPTURE ", output, ": ", rows.size(), " states/sizes completed")
 	game.queue_free()
