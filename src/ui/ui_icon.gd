@@ -1,6 +1,6 @@
 class_name UiIcon extends Control
 # Small vector icons drawn in code (no texture files): coin, heart, bolt, star, skull, pause, dice, flame, gear, lock, wrench.
-const OUTLINE = Color("1b1230")
+const OUTLINE = Color("34433f")
 var kind := "coin"
 var tint := Color.WHITE
 var value := 1.0

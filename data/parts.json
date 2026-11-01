@@ -37,6 +37,9 @@
           "hp_flat": 20
         }
       }
+    ],
+    "replaces": [
+      "tracks"
     ]
   },
   "tracks": {

@@ -1,14 +1,14 @@
 extends Node3D
-const NAVY = Color("1b1230")
-const CREAM = Color("ffffff")
-const MUTED = Color("c6bde6")
-const GREEN = Color("5fdc4a")
-const ORANGE = Color("ff8a1f")
-const INK = Color("1b1230")
-const PANEL = Color("3a2f6b")
+const NAVY = Color("34433f")
+const CREAM = Color("34433f")
+const MUTED = Color("68746b")
+const GREEN = Color("63c96b")
+const ORANGE = Color("ef952f")
+const INK = Color("34433f")
+const PANEL = Color("ffffff")
 const TONES = {
-	"green": Color("5fdc4a"), "blue": Color("3aa0ff"), "yellow": Color("ffc933"), "red": Color("ff5468"),
-	"panel": Color("463a7c"), "grey": Color("5a5278"), "orange": Color("ff8a1f")}
+	"green": Color("83d884"), "blue": Color("e6eee7"), "yellow": Color("ffe3a0"), "red": Color("f8d4c9"),
+	"panel": Color("ffffff"), "grey": Color("e7e9e4"), "orange": Color("f6b75b")}
 var sim: RunSim
 var world: WorldView
 var camera: Camera3D
@@ -59,6 +59,7 @@ var kill_timer := 0.0
 var ui_tick := 0.0
 var settings_return := "hangar"
 var hangar_model: RobotBuilder
+var hangar_camera: Camera3D
 var display_font: Font
 var body_font: Font
 var reward_doubled := false
@@ -192,12 +193,12 @@ func _ready() -> void:
 func style(color: Color, border := Color.TRANSPARENT, radius := 26, lip := 8) -> StyleBoxFlat:
 	var box := StyleBoxFlat.new()
 	box.bg_color = color
-	box.border_color = INK
-	box.set_border_width_all(4)
+	box.border_color = border if border.a > 0 else Color("d9dfd5")
+	box.set_border_width_all(2)
 	box.set_corner_radius_all(radius)
-	box.shadow_color = INK
+	box.shadow_color = Color(0.25, 0.3, 0.2, 0.10)
 	box.shadow_size = 1
-	box.shadow_offset = Vector2(0, lip)
+	box.shadow_offset = Vector2(0, minf(lip, 4))
 	box.content_margin_left = 28
 	box.content_margin_right = 28
 	box.content_margin_top = 14
@@ -211,9 +212,6 @@ func text_label(value: String, size := 36, color := CREAM) -> Label:
 	label.add_theme_font_override("font", display_font if big else body_font)
 	label.add_theme_font_size_override("font_size", size)
 	label.add_theme_color_override("font_color", color)
-	if big:
-		label.add_theme_constant_override("outline_size", clampi(size / 6, 4, 14))
-		label.add_theme_color_override("font_outline_color", INK)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return label
 
@@ -226,16 +224,16 @@ func make_button(value: String, action: Callable, primary := false, tone := "") 
 	button.custom_minimum_size.y = 128
 	button.add_theme_font_size_override("font_size", 46)
 	for color_name in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
-		button.add_theme_color_override(color_name, Color.WHITE)
-	button.add_theme_color_override("font_disabled_color", Color("958eb4"))
-	button.add_theme_constant_override("outline_size", 9)
+		button.add_theme_color_override(color_name, INK)
+	button.add_theme_color_override("font_disabled_color", Color("899087"))
+	button.add_theme_constant_override("outline_size", 0)
 	button.add_theme_color_override("font_outline_color", INK)
 	button.add_theme_stylebox_override("normal", style(fill))
 	button.add_theme_stylebox_override("hover", style(fill.lightened(0.12)))
 	var pressed := style(fill.darkened(0.12), Color.TRANSPARENT, 26, 2)
 	pressed.content_margin_top += 6
 	button.add_theme_stylebox_override("pressed", pressed)
-	button.add_theme_stylebox_override("disabled", style(Color("4a4268"), Color.TRANSPARENT, 26, 4))
+	button.add_theme_stylebox_override("disabled", style(Color("e7e9e4"), Color.TRANSPARENT, 26, 4))
 	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	button.pressed.connect(func():
 		audio.play("click")
@@ -283,7 +281,7 @@ func bar(color: Color, height := 22) -> ProgressBar:
 	node.custom_minimum_size.y = height
 	node.show_percentage = false
 	var back := StyleBoxFlat.new()
-	back.bg_color = Color("2a2150")
+	back.bg_color = Color("e0e5dc")
 	back.border_color = INK
 	back.set_border_width_all(4)
 	back.set_corner_radius_all(int(height / 2))
@@ -309,9 +307,10 @@ func _build_hud() -> void:
 	if OS.has_feature("android"):
 		var safe := DisplayServer.get_display_safe_area()
 		var size := DisplayServer.screen_get_size()
+		var logical_height := get_viewport().get_visible_rect().size.y
 		if size.y > 0:
-			safe_top = maxf(35, float(safe.position.y) * 1920.0 / size.y)
-			safe_bottom = maxf(35, float(size.y - safe.end.y) * 1920.0 / size.y)
+			safe_top = maxf(35, float(safe.position.y) * logical_height / size.y)
+			safe_bottom = maxf(35, float(size.y - safe.end.y) * logical_height / size.y)
 	top_bar = PanelContainer.new()
 	top_bar.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
 	top_bar.offset_left = 34
@@ -334,7 +333,7 @@ func _build_hud() -> void:
 	top_spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top_spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(top_spacer)
-	scrap_label = text_label("0", 48, Color("ffe27a"))
+	scrap_label = text_label("0", 48, Color("93671f"))
 	row.add_child(pill("coin", scrap_label))
 	var pause_button := round_button("", 112, "panel", show_pause)
 	pause_button.add_child(UiIcon.make("pause", 60))
@@ -433,6 +432,9 @@ func _build_hud() -> void:
 	hint_label.offset_top = -760 - safe_bottom
 	hint_label.offset_bottom = -620 - safe_bottom
 	hud.add_child(hint_label)
+	for floating in [hint_label, toast_label, boss_label]:
+		floating.add_theme_constant_override("outline_size", 5)
+		floating.add_theme_color_override("font_outline_color", Color.WHITE)
 	var bottom := HBoxContainer.new()
 	bottom.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	bottom.offset_left = 40
@@ -469,7 +471,7 @@ func _build_hud() -> void:
 	special_button.offset_top = -118
 	special_button.offset_bottom = 118
 	special_holder.add_child(special_button)
-	debug_label = text_label("", 24, Color("ffe27a"))
+	debug_label = text_label("", 24, Color("93671f"))
 	debug_label.position = Vector2(40, 350)
 	debug_label.visible = false
 	hud.add_child(debug_label)
@@ -492,7 +494,7 @@ func _clear_overlay() -> void:
 func menu(title: String, subtitle: String) -> VBoxContainer:
 	_clear_overlay()
 	var gradient := Gradient.new()
-	gradient.colors = PackedColorArray([Color("5a3fa8"), Color("2d1f66"), Color("1a1040")])
+	gradient.colors = PackedColorArray([Color("ffffff"), Color("faf8f1"), Color("efe6d2")])
 	gradient.offsets = PackedFloat32Array([0.0, 0.55, 1.0])
 	var texture := GradientTexture2D.new()
 	texture.gradient = gradient
@@ -517,14 +519,30 @@ func menu(title: String, subtitle: String) -> VBoxContainer:
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	margin.add_theme_constant_override("margin_left", 50)
 	margin.add_theme_constant_override("margin_right", 50)
-	margin.add_theme_constant_override("margin_top", 70)
-	margin.add_theme_constant_override("margin_bottom", 60)
+	var top := 50
+	var bottom := 40
+	if OS.has_feature("android"):
+		var safe := DisplayServer.get_display_safe_area()
+		var pixels := DisplayServer.screen_get_size()
+		var logical_height := get_viewport().get_visible_rect().size.y
+		if pixels.y > 0:
+			top = maxi(top, int(safe.position.y * logical_height / pixels.y) + 20)
+			bottom = maxi(bottom, int((pixels.y - safe.end.y) * logical_height / pixels.y) + 20)
+	margin.add_theme_constant_override("margin_top", top)
+	margin.add_theme_constant_override("margin_bottom", bottom)
 	overlay.add_child(margin)
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 22)
-	margin.add_child(column)
+	if title in ["SETTINGS", "TITAN DOWN!", "SO CLOSE!", "START FRESH?"]:
+		var scroll := ScrollContainer.new()
+		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		margin.add_child(scroll)
+		column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		scroll.add_child(column)
+	else:
+		margin.add_child(column)
 	if not title.is_empty():
-		var heading := text_label(title, 88, Color("ffd23f"))
+		var heading := text_label(title, 76, INK)
 		heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		column.add_child(heading)
 	if not subtitle.is_empty():
@@ -830,6 +848,8 @@ func _process(delta: float) -> void:
 		world.player.rotation.y += delta * 0.3
 		if is_instance_valid(hangar_model):
 			hangar_model.rotation.y += delta * 0.4
+			if is_instance_valid(hangar_camera):
+				frame_model(hangar_camera, hangar_model, 1.9)
 	if stress_mode and not stress_done and runtime >= 60:
 		stress_done = true
 		perf.write()
@@ -867,6 +887,7 @@ func _update_hud() -> void:
 	if sig != parts_sig:
 		parts_sig = sig
 		for child in parts_row.get_children():
+			parts_row.remove_child(child)
 			child.queue_free()
 		if sim.robot.parts.is_empty():
 			parts_row.add_child(text_label("TINY BOT  ·  BUILD YOUR MACHINE", 26, MUTED))
@@ -881,6 +902,13 @@ func _update_hud() -> void:
 	for enemy in sim.enemies:
 		if enemy.id == "hauler" and enemy.hp > 0 and float(enemy.z) - sim.z < 60:
 			elite_guard = enemy
+	boss_panel.offset_top = maxf(340, top_bar.offset_top + top_bar.size.y + 20)
+	toast_label.offset_top = boss_panel.offset_top + (150 if sim.boss != null or elite_guard != null else 40)
+	toast_label.offset_bottom = toast_label.offset_top + 150
+	chain_label.offset_top = toast_label.offset_bottom
+	chain_label.offset_bottom = chain_label.offset_top + 80
+	combo_label.offset_top = chain_label.offset_bottom
+	combo_label.offset_bottom = combo_label.offset_top + 120
 	boss_panel.visible = sim.boss != null or elite_guard != null
 	parts_row.visible = not boss_panel.visible
 	if elite_guard != null and sim.boss == null:
@@ -905,7 +933,7 @@ func _update_hud() -> void:
 	special_button.disabled = not ready
 	special_ring.value = 1.0 if ready else (sim.robot.overdrive / 100.0 if combos.is_empty() else 1.0 - clampf(minimum / 12.0, 0, 1))
 	special_ring.glow = ready
-	special_ring.color = Color("ffd23f") if ready else Color("8e7cff")
+	special_ring.color = Color("ffd23f") if ready else Color("a6b5a4")
 	special_ring.queue_redraw()
 	special_button.text = "OVERDRIVE" if sim.robot.overdrive >= 100 else ("SPECIAL" if ready else ("%ds" % ceil(minimum) if not combos.is_empty() else "%d%%" % sim.robot.overdrive))
 	reroll_button.visible = sim.state == "running"
@@ -1000,7 +1028,7 @@ func capture_build() -> ImageTexture:
 	cam.fov = 40
 	cam.position = Vector3(0, 3.3, 5.8)
 	viewport.add_child(cam)
-	cam.look_at(Vector3(0, 1, 0))
+	frame_model(cam, model)
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
 	var texture := ImageTexture.create_from_image(viewport.get_texture().get_image())
@@ -1020,7 +1048,7 @@ func show_result() -> void:
 		image.custom_minimum_size.y = 500
 		image.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		column.add_child(image)
-	var build_title := text_label(build_name(), 52, Color("ff9a2e"))
+	var build_title := text_label(build_name(), 52, Color("9d541c"))
 	build_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(build_title)
 	var stars_row := HBoxContainer.new()
@@ -1029,7 +1057,7 @@ func show_result() -> void:
 	column.add_child(stars_row)
 	if won:
 		for i in 3:
-			var star := UiIcon.make("star", 150, Color("ffd23f") if i < run_stars else Color("5d5486"))
+			var star := UiIcon.make("star", 150, Color("ffd23f") if i < run_stars else Color("d5dacf"))
 			star.pivot_offset = Vector2(75, 75)
 			star.scale = Vector2.ZERO
 			stars_row.add_child(star)
@@ -1044,7 +1072,7 @@ func show_result() -> void:
 		var reached := text_label("REACHED  %d%%  OF THE WAY TO THE TITAN" % int(clampf(sim.z / sim.boss_z, 0, 1) * 100), 32, MUTED)
 		reached.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		column.add_child(reached)
-	reward_label = text_label("0", 84, Color("ffe27a"))
+	reward_label = text_label("0", 84, Color("93671f"))
 	var reward_row := HBoxContainer.new()
 	reward_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	reward_row.add_theme_constant_override("separation", 14)
@@ -1104,12 +1132,12 @@ func currency_row(column: VBoxContainer) -> void:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 14)
 	column.add_child(row)
-	row.add_child(pill("flame", text_label("%d" % save.data.streak, 44, Color("ffb067"))))
+	row.add_child(pill("flame", text_label("%d" % save.data.streak, 44, Color("a75c20"))))
 	row.add_child(pill("star", text_label("LV %d" % save.data.level, 44)))
 	var gap := Control.new()
 	gap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(gap)
-	row.add_child(pill("coin", text_label("%d" % save.data.cogs, 48, Color("ffe27a"))))
+	row.add_child(pill("coin", text_label("%d" % save.data.cogs, 48, Color("93671f"))))
 
 func show_hangar(tab := "home") -> void:
 	screen = "hangar"
@@ -1124,75 +1152,52 @@ func show_hangar(tab := "home") -> void:
 
 func _hangar_home() -> void:
 	var column := menu("", "")
-	currency_row(column)
-	var logo_a := text_label("SCRAP", 150, Color("ff9a2e"))
-	logo_a.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	logo_a.add_theme_constant_override("outline_size", 22)
-	var logo_b := text_label("DRAGON", 112, Color.WHITE)
-	logo_b.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	logo_b.add_theme_constant_override("outline_size", 20)
-	var logo := VBoxContainer.new()
-	logo.add_theme_constant_override("separation", -34)
-	logo.add_child(logo_a)
-	logo.add_child(logo_b)
-	logo.rotation = deg_to_rad(-2.5)
-	logo.pivot_offset = Vector2(490, 120)
-	column.add_child(logo)
-	if not login_banner.is_empty():
-		var banner := text_label(login_banner, 34, Color("ffe27a"))
-		banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		column.add_child(banner)
-		var pulse := banner.create_tween().set_loops(3)
-		pulse.tween_property(banner, "modulate:a", 0.4, 0.5)
-		pulse.tween_property(banner, "modulate:a", 1.0, 0.5)
-	_hangar_preview(column, 560)
-	var total_stars := 0
-	for key in save.data.stars:
-		total_stars += int(save.data.stars[key])
-	if total_stars > 0:
-		var stats := text_label("%d / 15 STARS   ·   %d KILLS   ·   BEST COMBO x%d" % [total_stars, save.data.stats.kills, save.data.stats.best_combo], 26, MUTED)
-		stats.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		column.add_child(stats)
-	var play := make_button("PLAY   LEVEL %d" % save.data.level, func(): start_run(false), true)
-	play.custom_minimum_size.y = 180
-	play.add_theme_font_size_override("font_size", 78)
-	play.add_theme_constant_override("outline_size", 14)
-	column.add_child(play)
-	var pulse_play := play.create_tween().set_loops()
-	pulse_play.tween_property(play, "modulate", Color(1.12, 1.12, 1.12), 0.7)
-	pulse_play.tween_property(play, "modulate", Color.WHITE, 0.7)
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 16)
-	column.add_child(row)
-	var daily_button := make_button("DAILY RUN", func(): start_run(true), false, "yellow")
-	daily_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	daily_button.add_theme_font_size_override("font_size", 40)
-	row.add_child(daily_button)
-	var settings_button := make_button("", func():
+	var header := HBoxContainer.new()
+	column.add_child(header)
+	var balance := text_label("%d COGS" % save.data.cogs, 42)
+	header.add_child(pill("coin", balance))
+	var gap := Control.new()
+	gap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	header.add_child(gap)
+	var settings := make_button("", func():
 		settings_return = "hangar"
 		show_settings(), false, "grey")
-	settings_button.custom_minimum_size.x = 150
-	settings_button.add_child(UiIcon.make("gear", 76))
-	settings_button.get_child(0).set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	settings_button.get_child(0).offset_left = -38
-	settings_button.get_child(0).offset_right = 38
-	settings_button.get_child(0).offset_top = -42
-	settings_button.get_child(0).offset_bottom = 34
-	row.add_child(settings_button)
-	var nav := HBoxContainer.new()
-	nav.add_theme_constant_override("separation", 14)
-	column.add_child(nav)
-	for entry in [["upgrades", "UPGRADES", "blue"], ["armoury", "ARMOURY", "orange"], ["codex", "CODEX", "panel"]]:
-		var tab_id: String = entry[0]
-		var nav_button := make_button(entry[1], func(): show_hangar(tab_id), false, entry[2])
-		nav_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		nav_button.custom_minimum_size.y = 110
-		nav_button.add_theme_font_size_override("font_size", 34)
-		nav.add_child(nav_button)
-		if tab_id == "upgrades" and _any_affordable():
-			var dot := UiIcon.make("dot", 40, Color("ff3b4f"))
-			nav_button.add_child(dot)
-			dot.position = Vector2(-8, -8)
+	settings.tooltip_text = "Settings"
+	settings.custom_minimum_size = Vector2(124, 124)
+	var gear := UiIcon.make("gear", 62, INK)
+	gear.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	gear.offset_left = -31
+	gear.offset_top = -31
+	gear.offset_right = 31
+	gear.offset_bottom = 31
+	settings.add_child(gear)
+	header.add_child(settings)
+	var title := text_label("SCRAP DRAGON", 88, INK)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	column.add_child(title)
+	var subtitle := text_label("Build your next big thing", 32, MUTED)
+	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	column.add_child(subtitle)
+	_hangar_preview(column, 500)
+	if not login_banner.is_empty():
+		var banner := text_label(login_banner, 30, MUTED)
+		banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		column.add_child(banner)
+	var play := make_button("PLAY  ·  LEVEL %d" % save.data.level, func(): start_run(false), true)
+	play.custom_minimum_size.y = 160
+	play.add_theme_font_size_override("font_size", 62)
+	column.add_child(play)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 18)
+	column.add_child(row)
+	var garage := make_button("GARAGE", func(): show_hangar("upgrades"))
+	garage.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	if _any_affordable():
+		garage.tooltip_text = "An upgrade is available"
+	row.add_child(garage)
+	var daily_button := make_button("DAILY RUN", func(): start_run(true), false, "yellow")
+	daily_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(daily_button)
 
 func _any_affordable() -> bool:
 	for id in GameData.table("parts"):
@@ -1202,7 +1207,16 @@ func _any_affordable() -> bool:
 	return false
 
 func _hangar_page(tab: String) -> void:
-	var column := menu(tab.to_upper(), "")
+	var column := menu("GARAGE", "")
+	var navigation := HBoxContainer.new()
+	navigation.add_theme_constant_override("separation", 12)
+	column.add_child(navigation)
+	for entry in [["upgrades", "UPGRADES"], ["armoury", "PARTS"], ["codex", "COLLECTION"]]:
+		var destination: String = entry[0]
+		var button := make_button(entry[1], func(): show_hangar(destination), tab == destination)
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button.add_theme_font_size_override("font_size", 30)
+		navigation.add_child(button)
 	currency_row(column)
 	_hangar_preview(column, 300)
 	var scroll := ScrollContainer.new()
@@ -1230,6 +1244,7 @@ func _hangar_page(tab: String) -> void:
 			var badge := UiIcon.make("dot", 84, chip_style(str(def.category)).bg_color)
 			if tab == "armoury":
 				if not GameData.table("economy").unlock_costs.has(id):
+					badge.free()
 					continue
 				var cost: int = int(GameData.table("economy").unlock_costs[id])
 				var unlocked: bool = save.data.unlocked_parts.has(id) or int(save.data.level) >= int(def.unlock_level)
@@ -1252,7 +1267,7 @@ func _hangar_page(tab: String) -> void:
 				var pips := HBoxContainer.new()
 				pips.add_theme_constant_override("separation", 4)
 				for i in 5:
-					pips.add_child(UiIcon.make("star", 40, Color("ffd23f") if i < tier else Color("5d5486")))
+					pips.add_child(UiIcon.make("star", 40, Color("ffd23f") if i < tier else Color("d5dacf")))
 				card.get_child(0).get_child(1).add_child(pips)
 				card.get_child(0).get_child(1).get_child(1).text = "+8% MAIN STAT" if cost > 0 else "MAX TIER"
 				if cost > 0:
@@ -1273,7 +1288,7 @@ func _hangar_page(tab: String) -> void:
 # A list card: badge on the left, title and caption in the middle, extra controls appended to get_child(0).
 func card_row(badge: Control, title: String, caption: String, done: bool) -> PanelContainer:
 	var card := PanelContainer.new()
-	var box := style(Color("4a3d86") if not done else Color("2f6b4b"), Color.TRANSPARENT, 28, 6)
+	var box := style(Color("ffffff") if not done else Color("edf7e9"), Color.TRANSPARENT, 28, 6)
 	box.content_margin_top = 12
 	box.content_margin_bottom = 18
 	card.add_theme_stylebox_override("panel", box)
@@ -1285,8 +1300,12 @@ func card_row(badge: Control, title: String, caption: String, done: bool) -> Pan
 	texts.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	texts.add_theme_constant_override("separation", 0)
 	row.add_child(texts)
-	texts.add_child(text_label(title, 40))
-	texts.add_child(text_label(caption, 26, MUTED))
+	var heading := text_label(title, 36)
+	heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	texts.add_child(heading)
+	var detail := text_label(caption, 26, MUTED)
+	detail.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	texts.add_child(detail)
 	return card
 
 func _hangar_preview(column: VBoxContainer, height := 290) -> void:
@@ -1305,26 +1324,44 @@ func _hangar_preview(column: VBoxContainer, height := 290) -> void:
 	environment.environment = Environment.new()
 	environment.environment.background_mode = Environment.BG_CLEAR_COLOR
 	environment.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	environment.environment.ambient_light_color = Color("d9d0ff")
+	environment.environment.ambient_light_color = Color("fff5df")
 	environment.environment.ambient_light_energy = 0.7
 	viewport.add_child(environment)
 	var sun := DirectionalLight3D.new()
 	sun.rotation_degrees = Vector3(-45, -35, 0)
 	viewport.add_child(sun)
 	var pedestal := MeshFactory.instance(MeshFactory.merged([
-		MeshFactory.cylinder(2.3, 0.3, Vector3(0, -0.16, 0), Color("4d4189"), Vector3.ZERO, -1.0, 28),
-		MeshFactory.cylinder(2.0, 0.34, Vector3(0, -0.14, 0), Color("ff8a1f"), Vector3.ZERO, -1.0, 28),
-		MeshFactory.cylinder(1.85, 0.36, Vector3(0, -0.12, 0), Color("2c2360"), Vector3.ZERO, -1.0, 28)], true))
+		MeshFactory.cylinder(1.9, 0.3, Vector3(0, -0.16, 0), Color("d7d6c9"), Vector3.ZERO, -1.0, 28),
+		MeshFactory.cylinder(1.8, 0.34, Vector3(0, -0.14, 0), Color("ff8a1f"), Vector3.ZERO, -1.0, 28),
+		MeshFactory.cylinder(1.7, 0.36, Vector3(0, -0.12, 0), Color("f3efe3"), Vector3.ZERO, -1.0, 28)], true))
 	viewport.add_child(pedestal)
 	hangar_model = RobotBuilder.new()
 	viewport.add_child(hangar_model)
 	hangar_model.rotation_degrees.y = 155
-	hangar_model.sync(sim.robot, false)
+	var preview := RobotState.new()
+	preview.parts = sim.robot.parts.duplicate()
+	preview.slots = sim.robot.slots.duplicate()
+	preview.tiers = save.data.part_tiers.duplicate()
+	preview.refresh()
+	hangar_model.sync(preview, false)
 	var cam := Camera3D.new()
 	cam.fov = 35
 	cam.position = Vector3(0, 3.0 if height > 400 else 2.8, 6.6 if height > 400 else 5.7)
 	viewport.add_child(cam)
-	cam.look_at(Vector3(0, 1.0, 0))
+	hangar_camera = cam
+	frame_model(cam, hangar_model, 1.9)
+
+func frame_model(cam: Camera3D, model: RobotBuilder, platform_radius := 0.0) -> void:
+	var bounds := model.visual_bounds()
+	var center := Vector3(0, bounds.get_center().y, 0)
+	var extents := Vector3(maxf(absf(bounds.position.x), absf(bounds.end.x)), bounds.size.y / 2, maxf(absf(bounds.position.z), absf(bounds.end.z)))
+	var radius := maxf(platform_radius, extents.length())
+	var dimensions := cam.get_viewport().get_visible_rect().size
+	var aspect := dimensions.x / maxf(1, dimensions.y)
+	var half_fov := atan(tan(deg_to_rad(cam.fov / 2)) * minf(1, aspect))
+	var distance := radius / sin(half_fov) * 1.08
+	cam.position = center + Vector3(0, 0.32, 1).normalized() * distance
+	cam.look_at(center)
 
 func show_pause() -> void:
 	paused = true
@@ -1438,6 +1475,17 @@ func show_repair_offer() -> void:
 		column.add_child(make_button("FREE REPAIR  ·  WATCH", func(): ads.show_rewarded("repair"), false, "yellow"))
 	column.add_child(make_button("KEEP GOING", resume_run, true))
 
+func navigate_back() -> void:
+	match screen:
+		"run": show_pause()
+		"pause": resume_run()
+		"settings":
+			if settings_return == "pause": show_pause()
+			else: show_hangar()
+		"hangar": show_hangar()
+		"purchase", "repair_offer": pass
+		_: show_hangar()
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch and OS.is_debug_build() and not capture:
 		if event.pressed:
@@ -1450,10 +1498,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode == KEY_F3 and OS.is_debug_build() and not capture:
 			debug_label.visible = not debug_label.visible
 		if event.keycode == KEY_ESCAPE:
-			if screen == "run":
-				show_pause()
-			elif screen == "pause":
-				resume_run()
+			navigate_back()
 		if event.keycode == KEY_SPACE and screen == "run":
 			sim.tap_special()
 	if screen != "run" or paused:
@@ -1483,7 +1528,7 @@ func _notification(what: int) -> void:
 			audio.music_player.stream_paused = false
 	elif what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		if is_instance_valid(overlay):
-			show_pause()
+			navigate_back()
 	elif what == NOTIFICATION_WM_CLOSE_REQUEST:
 		if save != null and not save.data.is_empty():
 			save.write()
