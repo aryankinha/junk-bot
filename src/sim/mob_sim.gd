@@ -30,8 +30,11 @@ var flame_timer := 0.0
 var flame_fire_clock := 0.0
 var torch_burn_s := 2.0
 var cap_scale := 1.0
+var gates: Array = []               # mob_gate beats in z order
+var gate_cursor := 0
+var first_multiply_t := -1.0
 var impacts: Array = []             # [x, z, weight, kind] for the view; not events, never logged
-var stats := {"launched": 0, "launched_damage": 0.0, "hit_damage": 0.0, "peak": 0, "live_sum": 0.0, "ticks": 0, "merges": 0, "cap_ticks": 0, "over_cap": 0}
+var stats := {"launched": 0, "launched_damage": 0.0, "hit_damage": 0.0, "peak": 0, "live_sum": 0.0, "ticks": 0, "merges": 0, "cap_ticks": 0, "over_cap": 0, "passes": {}, "gain": 0.0, "trap_loss": 0.0}
 
 func setup(config: Dictionary, start_x: float) -> void:
 	cfg = config
@@ -123,7 +126,7 @@ func launch_volley(sim, weapon: Dictionary, z_offset: float) -> void:
 	var per := total / count
 	var charge_total: float = sim._bullet_charge(weapon)
 	var speed := float(weapon.get("speed", 36))
-	var target = sim._pick_target()
+	var target = _aim_target(sim)
 	var launch: Dictionary = cfg.launch
 	stats.launched_damage += total
 	stats.launched += count
@@ -139,6 +142,20 @@ func launch_volley(sim, weapon: Dictionary, z_offset: float) -> void:
 			svx = s * float(launch.straight_spread_mps) + robot_vx * float(cfg.lateral_inherit) + _hash(sim.shot_count, i) * float(launch.jitter_mps)
 			svz = speed
 		add_drone(k, sim.x + s * float(launch.muzzle_spread_m), sim.z + 0.8 + z_offset + float(i) * 0.04, svx, svz, per, charge_total / count, float(spec.life_s), 1.0, str(weapon.id), 0.0, float(weapon.get("area_radius", 0)))
+
+# Aim assist yields to mob gates: a target that sits behind an upcoming gate is not homed on, so the gate panel the player
+# lines up decides where the stream goes; the multiplied stream then reaches whatever is beyond if the player is aligned.
+func _aim_target(sim):
+	var target = sim._pick_target()
+	if target == null:
+		return null
+	for gate in gates:
+		var gz := float(gate.z)
+		if gz > sim.z + 1.0 and gz < float(target.z):
+			return null
+		if gz > float(target.z):
+			break
+	return target
 
 # Flame cone becomes a burst of short-lived torch drones. Per-second damage equals the old cone dps.
 func flame(sim, weapon: Dictionary, dt: float) -> bool:
@@ -181,6 +198,14 @@ func step(sim, dt: float) -> void:
 			tz.append(float(enemy.z))
 	var gate: Dictionary = sim.next_gate() if sim.flags.gate_charge else {}
 	var gate_z := float(gate.z) if gate.has("charge") else -1.0
+	while gate_cursor < gates.size() and float(gates[gate_cursor].z) < sim.z - 1.0:
+		gate_cursor += 1
+	var active: Array = []
+	var gi := gate_cursor
+	while gi < gates.size() and float(gates[gi].z) <= sim.z + 90.0:
+		active.append(gates[gi])
+		gi += 1
+	var gate_tuning: Dictionary = sim.flags.tuning
 	var boss_plane: float = sim.z + 14.0
 	var in_boss: bool = sim.state == "boss"
 	var kinds: Dictionary = cfg.kinds
@@ -194,6 +219,16 @@ func step(sim, dt: float) -> void:
 		var dead := life[i] <= 0.0
 		if not dead and gate_z >= 0.0 and k != Kind.TORCH and prev_z < gate_z and pz[i] >= gate_z:
 			sim._charge_gate({"x": px[i], "z": pz[i], "charge": chg[i]}, prev_z)
+		if not dead:
+			for g in active:
+				var gz := float(g.z)
+				var bit := 1 << int(g.ord)
+				if prev_z < gz and pz[i] >= gz and (gmask[i] & bit) == 0:
+					gmask[i] |= bit
+					var lane := panel_lane(g, px[i], sim.t, gate_tuning)
+					if lane >= 0 and _apply_panel(sim, i, g, lane):
+						dead = true
+						break
 		if not dead:
 			var r := float(kinds[KIND_NAMES[k]].hit_radius)
 			for j in targets.size():
@@ -225,6 +260,7 @@ func step(sim, dt: float) -> void:
 		if dead:
 			_swap_remove(i)
 		i -= 1
+	_flush_passes(sim)
 	stats.peak = maxi(int(stats.peak), n)
 	stats.live_sum += n
 	stats.ticks += 1
@@ -251,3 +287,143 @@ func _hit_enemy(sim, i: int, enemy: Dictionary, targets: Array) -> void:
 
 func is_alive(i: int) -> bool:
 	return i >= 0 and i < n
+
+func _clone(i: int) -> int:
+	var j := _grow()
+	px[j] = px[i]
+	pz[j] = pz[i]
+	vx[j] = vx[i]
+	vz[j] = vz[i]
+	dmg[j] = dmg[i]
+	wgt[j] = wgt[i]
+	life[j] = life[i]
+	chg[j] = chg[i]
+	burn[j] = burn[i]
+	rad[j] = rad[i]
+	kind[j] = kind[i]
+	pierce[j] = pierce[i]
+	lasthit[j] = lasthit[i]
+	gmask[j] = gmask[i]
+	wid[j] = wid[i]
+	return j
+
+# Register the authored mob gates (beats of type mob_gate). Each gate and panel keeps its own pass counters.
+func register_gates(beats: Array) -> void:
+	gates.clear()
+	gate_cursor = 0
+	var ordinal := 0
+	for beat in beats:
+		if str(beat.type) == "mob_gate":
+			beat["ord"] = ordinal
+			ordinal += 1
+			beat["state"] = []
+			for panel in beat.panels:
+				beat.state.append({"acc": 0.0, "count": 0, "gain": 0.0, "next": 0.0, "sx": 0.0})
+			gates.append(beat)
+	assert(ordinal < 62, "gate mask holds 62 mob gates")
+
+# Slide of a moving mob gate: same pure function of time as the part gates, so it is telegraphed and deterministic.
+func gate_offset(gate: Dictionary, at_t: float, tuning: Dictionary) -> float:
+	if not gate.get("moving", false):
+		return 0.0
+	return float(tuning.moving_amplitude) * sin(TAU * at_t / float(tuning.moving_period) + float(gate.z) * 0.37)
+
+func panel_center(gate: Dictionary, lane: int, at_t: float, tuning: Dictionary) -> float:
+	var count: int = gate.panels.size()
+	if gate.get("moving", false):
+		return (float(lane) - (count - 1) / 2.0) * float(tuning.moving_spacing) + gate_offset(gate, at_t, tuning)
+	var half := float(GameData.constants().road_half_width)
+	return -half + 2.0 * half / count * (lane + 0.5)
+
+# Panel a drone at x passes through, or -1 when it flies through a gap beside the panels.
+func panel_lane(gate: Dictionary, at_x: float, at_t: float, tuning: Dictionary) -> int:
+	var count: int = gate.panels.size()
+	if gate.get("moving", false):
+		var best := -1
+		var best_distance := float(tuning.moving_half)
+		for lane in count:
+			var distance := absf(at_x - panel_center(gate, lane, at_t, tuning))
+			if distance < best_distance:
+				best_distance = distance
+				best = lane
+		return best
+	var half := float(GameData.constants().road_half_width)
+	if absf(at_x) >= half:
+		return -1
+	return clampi(int(floor((at_x + half) / (2.0 * half) * count)), 0, count - 1)
+
+# Gate that creates `extra` more full-damage drones from drone i. Room under the cap decides how many become real
+# drones; the rest of the damage is folded into the group as heavier drones, so no damage is lost to the cap.
+func _multiply(i: int, extra: int, jitter_seed: int) -> void:
+	var room := maxi(0, live_cap() - n)
+	var made := mini(extra, room)
+	var group := 1 + made
+	if made < extra:
+		stats.merges += 1
+	var factor := float(1 + extra) / group
+	dmg[i] *= factor
+	wgt[i] *= factor
+	chg[i] /= group
+	for c in made:
+		var j := _clone(i)
+		var side := 1.0 if c % 2 == 0 else -1.0
+		px[j] += side * (1 + c / 2) * float(cfg.gates.copy_spread_m)
+		vx[j] += _hash(jitter_seed, c) * float(cfg.gates.copy_jitter_mps)
+
+# Applies one panel to drone i. Returns true when the drone is destroyed (trap).
+func _apply_panel(sim, i: int, gate: Dictionary, lane: int) -> bool:
+	var panel: Dictionary = gate.panels[lane]
+	var state: Dictionary = gate.state[lane]
+	var value := float(panel.v)
+	var before := dmg[i]
+	var removed := false
+	state.count += 1
+	state.sx += px[i]
+	match str(panel.t):
+		"mult":
+			_multiply(i, int(value) - 1, sim.shot_count + i)
+			state.gain += before * (value - 1.0)
+		"add":
+			state.acc += 1.0
+			if state.acc >= float(cfg.gates.add_per):
+				state.acc -= float(cfg.gates.add_per)
+				_multiply(i, int(value), sim.shot_count + i)
+				state.gain += before * value
+		"power":
+			dmg[i] *= 1.0 + value / 100.0
+			wgt[i] *= 1.0 + value / 100.0
+			state.gain += before * value / 100.0
+		"speed":
+			vx[i] *= 1.0 + value / 100.0
+			vz[i] *= 1.0 + value / 100.0
+		"trap":
+			state.acc += value / 100.0
+			if state.acc >= 1.0:
+				state.acc -= 1.0
+				state.gain -= before
+				stats.trap_loss += before
+				removed = true
+	return removed
+
+# Emits at most one mob_gate_pass per panel per pop_interval so the log and the pop-ups stay readable.
+func _flush_passes(sim) -> void:
+	for gate in gates:
+		var gz := float(gate.z)
+		if gz < sim.z - 12.0:
+			continue
+		if gz > sim.z + 80.0:
+			break
+		for lane in gate.panels.size():
+			var state: Dictionary = gate.state[lane]
+			if state.count > 0 and sim.t >= float(state.next):
+				var panel: Dictionary = gate.panels[lane]
+				var typ := str(panel.t)
+				stats.passes[typ] = int(stats.passes.get(typ, 0)) + int(state.count)
+				stats.gain += float(state.gain)
+				if first_multiply_t < 0.0 and typ in ["mult", "add"]:
+					first_multiply_t = sim.t
+				sim.emit("mob_gate_pass", {"ord": gate.ord, "lane": lane, "type": typ, "v": panel.v, "count": state.count, "gain": snappedf(state.gain, 0.01), "x": snappedf(float(state.sx) / state.count, 0.01), "z": gz})
+				state.count = 0
+				state.gain = 0.0
+				state.sx = 0.0
+				state.next = sim.t + float(cfg.gates.pop_interval_s)

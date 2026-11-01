@@ -91,6 +91,8 @@ func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count :
 		_add_salvage_beats()
 	if flags.dense_blocks:
 		_add_rhythm_beats()
+	if flags.mob_stream:
+		_add_mob_gates()
 	var gate_index := 0
 	for beat in beats:
 		beat.resolved = false
@@ -107,7 +109,19 @@ func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count :
 			beat.options = [{"kind": "repair"}, {"kind": "reroll"}, {"kind": "buy"}]
 		elif beat.type == "final_choice":
 			beat.options = [{"kind": "part", "id": "rocket"}, {"kind": "part", "id": "armour"}, {"kind": "part", "id": "cannon"}]
+	if mob != null:
+		mob.register_gates(beats)
 	emit("run_start", {"level": level, "seed": seed_value})
+
+# Mob gates (flag mob_stream): authored for Level 1 in data/mob.json, generated for later levels (MOB-4).
+func _add_mob_gates() -> void:
+	var rules: Dictionary = GameData.table("mob").gates
+	if level == 1:
+		for row in rules.level1:
+			beats.append({"z": float(row.z), "type": "mob_gate", "panels": row.panels.duplicate(true), "moving": bool(row.get("moving", false))})
+			if row.has("pack"):
+				beats.append({"z": float(row.z) + float(row.pack.dz), "type": "enemy_pack", "enemy": str(row.pack.enemy), "count": int(row.pack.count), "lane": "spread"})
+	beats.sort_custom(func(a, b): return a.z < b.z)
 
 func _generate_beats() -> void:
 	beats.clear()

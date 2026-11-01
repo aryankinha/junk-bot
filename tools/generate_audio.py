@@ -16,6 +16,26 @@ for name,freq,duration in [('attach',180,.16),('upgrade',660,.24),('stage',110,.
   pitch=freq*(1+1.8*t if name in ['upgrade','special','victory'] else 1-t*.5)
   values.append((math.sin(2*math.pi*pitch*t)*.48+noise)*fade)
  write(name,values)
+
+# Mob Stream sounds (own RNG so the original effects and music stay bit-identical).
+import sys
+mob_rng=random.Random(91)
+def sweep(duration,f0,f1,noise=0.0,square=0.0,attack=0.01,power=2.0,harm=0.0):
+ values=[];phase=0.0
+ for i in range(int(rate*duration)):
+  t=i/rate;u=t/duration;freq=f0+(f1-f0)*u;phase+=2*math.pi*freq/rate
+  tone=math.sin(phase)+harm*math.sin(2*phase)
+  if square:tone=tone*(1-square)+square*(1 if math.sin(phase)>0 else -1)
+  env=min(1,t/attack)*(1-u)**power
+  values.append((tone*.42+mob_rng.uniform(-1,1)*noise)*env)
+ return values
+write('multiply',sweep(.26,520,1180,noise=.02,harm=.5,power=1.4))
+write('swarm_hit',sweep(.11,170,60,noise=.5,power=3.0))
+write('champion',[a+b for a,b in zip(sweep(.8,95,38,noise=.18,harm=.6,attack=.03,power=1.2),sweep(.8,200,900,noise=.04,power=0.7)[:int(rate*.8)])])
+write('trap',sweep(.28,640,140,noise=.05,square=.6,power=1.6))
+if '--mob-only' in sys.argv:
+ sys.exit(0)
+
 for name,notes in [('run_music',[110,164.81,220,164.81,130.81,196,261.63,196]),('hangar_music',[130.81,164.81,196,164.81,146.83,174.61,220,174.61])]:
  beat=60/110;values=[]
  for i in range(int(rate*beat*16)):

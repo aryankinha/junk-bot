@@ -1,7 +1,7 @@
 extends SceneTree
 # Fingerprint of full bot runs. With every experiment flag off the fingerprints must equal the
 # stored baseline (results/interactivity_trace_baseline.txt).  Usage: -- [--write]
-const NEW_EVENTS := ["gate_charge_tick", "payoff", "gate_charged", "salvage_target", "evolution", "evolution_hint", "focus_ramp", "salvage_spawn", "salvage_looted", "wave_spawn", "cluster_burst"]
+const NEW_EVENTS := ["gate_charge_tick", "payoff", "gate_charged", "salvage_target", "evolution", "evolution_hint", "focus_ramp", "salvage_spawn", "salvage_looted", "wave_spawn", "cluster_burst", "mob_gate_pass", "mob_champion", "mob_enemy_stream"]
 func _initialize() -> void:
 	GameData.load_all()
 	var lines: Array = []

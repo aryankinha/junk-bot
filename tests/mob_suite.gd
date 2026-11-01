@@ -112,7 +112,119 @@ func run() -> void:
 	bend.setup(1, 9)
 	bend.mob.robot_vx = 5.0
 	bend.mob.launch_volley(bend, bend.robot.stats.weapons[0], 0.0)
-	check(bend.mob.vx[0] > 1.5, "drones inherit lateral velocity (vx %.2f)" % bend.mob.vx[0])
+	var mean_vx := 0.0
+	for i in bend.mob.n:
+		mean_vx += bend.mob.vx[i] / bend.mob.n
+	check(mean_vx > 1.5, "drones inherit lateral velocity (mean vx %.2f)" % mean_vx)
 	var flag_off := RunSim.new()
 	flag_off.setup(1, 9)
 	check(flag_off.mob == null, "no mob state with the flag off")
+
+	_gate_tests()
+
+# Sim with one mob gate at z=20 and a single drone aimed straight at it.
+func gate_sim(panels: Array, moving := false) -> RunSim:
+	var sim := RunSim.new()
+	sim.flag_overrides = {"mob_stream": true}
+	sim.setup(1, 33)
+	sim.beats = [{"z": 20.0, "type": "mob_gate", "panels": panels, "moving": moving, "resolved": false}]
+	sim.next_beat = 1
+	sim.mob.register_gates(sim.beats)
+	sim.robot.stats.weapons = []
+	return sim
+
+func total_damage(sim: RunSim) -> float:
+	var sum := 0.0
+	for i in sim.mob.n:
+		sum += sim.mob.dmg[i]
+	return sum
+
+func send(sim: RunSim, at_x: float, count := 1, damage := 4.0) -> void:
+	for i in count:
+		sim.mob.add_drone(MobSim.Kind.BOLT, at_x, 18.0 + float(i) * 0.001, 0.0, 36.0, damage, 0.0, 5.0)
+
+func _gate_tests() -> void:
+	# MOB-2: multiply, add, power, speed, trap.
+	var mult := gate_sim([{"t": "mult", "v": 3}, {"t": "mult", "v": 2}])
+	send(mult, -1.7)
+	mult.step(0.1)
+	check(mult.mob.n == 3 and absf(total_damage(mult) - 12.0) < 0.001, "x3 gate makes 3 drones with 3x damage (n %d, dmg %.2f)" % [mult.mob.n, total_damage(mult)])
+	mult.step(0.1)
+	check(mult.mob.n == 3, "a drone is affected once per gate (n %d)" % mult.mob.n)
+	var right := gate_sim([{"t": "mult", "v": 3}, {"t": "mult", "v": 2}])
+	send(right, 1.7)
+	right.step(0.1)
+	check(right.mob.n == 2 and absf(total_damage(right) - 8.0) < 0.001, "panel is chosen by the drone's x (right panel x2)")
+	var outside := gate_sim([{"t": "mult", "v": 3}, {"t": "mult", "v": 2}])
+	send(outside, 3.8)
+	outside.step(0.1)
+	check(outside.mob.n == 1, "a drone beside the gate is not multiplied")
+	# Two gates in a row each multiply once.
+	var two := gate_sim([{"t": "mult", "v": 2}])
+	two.beats.append({"z": 21.5, "type": "mob_gate", "panels": [{"t": "mult", "v": 2}], "moving": false, "resolved": false})
+	two.mob.register_gates(two.beats)
+	send(two, 0.0)
+	for i in 6:
+		two.step(0.05)
+	check(two.mob.n == 4 and absf(total_damage(two) - 16.0) < 0.001, "two gates multiply a drone twice and no more (n %d)" % two.mob.n)
+	var added := gate_sim([{"t": "add", "v": 6}])
+	send(added, 0.0, 10)
+	added.step(0.1)
+	check(added.mob.n == 10 + 12 and absf(total_damage(added) - 4.0 * 22.0) < 0.001, "+6 gate adds 6 drones per 5 that pass (n %d)" % added.mob.n)
+	var power := gate_sim([{"t": "power", "v": 100}])
+	send(power, 0.0, 3)
+	power.step(0.1)
+	check(power.mob.n == 3 and absf(total_damage(power) - 24.0) < 0.001, "+100% power doubles drone damage")
+	var speed := gate_sim([{"t": "speed", "v": 40}])
+	send(speed, 0.0)
+	speed.step(0.1)
+	check(absf(speed.mob.vz[0] - 36.0 * 1.4) < 0.01, "speed gate scales drone velocity")
+	var trap := gate_sim([{"t": "trap", "v": 50}])
+	send(trap, 0.0, 10)
+	trap.step(0.1)
+	check(trap.mob.n == 5 and absf(total_damage(trap) - 20.0) < 0.001, "trap /2 destroys every second drone (n %d)" % trap.mob.n)
+	# Cap: a multiplication at the cap merges into heavier drones and keeps the damage.
+	var capped := gate_sim([{"t": "mult", "v": 3}])
+	var cap := capped.mob.live_cap()
+	for i in cap - 1:
+		capped.mob.add_drone(MobSim.Kind.BOLT, 2.5, 0.0 + float(i) * 0.0, 0.0, 0.0, 1.0, 0.0, 9.0)
+	send(capped, 0.0, 1, 5.0)
+	var before := total_damage(capped)
+	capped.step(0.1)
+	check(capped.mob.n <= cap, "gate multiplication never exceeds the cap (n %d, cap %d)" % [capped.mob.n, cap])
+	check(absf(total_damage(capped) - (before + 10.0)) < 0.001, "merged multiplication keeps total damage (%.2f vs %.2f)" % [total_damage(capped), before + 10.0])
+	check(capped.mob.stats.merges >= 1, "cap merge is counted")
+	# Pass events are throttled and report counts.
+	var events := gate_sim([{"t": "mult", "v": 2}])
+	for i in 8:
+		send(events, 0.0, 1)
+		events.mob.px[events.mob.n - 1] = 0.0
+		events.mob.pz[events.mob.n - 1] = 19.99
+		events.step(0.02)
+	var passes := events.events.filter(func(e): return e.t == "mob_gate_pass")
+	check(passes.size() == 1 and int(passes[0].count) >= 1, "mob_gate_pass is throttled (%d events)" % passes.size())
+	check(events.mob.first_multiply_t >= 0.0, "first multiplication time is recorded")
+	# Moving gates: panel follows the slide, and a drone between panels gets nothing.
+	var moving := gate_sim([{"t": "mult", "v": 3}, {"t": "mult", "v": 2}], true)
+	moving.t = 1.0
+	var left_center := moving.mob.panel_center(moving.beats[0], 0, 1.0, moving.flags.tuning)
+	var right_center := moving.mob.panel_center(moving.beats[0], 1, 1.0, moving.flags.tuning)
+	check(moving.mob.panel_lane(moving.beats[0], left_center, 1.0, moving.flags.tuning) == 0 and moving.mob.panel_lane(moving.beats[0], right_center, 1.0, moving.flags.tuning) == 1, "moving mob panels are found by their slid centre")
+	check(moving.mob.panel_lane(moving.beats[0], (left_center + right_center) / 2.0, 1.0, moving.flags.tuning) == -1, "the gap between moving panels gives nothing")
+	# Level 1 authoring: at least six gates in the first 45 s of road, in z order, both families present.
+	var level1 := RunSim.new()
+	level1.flag_overrides = {"mob_stream": true}
+	level1.setup(1, 5)
+	var mob_beats := level1.beats.filter(func(b): return b.type == "mob_gate")
+	var early := mob_beats.filter(func(b): return float(b.z) <= 9.0 * 45.0)
+	check(early.size() >= 6, "level 1 has at least six mob gates in the first 45 s (%d)" % early.size())
+	check(level1.beats.any(func(b): return b.type == "gate"), "part gates stay beside mob gates")
+	var part_gate_z := level1.beats.filter(func(b): return b.type == "gate").map(func(b): return float(b.z))
+	var near := 999.0
+	for beat in mob_beats:
+		for gz in part_gate_z:
+			near = minf(near, absf(float(beat.z) - gz))
+	check(near >= 20.0, "mob gates keep 20 m from part gates (%.0f)" % near)
+	var plain := RunSim.new()
+	plain.setup(1, 5)
+	check(not plain.beats.any(func(b): return b.type == "mob_gate"), "no mob gates with the flag off")

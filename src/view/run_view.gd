@@ -636,7 +636,7 @@ func bump_combo() -> void:
 
 func _events() -> void:
 	for event in sim.events:
-		if event.t not in ["scrap", "weapon_fire", "gate_charge_tick", "wave_spawn", "cluster_burst"]:
+		if event.t not in ["scrap", "weapon_fire", "gate_charge_tick", "wave_spawn", "cluster_burst", "mob_gate_pass"]:
 			TelemetryLog.log_event(event)
 		match str(event.t):
 			"part_attached", "part_upgraded":
@@ -776,6 +776,16 @@ func _events() -> void:
 				audio.play("stage")
 				shake = 0.5
 			"clean_dodge": audio.play("dodge")
+			"mob_gate_pass":
+				var pass_type := str(event.type)
+				var pass_color := world._mob_panel_color(pass_type)
+				var gain: float = float(event.gain)
+				world.popup(world._mob_panel_text({"t": pass_type, "v": event.v}), Vector3(float(event.x), 3.0, sim.z - float(event.z)), pass_color if pass_type != "trap" else Color("ff6b7a"), 96 if gain > 0 or pass_type == "trap" else 72)
+				world.burst(Vector3(float(event.x), 1.3, sim.z - float(event.z)), 6 + mini(14, int(event.count) * 2), pass_color, 1.3)
+				audio.play("trap" if pass_type == "trap" else "multiply")
+				haptics.tap(12, 0.3)
+				if pass_type != "trap":
+					fov_kick = maxf(fov_kick, 2.5)
 			"special_used":
 				toast("OVERDRIVE" if event.id == "overdrive" else GameData.table("combos")[event.id].name.to_upper())
 				fov_kick = 10.0
@@ -834,8 +844,10 @@ func _process(delta: float) -> void:
 		_events()
 		world.sync(sim, frame_delta * (0.25 if kill_timer > 0 else 1))
 		perf.sample()
-		if sim.flags.dense_blocks:
+		if sim.flags.dense_blocks or sim.flags.mob_stream:
 			_govern_density(delta)
+		if world.impact_count >= 3:
+			audio.play("swarm_hit")
 		if runtime - last_perf_save > 5:
 			perf.write()
 			last_perf_save = runtime

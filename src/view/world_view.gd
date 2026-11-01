@@ -10,6 +10,8 @@ var projectiles: MultiMeshInstance3D
 var hostile_projectiles: MultiMeshInstance3D
 var bomblets: MultiMeshInstance3D
 var drones: MultiMeshInstance3D
+var mob_gate_nodes: Array = []
+var impact_count := 0
 var shadows: MultiMeshInstance3D
 var fx: MultiMeshInstance3D
 var fx_items: Array = []
@@ -150,6 +152,7 @@ func _ready() -> void:
 	gate_rail.position.y = 0.03
 	gate_rail.visible = false
 	add_child(gate_rail)
+	_build_mob_gate_pool()
 
 # Lane-aiming feedback: a ring under the locked target, a soft beam to it, and tags on salvage targets.
 func _build_aim_feedback() -> void:
@@ -337,6 +340,92 @@ func _gate_tag(option: Dictionary, robot: RobotState) -> String:
 				return "COMBO!"
 	return ""
 
+# Mob gates: at most two are on screen. Each is one flat merged frame mesh plus one Label3D per panel (<= 4 draw calls),
+# so a mob gate costs about half of a part gate. They are rebuilt only when a different gate is assigned to the slot.
+func _build_mob_gate_pool() -> void:
+	for slot in 2:
+		var root := Node3D.new()
+		root.visible = false
+		var frame := MeshInstance3D.new()
+		frame.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		root.add_child(frame)
+		var labels: Array = []
+		for k in 3:
+			var label := label3d("", Vector3.ZERO, 76)
+			label.outline_size = 12
+			label.outline_modulate = Color(0.06, 0.07, 0.12)
+			label.visible = false
+			root.add_child(label)
+			labels.append(label)
+		var rail_node := MeshInstance3D.new()
+		rail_node.mesh = gate_rail.mesh
+		rail_node.material_override = gate_rail.material_override
+		rail_node.position.y = 0.03
+		rail_node.visible = false
+		add_child(rail_node)
+		add_child(root)
+		mob_gate_nodes.append({"root": root, "frame": frame, "labels": labels, "rail": rail_node, "ord": -1})
+
+func _mob_panel_color(type_name: String) -> Color:
+	return Color(str(GameData.table("mob").gates.types[type_name].color))
+
+func _mob_panel_text(panel: Dictionary) -> String:
+	return str(GameData.table("mob").gates.types[str(panel.t)].text) % int(panel.v)
+
+func _rebuild_mob_gate(slot: Dictionary, gate: Dictionary, tuning: Dictionary) -> void:
+	var panels: Array = gate.panels
+	var moving: bool = gate.get("moving", false)
+	var width := 2.4 if moving else 6.8 / panels.size()
+	var pieces: Array = []
+	for i in panels.size():
+		var dx: float = (float(i) - (panels.size() - 1) / 2.0) * float(tuning.moving_spacing) if moving else -3.4 + width * (i + 0.5)
+		var tone := _mob_panel_color(str(panels[i].t))
+		pieces.append(MeshFactory.rbox(Vector3(width - 0.1, 0.95, 0.16), Vector3(dx, 3.05, 0), MeshFactory.DARK, 0.06))
+		pieces.append(MeshFactory.rbox(Vector3(width - 0.1, 0.12, 0.2), Vector3(dx, 3.58, 0), tone, 0.04))
+		pieces.append(MeshFactory.rbox(Vector3(0.12, 3.1, 0.18), Vector3(dx - width / 2 + 0.06, 1.55, 0), tone, 0.05))
+		pieces.append(MeshFactory.rbox(Vector3(0.12, 3.1, 0.18), Vector3(dx + width / 2 - 0.06, 1.55, 0), tone, 0.05))
+		pieces.append(MeshFactory.rbox(Vector3(width - 0.1, 0.05, 0.5), Vector3(dx, 0.03, 0), tone, 0.02))
+		var label: Label3D = slot.labels[i]
+		label.text = _mob_panel_text(panels[i])
+		label.font_size = 56 if moving or panels.size() == 3 else 76
+		label.position = Vector3(dx, 3.02, 0.14)
+		label.modulate = Color("ff6b7a") if str(panels[i].t) == "trap" else Color.WHITE
+		label.visible = true
+	for k in range(panels.size(), 3):
+		slot.labels[k].visible = false
+	slot.frame.mesh = MeshFactory.merged(pieces, true)
+	slot.ord = int(gate.ord)
+
+func _sync_mob_gates(sim: RunSim) -> void:
+	var mob: MobSim = sim.mob
+	var shown := 0
+	var shown_ords: Array = []
+	if mob != null and sim.state == "running":
+		var reach := float(mob.cfg.gates.visible_m)
+		for gate in mob.gates:
+			var gz := float(gate.z)
+			if gz < sim.z - 3.0:
+				continue
+			if gz > sim.z + reach or shown >= 2:
+				break
+			var slot: Dictionary = mob_gate_nodes[int(gate.ord) % 2]
+			if int(slot.ord) != int(gate.ord):
+				_rebuild_mob_gate(slot, gate, sim.flags.tuning)
+			slot.root.visible = true
+			slot.root.position = Vector3(mob.gate_offset(gate, sim.t, sim.flags.tuning), 0, sim.z - gz)
+			var is_moving: bool = gate.get("moving", false)
+			slot.rail.visible = is_moving
+			if is_moving:
+				slot.rail.position = Vector3(0, 0.03, sim.z - gz)
+				slot.rail.scale = Vector3(2.0 * (float(sim.flags.tuning.moving_amplitude) + 1.4 + float(sim.flags.tuning.moving_half)), 1, 1)
+			shown_ords.append(int(gate.ord))
+			shown += 1
+	for slot in mob_gate_nodes:
+		if slot.root.visible and not shown_ords.has(int(slot.ord)):
+			slot.root.visible = false
+			slot.rail.visible = false
+			slot.ord = -1
+
 const DRONE_COLORS := [Color("ffd23f"), Color("ff8a1f"), Color("ff4f2a"), Color("5fd0ff")]
 
 # Mob Stream drones: one MultiMesh, tint by kind, scale by how heavy (multiplied or merged) the drone is.
@@ -344,6 +433,7 @@ func _sync_drones(sim: RunSim) -> void:
 	var mob: MobSim = sim.mob
 	if mob == null:
 		drones.multimesh.visible_instance_count = 0
+		impact_count = 0
 		return
 	var count := mini(mob.n, 256)
 	var kinds: Dictionary = mob.cfg.kinds
@@ -358,6 +448,7 @@ func _sync_drones(sim: RunSim) -> void:
 		drones.multimesh.set_instance_color(i, DRONE_COLORS[k])
 	drones.multimesh.visible_instance_count = count
 	var shown := 0
+	impact_count = mob.impacts.size()
 	for impact in mob.impacts:
 		if shown < 6:
 			burst(Vector3(impact[0], 1.0, sim.z - float(impact[1])), 1 + mini(3, int(float(impact[2]))), DRONE_COLORS[int(impact[3])], 0.6)
@@ -515,6 +606,7 @@ func sync(sim: RunSim, dt: float) -> void:
 	projectiles.multimesh.visible_instance_count = shot_count
 	bomblets.multimesh.visible_instance_count = bomblet_count
 	_sync_drones(sim)
+	_sync_mob_gates(sim)
 	hostile_projectiles.multimesh.visible_instance_count = sim.hostile_bullets.size()
 	for i in sim.hostile_bullets.size():
 		var bolt: Dictionary = sim.hostile_bullets[i]

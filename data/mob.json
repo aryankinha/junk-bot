@@ -3,18 +3,58 @@
   "cap": 200,
   "overflow": "merge",
   "lateral_inherit": 0.4,
-  "kind_of_weapon": {"projectile": "bolt", "rocket": "bomb", "cone": "torch"},
+  "kind_of_weapon": {
+    "projectile": "bolt",
+    "rocket": "bomb",
+    "cone": "torch"
+  },
   "volley": {
-    "blaster": [3, 3, 3],
-    "cannon": [2, 3, 4],
-    "rocket": [1, 2, 3],
-    "flame": [3, 4, 5]
+    "blaster": [
+      3,
+      3,
+      3
+    ],
+    "cannon": [
+      2,
+      3,
+      4
+    ],
+    "rocket": [
+      1,
+      2,
+      3
+    ],
+    "flame": [
+      3,
+      4,
+      5
+    ]
   },
   "kinds": {
-    "bolt":  {"hit_radius": 0.85, "life_s": 1.6, "pierce": 0, "scale": 1.25},
-    "bomb":  {"hit_radius": 0.85, "life_s": 2.0, "pierce": 0, "scale": 1.35},
-    "torch": {"hit_radius": 1.5, "life_s": 0.5, "pierce": 2, "scale": 1.1},
-    "champion": {"hit_radius": 1.7, "life_s": 4.0, "pierce": 12, "scale": 3.0}
+    "bolt": {
+      "hit_radius": 0.85,
+      "life_s": 1.6,
+      "pierce": 0,
+      "scale": 1.25
+    },
+    "bomb": {
+      "hit_radius": 0.85,
+      "life_s": 2.0,
+      "pierce": 0,
+      "scale": 1.35
+    },
+    "torch": {
+      "hit_radius": 1.5,
+      "life_s": 0.5,
+      "pierce": 2,
+      "scale": 1.1
+    },
+    "champion": {
+      "hit_radius": 1.7,
+      "life_s": 4.0,
+      "pierce": 12,
+      "scale": 3.0
+    }
   },
   "launch": {
     "aim_spread_rad": 0.025,
@@ -30,5 +70,204 @@
   },
   "impact_buffer": 32,
   "scale_per_extra_weight": 0.3,
-  "scale_max": 2.2
+  "scale_max": 2.2,
+  "gates": {
+    "_note": "visible_m: gates show from 62 m = 6.9 s at 9 m/s forward speed. A drone flies at 36 m/s, so it closes on a gate at about 27 m/s relative to the robot (2.3 s over 62 m): the player has about 4.5 s after the gate appears to line the stream up. add_per: a +N gate spawns N extra drones for every add_per drones that pass its panel.",
+    "visible_m": 62.0,
+    "add_per": 5,
+    "pop_interval_s": 0.35,
+    "copy_spread_m": 0.22,
+    "copy_jitter_mps": 0.8,
+    "types": {
+      "mult": {
+        "color": "43d17a",
+        "text": "x%d"
+      },
+      "add": {
+        "color": "3ab0ff",
+        "text": "+%d"
+      },
+      "power": {
+        "color": "ff8a1f",
+        "text": "+%d%%"
+      },
+      "speed": {
+        "color": "9b6cff",
+        "text": "FAST +%d%%"
+      },
+      "trap": {
+        "color": "ff4757",
+        "text": "-%d%%"
+      }
+    },
+    "level1": [
+      {
+        "z": 45,
+        "panels": [
+          {
+            "t": "mult",
+            "v": 2
+          },
+          {
+            "t": "add",
+            "v": 5
+          }
+        ],
+        "pack": {
+          "enemy": "scrapper",
+          "count": 3,
+          "dz": 14
+        }
+      },
+      {
+        "z": 105,
+        "panels": [
+          {
+            "t": "mult",
+            "v": 2
+          },
+          {
+            "t": "power",
+            "v": 100
+          }
+        ],
+        "pack": {
+          "enemy": "scrapper",
+          "count": 3,
+          "dz": 14
+        }
+      },
+      {
+        "z": 150,
+        "panels": [
+          {
+            "t": "mult",
+            "v": 3
+          },
+          {
+            "t": "add",
+            "v": 8
+          }
+        ]
+      },
+      {
+        "z": 215,
+        "panels": [
+          {
+            "t": "speed",
+            "v": 40
+          },
+          {
+            "t": "mult",
+            "v": 2
+          }
+        ],
+        "pack": {
+          "enemy": "scrapper",
+          "count": 4,
+          "dz": 14
+        }
+      },
+      {
+        "z": 255,
+        "panels": [
+          {
+            "t": "mult",
+            "v": 2
+          },
+          {
+            "t": "add",
+            "v": 5
+          }
+        ]
+      },
+      {
+        "z": 320,
+        "panels": [
+          {
+            "t": "mult",
+            "v": 2
+          },
+          {
+            "t": "add",
+            "v": 5
+          },
+          {
+            "t": "power",
+            "v": 100
+          }
+        ]
+      },
+      {
+        "z": 375,
+        "panels": [
+          {
+            "t": "mult",
+            "v": 3
+          },
+          {
+            "t": "trap",
+            "v": 50
+          }
+        ]
+      },
+      {
+        "z": 435,
+        "moving": true,
+        "panels": [
+          {
+            "t": "mult",
+            "v": 3
+          },
+          {
+            "t": "trap",
+            "v": 50
+          }
+        ]
+      },
+      {
+        "z": 480,
+        "panels": [
+          {
+            "t": "mult",
+            "v": 2
+          },
+          {
+            "t": "speed",
+            "v": 40
+          }
+        ]
+      },
+      {
+        "z": 560,
+        "panels": [
+          {
+            "t": "mult",
+            "v": 3
+          },
+          {
+            "t": "add",
+            "v": 8
+          }
+        ]
+      },
+      {
+        "z": 640,
+        "panels": [
+          {
+            "t": "mult",
+            "v": 2
+          },
+          {
+            "t": "add",
+            "v": 5
+          },
+          {
+            "t": "power",
+            "v": 100
+          }
+        ]
+      }
+    ]
+  }
 }

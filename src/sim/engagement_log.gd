@@ -6,8 +6,10 @@ class_name EngagementLog extends RefCounted
 const STEER_WINDOW := 1.0
 const STEER_MIN := 0.3
 const DODGE_MOVE := 0.8
+const MOB_WINDOW := 7.0   # a mob gate is visible for 6.9 s (62 m at 9 m/s); moving the stream inside that window is the choice
 var marks: Array = []           # [time, kind]
 var steer_samples: Array = []   # [time, target_x] over the last STEER_WINDOW seconds
+var mob_samples: Array = []     # same, over MOB_WINDOW seconds
 var gate_times: Array = []
 var first_gate_t := -1.0
 var boss_t := -1.0
@@ -21,6 +23,8 @@ var warned: Dictionary = {}     # enemy uid -> x when its telegraph started
 var lane_half := 1.2
 var evolution_t := -1.0
 var bursts := 0
+var first_multiply_t := -1.0
+var mob_passes := 0
 
 func setup(half_width: float) -> void:
 	lane_half = half_width
@@ -32,6 +36,10 @@ func on_tick(sim) -> void:
 	steer_samples.append([sim.t, sim.target_x])
 	while steer_samples.size() > 1 and float(steer_samples[0][0]) < sim.t - STEER_WINDOW:
 		steer_samples.pop_front()
+	if sim.mob != null:
+		mob_samples.append([sim.t, sim.x])
+		while mob_samples.size() > 1 and float(mob_samples[0][0]) < sim.t - MOB_WINDOW:
+			mob_samples.pop_front()
 	for enemy in sim.enemies:
 		var uid: int = enemy.uid
 		if enemy.warning and not warned.has(uid):
@@ -43,12 +51,12 @@ func on_tick(sim) -> void:
 				mark(sim.t, "dodge")
 			warned.erase(uid)
 
-func steered() -> bool:
-	if steer_samples.is_empty():
+func steered(samples: Array = steer_samples) -> bool:
+	if samples.is_empty():
 		return false
 	var low := 1e9
 	var high := -1e9
-	for sample in steer_samples:
+	for sample in samples:
 		low = minf(low, float(sample[1]))
 		high = maxf(high, float(sample[1]))
 	return high - low >= STEER_MIN
@@ -87,6 +95,13 @@ func on_event(sim, type: String, data: Dictionary) -> void:
 				evolution_t = sim.t
 		"gate_charge_tick":
 			mark(sim.t, "charge")
+		"mob_gate_pass":
+			# The stream reaching a panel counts as decided only when the player is steering it there.
+			if steered(mob_samples):
+				mark(sim.t, "mobgate")
+			mob_passes += int(data.count)
+			if first_multiply_t < 0.0 and str(data.type) in ["mult", "add"]:
+				first_multiply_t = sim.t
 		"payoff":
 			_payoff(sim.t, str(data.get("source", "")))
 			mark(sim.t, "payoff")
