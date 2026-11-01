@@ -1,0 +1,1 @@
+PASS: 20 adb calls, explicit serial and owned package, foreground-gated screenshot

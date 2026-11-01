@@ -1,0 +1,42 @@
+[
+  {
+    "mean_a": 61.1566666666667,
+    "mean_b": 65.06,
+    "noise_aware": 0.423753149081315,
+    "pair": "mult2.0 vs add5.0",
+    "paired": 0.525,
+    "seeds": 20,
+    "z": 620.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 57.9966666666667,
+    "mean_b": 59.9966666666667,
+    "noise_aware": 0.439808661361162,
+    "pair": "mult2.0 vs power100.0",
+    "paired": 0.425,
+    "seeds": 20,
+    "z": 620.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 66.2733333333333,
+    "mean_b": 66.4766666666667,
+    "noise_aware": 0.4940464613607,
+    "pair": "add5.0 vs power100.0",
+    "paired": 0.45,
+    "seeds": 20,
+    "z": 620.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 35.0533333333333,
+    "mean_b": 34.0266666666667,
+    "noise_aware": 0.52322593039512,
+    "pair": "mult2.0 vs power100.0",
+    "paired": 0.475,
+    "seeds": 20,
+    "z": 690.0,
+    "zero_damage_pairs": 0
+  }
+]

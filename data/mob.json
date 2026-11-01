@@ -344,7 +344,7 @@
       },
       {
         "z": 690,
-        "_note": "last gate: the stream it multiplies arrives at the Titan as the opening salvo",
+        "_note": "Final gate payoff is a scrapper pack at z704. Earlier tests found its boss-opening volley expired during the Titan roar; do not count the roar as landed damage.",
         "panels": [
           {
             "t": "mult",
@@ -354,7 +354,12 @@
             "t": "power",
             "v": 100
           }
-        ]
+        ],
+        "pack": {
+          "enemy": "scrapper",
+          "count": 3,
+          "dz": 14
+        }
       }
     ],
     "generated": {

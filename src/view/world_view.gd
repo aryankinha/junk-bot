@@ -22,6 +22,7 @@ var popups: Array[Label3D] = []
 var popup_index := 0
 var player: RobotBuilder
 var enemy_nodes: Array[MeshInstance3D] = []
+var crowd_scrappers: MultiMeshInstance3D
 var hazard_nodes: Array[MeshInstance3D] = []
 var warnings: Array[MeshInstance3D] = []
 var gate_root: Node3D
@@ -110,6 +111,8 @@ func _ready() -> void:
 		add_child(node)
 		node.visible = false
 		enemy_nodes.append(node)
+	crowd_scrappers = make_multimesh(MeshFactory.enemy("scrapper"), 24, false, true)
+	crowd_scrappers.material_override = MeshFactory.crowd_palette()
 	var warning_material := StandardMaterial3D.new()
 	warning_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	warning_material.albedo_color = Color("e84c41")
@@ -199,11 +202,12 @@ func _sync_aim(sim: RunSim) -> void:
 			tag.visible = true
 			tag.position = Vector3(enemy.x, 3.0 + sin(elapsed * 4.0) * 0.12, -gap)
 
-func make_multimesh(mesh: Mesh, count: int, colors := false) -> MultiMeshInstance3D:
+func make_multimesh(mesh: Mesh, count: int, colors := false, custom := false) -> MultiMeshInstance3D:
 	var node := MultiMeshInstance3D.new()
 	node.multimesh = MultiMesh.new()
 	node.multimesh.transform_format = MultiMesh.TRANSFORM_3D
 	node.multimesh.use_colors = colors
+	node.multimesh.use_custom_data = custom
 	node.multimesh.mesh = mesh
 	node.multimesh.instance_count = count
 	node.multimesh.visible_instance_count = 0
@@ -627,6 +631,7 @@ func sync(sim: RunSim, dt: float) -> void:
 		hostile_projectiles.multimesh.set_instance_transform(i, Transform3D(Basis(), Vector3(bolt.x, 0.9, sim.z - float(bolt.z))))
 	shadows.multimesh.visible_instance_count = sim.enemies.size() + 1
 	shadows.multimesh.set_instance_transform(0, Transform3D(Basis().scaled(Vector3(1.2, 1, 1.3)), Vector3(sim.x, 0.025, 0)))
+	var crowd_count := 0
 	for i in enemy_nodes.size():
 		var node := enemy_nodes[i]
 		node.visible = i < sim.enemies.size()
@@ -674,7 +679,13 @@ func sync(sim: RunSim, dt: float) -> void:
 			var flash_value: float = maxf(0.0, float(node.get_meta("flash", 0.0)) - dt * 6.0)
 			node.set_meta("flash", flash_value)
 			node.set_instance_shader_parameter("flash", flash_value)
+			if sim.mob != null and enemy.id == "scrapper":
+				crowd_scrappers.multimesh.set_instance_transform(crowd_count, node.transform)
+				crowd_scrappers.multimesh.set_instance_custom_data(crowd_count, Color(flash_value, 0, 0, 1))
+				crowd_count += 1
+				node.visible = false
 			shadows.multimesh.set_instance_transform(i + 1, Transform3D(Basis().scaled(Vector3.ONE * size), Vector3(enemy.x, 0.025, node.position.z)))
+	crowd_scrappers.multimesh.visible_instance_count = crowd_count
 	for i in hazard_nodes.size():
 		hazard_nodes[i].visible = i < sim.hazards.size() and not sim.hazards[i].used
 		if hazard_nodes[i].visible:

@@ -23,6 +23,7 @@ const GREY = Color("8b97a8")
 const DIRT = Color("8b6a47")
 static var material: ShaderMaterial
 static var ground_material: StandardMaterial3D
+static var crowd_material: ShaderMaterial
 static var cache: Dictionary = {}
 
 const TOON_SHADER := """
@@ -74,6 +75,16 @@ static func palette() -> ShaderMaterial:
 		pass_material.shader = outline
 		material.next_pass = pass_material
 	return material
+
+static func crowd_palette() -> ShaderMaterial:
+	if crowd_material == null:
+		# Same toy shading and outline; each MultiMesh instance carries its own hit flash.
+		var shader := Shader.new()
+		shader.code = TOON_SHADER.replace("instance uniform float flash : hint_range(0.0, 1.0) = 0.0;", "varying float flash;").replace("void vertex() {", "void vertex() {\n flash = INSTANCE_CUSTOM.r;")
+		crowd_material = ShaderMaterial.new()
+		crowd_material.shader = shader
+		crowd_material.next_pass = palette().next_pass
+	return crowd_material
 
 static func flat_material() -> StandardMaterial3D:
 	if ground_material == null:

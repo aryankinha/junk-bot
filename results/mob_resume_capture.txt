@@ -1,0 +1,7 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 91.7 - Compatibility - Using Device: Apple - Apple M3
+
+captured first_multiply t=1.23333333333333 drones=8
+captured x3_stream t=0.75 drones=99
+captured champion_launch t=0.75 drones=108
+captured boss_multiplied_hit t=0.76666666666667 drones=79

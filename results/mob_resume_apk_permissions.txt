@@ -1,0 +1,3 @@
+package: com.aryankinha.scrapdragon
+uses-permission: name='android.permission.VIBRATE'
+warn: resource com.godot.game:mipmap/themed_icon for config 'anydpi-v26' is a file reference to 'res/mipmap-anydpi-v26/themed_icon.xml' but no such path exists.

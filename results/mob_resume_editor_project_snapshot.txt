@@ -1,0 +1,46 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Scrap Dragon"
+run/main_scene="res://src/view/Boot.tscn"
+config/auto_accept_quit=false
+config/features=PackedStringArray("4.7", "GL Compatibility")
+run/max_fps=60
+run/delta_smoothing=false
+config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1080
+window/size/viewport_height=1920
+window/size/window_width_override=648
+window/size/window_height_override=1152
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/scrap_ads_export/plugin.cfg")
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
+anti_aliasing/quality/msaa_3d=2
+environment/defaults/default_clear_color=Color(0.89, 0.77, 0.58, 1)
+anti_aliasing/quality/msaa_3d.mobile=0

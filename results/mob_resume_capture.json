@@ -1,0 +1,9 @@
+{
+  "boss_fixture_damage": 180.0,
+  "first_multiply_t": 1.23333333333333,
+  "fixtures": [
+    "x3_stream: cannon L3, rocket L3, enemies removed",
+    "champion_launch: full Overdrive supplied",
+    "boss_multiplied_hit: same multiplied volley, boss HP 10000, roar skipped"
+  ]
+}

@@ -6,9 +6,12 @@ func _initialize() -> void:
 
 func run() -> void:
 	var flags: Dictionary = {}
+	var steps := 1
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--flags="):
 			flags = JSON.parse_string(arg.substr(8))
+		elif arg == "--fast":
+			steps = 6 # draw-state diagnosis only; never use accelerated frame times as a perf result
 	var game = load("res://src/view/Boot.tscn").instantiate()
 	root.add_child(game)
 	game.capture = true
@@ -20,14 +23,21 @@ func run() -> void:
 	var bot = MobBot.new(20261031, 0.15)
 	var rows: Array = []
 	for i in 6000:
-		for k in 1:
+		for k in steps:
 			bot.control(game.sim)
 			game.sim.step(1.0 / 60)
+		game.runtime = game.sim.t
 		game._events()
 		game.sim.events.clear()
-		game.world.sync(game.sim, 1.0 / 60)
+		game.world.sync(game.sim, float(steps) / 60)
+		if game.sim.mob != null:
+			var expected: int = game.sim.enemies.filter(func(e): return e.id == "scrapper").size()
+			assert(game.world.crowd_scrappers.multimesh.visible_instance_count == expected)
 		game._update_hud()
 		await process_frame
+		if steps > 1 and i == 216:
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png("res://results/mob_resume_crowd_batch.png")
 		var draws := int(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME))
 		var w = game.world
 		var pops := 0

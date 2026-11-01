@@ -593,7 +593,14 @@ func start_run(is_daily := false) -> void:
 	sim = RunSim.new()
 	sim.flag_overrides = flag_overrides
 	sim.setup(level, seed_arg, {} if daily else save.data.part_tiers, 0 if daily else int(save.data.losses_on_level), [] if daily else save.data.unlocked_parts)
-	bot = (MobBot.new(seed_arg, 0.15) if sim.flags.mob_stream else AimBot.new(seed_arg, 0.15) if sim.flags.aim_mode == "lane" else BotController.new(seed_arg, "perfect", 0)) if capture else null
+	bot = null
+	if capture and OS.is_debug_build():
+		# Test drivers are excluded from player exports. Resolve them only for source-tree captures;
+		# static class references here made the packaged game fail to parse at startup.
+		var driver_path := "res://tests/bots/" + ("mob_bot.gd" if sim.flags.mob_stream else "aim_bot.gd" if sim.flags.aim_mode == "lane" else "bot_controller.gd")
+		if ResourceLoader.exists(driver_path):
+			var driver = load(driver_path)
+			bot = driver.new(seed_arg, 0.15) if sim.flags.mob_stream or sim.flags.aim_mode == "lane" else driver.new(seed_arg, "perfect", 0)
 	perf = PerfLog.new()
 	mob_popup_at.clear()
 	reward_doubled = false

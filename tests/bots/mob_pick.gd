@@ -11,6 +11,7 @@ func _initialize() -> void:
 	var seeds := 16
 	var level := 1
 	var label := "mob_pick"
+	var from_z := -1.0
 	var overrides: Dictionary = {"mob_stream": true}
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--seeds="):
@@ -19,6 +20,8 @@ func _initialize() -> void:
 			level = arg.get_slice("=", 1).to_int()
 		elif arg.begins_with("--label="):
 			label = arg.get_slice("=", 1)
+		elif arg.begins_with("--from-z="):
+			from_z = arg.get_slice("=", 1).to_float()
 		elif arg.begins_with("--flags="):
 			overrides.merge(JSON.parse_string(arg.substr(8)), true)
 	var probe := RunSim.new()
@@ -30,6 +33,8 @@ func _initialize() -> void:
 	for gate_index in probe.mob.gates.size():
 		var panels: Array = probe.mob.gates[gate_index].panels
 		var gate_z: float = float(probe.mob.gates[gate_index].z)
+		if gate_z < from_z:
+			continue
 		var names := panels.map(func(p): return "%s%s" % [str(p.t), str(p.v)])
 		for a in panels.size():
 			for b in range(a + 1, panels.size()):

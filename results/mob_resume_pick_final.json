@@ -1,0 +1,162 @@
+[
+  {
+    "mean_a": 25.2,
+    "mean_b": 22.44,
+    "noise_aware": 0.564139448276996,
+    "pair": "mult2.0 vs add5.0",
+    "paired": 0.5,
+    "seeds": 20,
+    "z": 45.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 60.6966666666667,
+    "mean_b": 65.2,
+    "noise_aware": 0.440109282775344,
+    "pair": "mult2.0 vs power80.0",
+    "paired": 0.3,
+    "seeds": 20,
+    "z": 105.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 30.9333333333333,
+    "mean_b": 29.4766666666667,
+    "noise_aware": 0.517745810758092,
+    "pair": "mult3.0 vs add10.0",
+    "paired": 0.6,
+    "seeds": 20,
+    "z": 150.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 75.8866666666667,
+    "mean_b": 69.6433333333333,
+    "noise_aware": 0.582453415518389,
+    "pair": "speed40.0 vs mult2.0",
+    "paired": 0.65,
+    "seeds": 20,
+    "z": 215.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 18.6333333333333,
+    "mean_b": 7.63333333333333,
+    "noise_aware": 0.670012957776148,
+    "pair": "mult2.0 vs add5.0",
+    "paired": 0.675,
+    "seeds": 20,
+    "z": 255.0,
+    "zero_damage_pairs": 3
+  },
+  {
+    "mean_a": 60.04,
+    "mean_b": 62.9666666666666,
+    "noise_aware": 0.470076984638509,
+    "pair": "mult2.0 vs add5.0",
+    "paired": 0.5,
+    "seeds": 20,
+    "z": 320.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 55.2033333333333,
+    "mean_b": 55.3366666666667,
+    "noise_aware": 0.49865234016766,
+    "pair": "mult2.0 vs power100.0",
+    "paired": 0.475,
+    "seeds": 20,
+    "z": 320.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 77.8966666666667,
+    "mean_b": 75.6066666666667,
+    "noise_aware": 0.539187032403042,
+    "pair": "add5.0 vs power100.0",
+    "paired": 0.525,
+    "seeds": 20,
+    "z": 320.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 4.06666666666667,
+    "mean_b": 4.0,
+    "noise_aware": 0.50357329909443,
+    "pair": "mult3.0 vs trap50.0",
+    "paired": 0.5,
+    "seeds": 20,
+    "z": 375.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 256.25,
+    "mean_b": 78.07,
+    "noise_aware": 0.978047713231427,
+    "pair": "mult3.0 vs trap50.0",
+    "paired": 1.0,
+    "seeds": 20,
+    "z": 435.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 76.2959999999999,
+    "mean_b": 78.678,
+    "noise_aware": 0.462061765428873,
+    "pair": "speed60.0 vs power30.0",
+    "paired": 0.525,
+    "seeds": 20,
+    "z": 480.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 98.41,
+    "mean_b": 91.5833333333333,
+    "noise_aware": 0.568908468274989,
+    "pair": "mult3.0 vs add12.0",
+    "paired": 0.525,
+    "seeds": 20,
+    "z": 560.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 61.1566666666667,
+    "mean_b": 65.06,
+    "noise_aware": 0.423753149081315,
+    "pair": "mult2.0 vs add5.0",
+    "paired": 0.525,
+    "seeds": 20,
+    "z": 620.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 57.9966666666667,
+    "mean_b": 59.9966666666667,
+    "noise_aware": 0.439808661361162,
+    "pair": "mult2.0 vs power100.0",
+    "paired": 0.425,
+    "seeds": 20,
+    "z": 620.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 66.2733333333333,
+    "mean_b": 66.4766666666667,
+    "noise_aware": 0.4940464613607,
+    "pair": "add5.0 vs power100.0",
+    "paired": 0.45,
+    "seeds": 20,
+    "z": 620.0,
+    "zero_damage_pairs": 0
+  },
+  {
+    "mean_a": 0.0,
+    "mean_b": 0.0,
+    "noise_aware": 0.5,
+    "pair": "mult2.0 vs power100.0",
+    "paired": 0.5,
+    "seeds": 20,
+    "z": 690.0,
+    "zero_damage_pairs": 20
+  }
+]

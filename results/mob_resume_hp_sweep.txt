@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{ "hp_mult": 1.3, "mode": "stay", "runs": 12, "wins": 4, "winning_boss_median_s": 25.8999999999998 }
+{ "hp_mult": 1.3, "mode": "best", "runs": 12, "wins": 12, "winning_boss_median_s": 13.0333333333336 }
+{ "hp_mult": 1.6, "mode": "stay", "runs": 12, "wins": 3, "winning_boss_median_s": 28.1999999999997 }
+{ "hp_mult": 1.6, "mode": "best", "runs": 12, "wins": 12, "winning_boss_median_s": 14.7500000000003 }
+{ "hp_mult": 2.0, "mode": "stay", "runs": 12, "wins": 4, "winning_boss_median_s": 38.8666666666657 }
+{ "hp_mult": 2.0, "mode": "best", "runs": 12, "wins": 12, "winning_boss_median_s": 15.316666666667 }
+{ "hp_mult": 2.5, "mode": "stay", "runs": 12, "wins": 2, "winning_boss_median_s": 41.9999999999989 }
+{ "hp_mult": 2.5, "mode": "best", "runs": 12, "wins": 12, "winning_boss_median_s": 17.3333333333336 }
