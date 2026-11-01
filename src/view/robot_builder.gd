@@ -14,7 +14,19 @@ var growth_tween: Tween
 var drive_speed := 0.0
 var steer := 0.0
 var fire_kick := 0.0
-var reduced_motion := false
+var reduced_motion := false:
+	set(value):
+		if value and not reduced_motion:
+			if growth_tween != null: growth_tween.kill()
+			if stage_value > 0: scale = Vector3.ONE * [0.85, 1.12, 1.4][stage_value - 1]
+			for node in attachments.values():
+				var tween = node.get_meta("attach_tween", null)
+				if tween != null and tween.is_valid(): tween.kill()
+				node.position = Vector3.ZERO; node.scale = Vector3.ONE
+			flash_amount = 0
+			for node in [body, head] + wheels:
+				if node != null: node.set_instance_shader_parameter("flash", 0.0)
+		reduced_motion = value
 var flash_amount := 0.0
 var clock := 0.0
 var wheel_spin := 0.0
@@ -62,6 +74,7 @@ func _process(delta: float) -> void:
 		body.position = Vector3.ZERO
 		body.rotation.z = -steer * 0.05
 		head_pivot.rotation = Vector3.ZERO
+		head_pivot.position.y = 1.32
 		antenna_pivot.rotation = Vector3.ZERO
 		return
 	clock += delta
@@ -137,6 +150,7 @@ func sync(robot: RobotState, animate := true) -> void:
 			node.position.y = 1.5
 			node.scale = Vector3.ONE * 0.2
 			var tween := node.create_tween().set_parallel(true)
+			node.set_meta("attach_tween", tween)
 			tween.tween_property(node, "position:y", 0.0, 0.22).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 			tween.tween_property(node, "scale", Vector3.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 

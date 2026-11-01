@@ -604,7 +604,7 @@ func sync(sim: RunSim, dt: float) -> void:
 	# Leave the playable surface clear. Sparse matte salvage keeps the junkyard setting outside it.
 	stripes.multimesh.visible_instance_count = 0
 	skids.multimesh.visible_instance_count = 0
-	MeshFactory.road_palette().set_shader_parameter("travel", sim.z)
+	road.material_override.set_shader_parameter("travel", sim.z)
 	for k in scenery_sets.size():
 		var set_mesh := scenery_sets[k].multimesh
 		set_mesh.visible_instance_count = 4 if k in [0, 1, 4] else 0
@@ -810,6 +810,7 @@ func sync(sim: RunSim, dt: float) -> void:
 func configure_ui_v2(enabled: bool, reduced: bool, limit: int) -> void:
 	ui_v2_enabled = enabled; reduce_motion = enabled and reduced; flash_rate = clampi(limit, 0, 3)
 	player.reduced_motion = reduce_motion
+	road.material_override = MeshFactory.industrial_road_palette() if enabled else MeshFactory.road_palette()
 	if enabled and ui_feedback == null:
 		ui_feedback = UiWorldScript.new(); add_child(ui_feedback)
 	if ui_feedback != null:

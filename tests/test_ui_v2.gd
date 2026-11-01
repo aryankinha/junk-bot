@@ -33,7 +33,10 @@ func run() -> void:
 	for time in g.ui_v2.flash_times:
 		var count: int = g.ui_v2.flash_times.filter(func(t): return t <= time and t > time - 1).size()
 		check(count <= 3, "local flash budget in rolling second")
+	g.world.player.flash()
+	g.world.player._process(0.01)
 	g.save.data.settings.reduce_motion = true; g._apply_settings()
+	check(is_zero_approx(float(g.world.player.body.get_instance_shader_parameter("flash"))), "enabling Reduce Motion clears an in-flight flash")
 	var starts: int = g.world.ui_feedback.optional_starts
 	g.sim.emit("stage_up", {"stage": 2}); g.sim.emit("player_hit", {"amount": 2}); g._events(); g.world.burst(Vector3.ZERO, 20); g.world.sync(g.sim, 0.1); g.ui_v2.tick(g, 0.1)
 	check(g.world.ui_feedback.optional_starts == starts and g.world.fx_items.is_empty(), "Reduce Motion stops optional effects")

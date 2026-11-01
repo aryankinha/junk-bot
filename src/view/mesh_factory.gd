@@ -24,6 +24,7 @@ const DIRT = Color("8b6a47")
 static var material: ShaderMaterial
 static var ground_material: StandardMaterial3D
 static var crowd_material: ShaderMaterial
+static var industrial_road_material: ShaderMaterial
 static var road_material: ShaderMaterial
 static var scenery_material: ShaderMaterial
 static var cache: Dictionary = {}
@@ -110,6 +111,34 @@ void fragment() {
 		road_material = ShaderMaterial.new()
 		road_material.shader = shader
 	return road_material
+
+# Broad seams read speed without fine noise or extra roadside objects.
+static func industrial_road_palette() -> ShaderMaterial:
+	if industrial_road_material == null:
+		var shader := Shader.new()
+		shader.code = """
+shader_type spatial;
+render_mode unshaded;
+uniform float travel = 0.0;
+varying vec3 tint;
+varying vec2 ground;
+void vertex() {
+ tint = pow(COLOR.rgb, vec3(2.2));
+ ground = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xz;
+}
+void fragment() {
+ float z = ground.y - travel;
+ float edge = smoothstep(5.0, 5.6, abs(ground.x));
+ float seam = 1.0 - smoothstep(0.08, 0.18, abs(mod(z + 6.0, 12.0) - 6.0));
+ float stripe = step(0.5, fract((ground.x + z) * 0.3));
+ float outer = smoothstep(5.6, 6.0, abs(ground.x));
+ vec3 worn = mix(tint, tint * vec3(0.8, 0.72, 0.64), edge * 0.13);
+ ALBEDO = worn * (1.0 - seam * 0.04 - stripe * outer * 0.04);
+}
+"""
+		industrial_road_material = ShaderMaterial.new()
+		industrial_road_material.shader = shader
+	return industrial_road_material
 
 static func scenery_palette() -> ShaderMaterial:
 	if scenery_material == null:

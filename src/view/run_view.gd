@@ -61,6 +61,7 @@ var gov_draws := 0
 var cluster_seen := false
 var capture := false
 var playtest_variant := ""
+var ui_review_variant := ""
 var snapshot_at := -1.0
 var snapshot_path := ""
 var exit_after := -1.0
@@ -117,13 +118,21 @@ func _ready() -> void:
 			var variant := arg.get_slice("=", 1)
 			if variant in ["a", "b"]:
 				playtest_variant = variant
+		elif arg.begins_with("--ui-review=") and OS.is_debug_build():
+			var variant := arg.get_slice("=", 1)
+			if variant in ["a", "b"]: ui_review_variant = variant
 		elif arg.begins_with("--snapshot-at="):
 			snapshot_at = arg.get_slice("=", 1).to_float()
 		elif arg.begins_with("--snapshot-path="):
 			snapshot_path = arg.get_slice("=", 1)
 		elif arg.begins_with("--exit-after="):
 			exit_after = arg.get_slice("=", 1).to_float()
-	if capture:
+	if OS.is_debug_build() and OS.has_feature("ui_v2_review"): ui_review_variant = "b"
+	if not ui_review_variant.is_empty():
+		save.path = "user://ui_review_%s.json" % ui_review_variant
+		save.data = save.defaults()
+		flag_overrides["ui_v2"] = ui_review_variant == "b"
+	elif capture:
 		save.path = "user://capture_save.json"
 		save.data = save.defaults()
 	elif not playtest_variant.is_empty():
@@ -602,7 +611,7 @@ func start_run(is_daily := false) -> void:
 	daily = is_daily
 	daily_key = Time.get_date_string_from_system(true)
 	var seed_arg := int(daily_key.replace("-", "")) if daily else int(Time.get_unix_time_from_system())
-	if capture or not playtest_variant.is_empty():
+	if capture or not playtest_variant.is_empty() or not ui_review_variant.is_empty():
 		seed_arg = 20261031
 	var level := 1 if daily else int(save.data.level)
 	sim = RunSim.new()
@@ -930,10 +939,11 @@ func _process(delta: float) -> void:
 				kill_timer -= delta
 			else:
 				_finish_run()
-	elif screen == "hangar":
-		world.player.rotation.y += delta * 0.3
+	elif screen == "hangar" or (screen == "result" and ui_v2_enabled):
+		var reduced := ui_v2_enabled and bool(save.data.settings.reduce_motion)
+		if not reduced: world.player.rotation.y += delta * 0.3
 		if is_instance_valid(hangar_model):
-			hangar_model.rotation.y += delta * 0.4
+			if not reduced: hangar_model.rotation.y += delta * 0.4
 			if is_instance_valid(hangar_camera):
 				frame_model(hangar_camera, hangar_model, 1.9)
 	if stress_mode and not stress_done and runtime >= 60:
@@ -1159,7 +1169,9 @@ func show_result() -> void:
 	hud.visible = false
 	var won := sim.state == "won"
 	var column := menu("TITAN DOWN!" if won else "SO CLOSE!", "")
-	if result_texture != null:
+	if ui_v2_enabled:
+		_hangar_preview(column, 500)
+	elif result_texture != null:
 		var image := TextureRect.new()
 		image.texture = result_texture
 		image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -1178,8 +1190,9 @@ func show_result() -> void:
 		for i in 3:
 			var star := UiIcon.make("star", 150, Color("ffd23f") if i < run_stars else Color("d5dacf"))
 			star.pivot_offset = Vector2(75, 75)
-			star.scale = Vector2.ZERO
+			star.scale = Vector2.ONE if ui_v2_enabled and save.data.settings.reduce_motion else Vector2.ZERO
 			stars_row.add_child(star)
+			if ui_v2_enabled and save.data.settings.reduce_motion: continue
 			var tween := star.create_tween()
 			tween.tween_interval(0.25 + i * 0.28)
 			tween.tween_property(star, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
@@ -1199,8 +1212,11 @@ func show_result() -> void:
 	reward_row.add_child(reward_label)
 	column.add_child(reward_row)
 	var shown_label := reward_label
-	var count := shown_label.create_tween()
-	count.tween_method(func(v: float): shown_label.text = "%d" % int(v), 0.0, float(result_reward), 0.9).set_delay(0.3)
+	if ui_v2_enabled and save.data.settings.reduce_motion:
+		shown_label.text = str(result_reward)
+	else:
+		var count := shown_label.create_tween()
+		count.tween_method(func(v: float): shown_label.text = "%d" % int(v), 0.0, float(result_reward), 0.9).set_delay(0.3)
 	var summary := text_label("%d KILLS   ·   BEST COMBO x%d   ·   %d PARTS LOST" % [run_kills, best_combo, sim.robot.parts_lost], 28, MUTED)
 	summary.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(summary)
@@ -1298,6 +1314,19 @@ func _hangar_home() -> void:
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(subtitle)
 	_hangar_preview(column, 500)
+	if ui_v2_enabled:
+		var cue := "UPGRADE AVAILABLE IN GARAGE" if _any_affordable() else "ALL BLUEPRINTS AVAILABLE"
+		if not _any_affordable():
+			var next_level := 999
+			for id in GameData.table("parts"):
+				var part: Dictionary = GameData.table("parts")[id]
+				var unlock := int(part.get("unlock_level", 1))
+				if unlock > int(save.data.level) and unlock < next_level:
+					next_level = unlock
+					cue = "NEXT BLUEPRINT  ·  %s  ·  LEVEL %d" % [str(part.name).to_upper(), unlock]
+		var progress := text_label(cue, 30, MUTED)
+		progress.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		column.add_child(progress)
 	if not login_banner.is_empty():
 		var banner := text_label(login_banner, 30, MUTED)
 		banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -1454,9 +1483,16 @@ func _hangar_preview(column: VBoxContainer, height := 290) -> void:
 		MeshFactory.cylinder(1.9, 0.3, Vector3(0, -0.16, 0), Color("d7d6c9"), Vector3.ZERO, -1.0, 28),
 		MeshFactory.cylinder(1.8, 0.34, Vector3(0, -0.14, 0), Color("ff8a1f"), Vector3.ZERO, -1.0, 28),
 		MeshFactory.cylinder(1.7, 0.36, Vector3(0, -0.12, 0), Color("f3efe3"), Vector3.ZERO, -1.0, 28)], true))
+	if ui_v2_enabled:
+		pedestal.mesh = MeshFactory.merged([
+			MeshFactory.box(Vector3(3.6, 0.22, 3.6), Vector3(0, -0.16, 0), Color("54636a")),
+			MeshFactory.box(Vector3(3.4, 0.1, 3.4), Vector3(0, -0.02, 0), Color("d2d4cb")),
+			MeshFactory.box(Vector3(0.25, 0.12, 0.65), Vector3(-1.55, 0.03, 1.3), Color("7e6955")),
+			MeshFactory.box(Vector3(0.25, 0.12, 0.65), Vector3(1.55, 0.03, -1.3), Color("7e6955"))], true)
 	viewport.add_child(pedestal)
 	hangar_model = RobotBuilder.new()
 	viewport.add_child(hangar_model)
+	hangar_model.reduced_motion = ui_v2_enabled and bool(save.data.settings.reduce_motion)
 	hangar_model.rotation_degrees.y = 155
 	var preview := RobotState.new()
 	preview.parts = sim.robot.parts.duplicate()
