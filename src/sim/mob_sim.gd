@@ -83,6 +83,8 @@ func _grow() -> int:
 # Adds a drone, or folds it into a compatible heavier drone at the cap. Champions share the same cap.
 func add_drone(k: int, x: float, z: float, svx: float, svz: float, damage: float, charge: float, life_s: float, weight := 1.0, weapon_id := "", burn_dps := 0.0, splash := 0.0, mask := 0, height := 1.0) -> int:
 	enforce_cap()
+	if hook_owner != null and hook_owner.enabled("material_tiers"):
+		return hook_owner.accept_particle(self,k,x,z,svx,svz,damage,charge,life_s,weight,weapon_id,burn_dps,splash,mask,height)
 	if n >= live_cap():
 		var last := -1
 		for candidate in range(n - 1, -1, -1):
@@ -121,6 +123,8 @@ func add_drone(k: int, x: float, z: float, svx: float, svz: float, damage: float
 	return i
 
 func _compact_one() -> void:
+	if hook_owner != null and hook_owner.enabled("material_tiers"):
+		hook_owner.compact(self); return
 	if hook_owner != null and hook_owner.enabled("gate_preview"):
 		hook_owner.compact_preview(self); return
 	var a := 0
@@ -248,7 +252,8 @@ func launch_champion(sim, overcharged: bool) -> void:
 	var spec: Dictionary = cfg.champion
 	var kind_spec: Dictionary = cfg.kinds.champion
 	var damage := float(spec.damage) * float(sim.robot.stats.dps_mult) * (1.5 if overcharged else 1.0)
-	if hook_owner != null: hook_owner.new_cohort(self,"champion",damage)
+	if hook_owner != null:
+		hook_owner.new_cohort(self,"champion",damage); damage *= hook_owner.multiplier(hook_owner.primary(sim))
 	add_drone(Kind.CHAMPION, sim.x, sim.z + 1.4, robot_vx * float(cfg.lateral_inherit), float(spec.speed), damage, 0.0, float(kind_spec.life_s), 1.0, "champion", 0.0, float(spec.splash))
 	stats["champions"] = int(stats.get("champions", 0)) + 1
 	sim.emit("mob_champion", {"damage": snappedf(damage, 0.1)})
@@ -482,6 +487,8 @@ func panel_lane(gate: Dictionary, at_x: float, at_t: float, tuning: Dictionary) 
 # Gate that creates `extra` more full-damage drones from drone i. Room under the cap decides how many become real
 # drones; the rest of the damage is folded into the group as heavier drones, so no damage is lost to the cap.
 func _multiply(i: int, extra: int, jitter_seed: int) -> void:
+	if hook_owner != null and hook_owner.enabled("material_tiers"):
+		hook_owner.multiply_single(self,i,extra,jitter_seed); return
 	var room := maxi(0, live_cap() - n)
 	var made := mini(extra, room)
 	var group := 1 + made
@@ -535,6 +542,7 @@ func _apply_panel(sim, i: int, gate: Dictionary, lane: int) -> bool:
 				state.gain -= before
 				stats.trap_loss += before
 				removed = true
+	if hook_owner != null and hook_owner.enabled("material_tiers") and not removed: hook_owner.bound_particle(self,i)
 	return removed
 
 # A champion is boosted by good gates and only dented by traps; it never splits or dies at a gate.

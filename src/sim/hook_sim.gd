@@ -41,6 +41,7 @@ func quality(family: String) -> int:
 
 func progress(family: String) -> float:
 	var q := quality(family)
+	if q >= 4: return 1.0
 	var limits: Array = tiers.get("thresholds", [30.0, 80.0, 160.0])
 	var lo := float(limits[q - 2]) if q > 1 else 0.0
 	var hi := float(limits[q - 1]) if q < 4 else float(limits[2]) + float(tiers.get("ascend_units", 160.0))
@@ -68,8 +69,9 @@ func primary(sim) -> String:
 func new_cohort(mob, family: String, nominal_damage: float) -> void:
 	cohort_serial += 1
 	mob.active_cohort = cohort_serial
-	mob.active_material = quality(family)
-	mob.active_unit_damage = maxf(0.000001, nominal_damage * multiplier(family))
+	var actual := primary(host.get_ref()) if family == "champion" else family
+	mob.active_material = quality(actual)
+	mob.active_unit_damage = maxf(0.000001, nominal_damage * multiplier(actual))
 
 static func resolve(input: float, panel: Dictionary) -> float:
 	var v := float(panel.v)
@@ -254,3 +256,105 @@ func compact_preview(mob) -> void:
 	for uid in mob.hit_ids[b]:
 		if not mob.hit_ids[a].has(uid):mob.hit_ids[a].append(uid)
 	mob._swap_remove(b);mob.stats.merges+=1
+
+# Material mode bounds physical weight; credit only the unrepresented payload.
+func accept_particle(mob, k: int, x: float, z: float, svx: float, svz: float, damage: float, charge: float, life_s: float, weight: float, family: String, burn_dps: float, splash: float, mask: int, height: float) -> int:
+	var retained := 0.0
+	var result := -1
+	var maximum := float(tiers.get("max_weight", 5.0))
+	var unit := damage / maxf(0.000001,weight)
+	if mob.n < mob.live_cap():
+		var kept := minf(maximum,weight)
+		# Safe call through the unmodified allocation branch; capacity was checked above.
+		var saved = mob.hook_owner; mob.hook_owner = null
+		result = mob.add_drone(k,x,z,svx,svz,unit*kept,charge,life_s,kept,family,burn_dps,splash,mask,height)
+		mob.hook_owner = saved
+		retained = kept
+	else:
+		for j in range(mob.n - 1, -1, -1):
+			if mob.kind[j] != k or mob.gmask[j] != mask or mob.wid[j] != family or mob.cohort[j] != mob.active_cohort: continue
+			var take := minf(maxf(0,maximum-mob.wgt[j]),weight-retained)
+			if take <= 0: continue
+			mob.dmg[j] += unit*take; mob.wgt[j] += take; mob.chg[j] += charge*take/maxf(0.000001,weight); retained += take; result=j
+			mob.life[j] = maxf(mob.life[j],life_s); mob.stats.merges += 1
+			if retained >= weight - 0.000001: break
+	var residual := maxf(0,weight-retained)
+	if residual > 0: credit(family,residual,unit*residual,"launch_cap")
+	account(damage,unit*retained,unit*residual)
+	return result
+
+func bound_particle(mob, i: int, reason := "merge_cap") -> void:
+	var maximum := float(tiers.get("max_weight", 5.0))
+	if mob.wgt[i] <= maximum: return
+	var unit: float = mob.dmg[i] / mob.wgt[i]
+	var residual: float = mob.wgt[i] - maximum
+	credit(mob.wid[i],residual,residual*unit,reason)
+	account(mob.dmg[i],maximum*unit,residual*unit)
+	mob.dmg[i] = maximum*unit; mob.wgt[i] = maximum
+
+func compact(mob) -> void:
+	var a := -1; var b := -1
+	var seen: Dictionary = {}
+	for j in mob.n:
+		var key := "%d:%s:%d:%d" % [mob.kind[j],mob.wid[j],mob.gmask[j],mob.material[j]]
+		if seen.has(key): a=int(seen[key]);b=j;break
+		seen[key]=j
+	if b < 0:
+		b=mob.n-1
+		credit(mob.wid[b],mob.wgt[b],mob.dmg[b],"governor_cap")
+		account(mob.dmg[b],0,mob.dmg[b]);mob._swap_remove(b);return
+	var old: int = mob.cohort[b]
+	var combined: int = mob.cohort[a]
+	if old != combined:
+		for j in mob.n:
+			if mob.cohort[j]==old:mob.cohort[j]=combined
+	mob.dmg[a] += mob.dmg[b];mob.wgt[a] += mob.wgt[b];mob.chg[a] += mob.chg[b]
+	mob.unit_damage[a] = mob.dmg[a] / maxf(0.000001,mob.wgt[a])
+	mob.life[a] = maxf(mob.life[a],mob.life[b])
+	mob.burn[a] = maxf(mob.burn[a],mob.burn[b]);mob.rad[a] = maxf(mob.rad[a],mob.rad[b])
+	for uid in mob.hit_ids[b]:
+		if not mob.hit_ids[a].has(uid):mob.hit_ids[a].append(uid)
+	mob._swap_remove(b);mob.stats.merges += 1
+	bound_particle(mob,a,"governor_cap")
+
+func multiply_single(mob, i: int, extra: int, jitter_seed: int) -> void:
+	var room: int = maxi(0,mob.live_cap()-mob.n)
+	var made := mini(extra,room)
+	var original: float = mob.wgt[i]
+	var unit: float = mob.dmg[i]/maxf(0.000001,original)
+	var requested := original*(1+extra)
+	var retained := minf(requested,(1+made)*float(tiers.get("max_weight",5.0)))
+	var weight := retained/(1+made)
+	mob.wgt[i]=weight;mob.dmg[i]=unit*weight;mob.chg[i]/=(1+made)
+	for copy in made:
+		var j: int = mob._clone(i)
+		mob.px[j] += (1.0 if copy%2==0 else -1.0)*minf(0.8,0.15*(1+copy/2))
+		mob.vx[j] += mob._hash(jitter_seed,copy)*0.4
+	var residual := maxf(0,requested-retained)
+	if residual>0:credit(mob.wid[i],residual,residual*unit,"gate_cap")
+	account(requested*unit,retained*unit,residual*unit)
+
+func stream_power(sim) -> Dictionary:
+	var family := primary(sim)
+	var value := 0.0
+	var lead := -INF
+	var cid := -1
+	if sim.mob!=null:
+		for i in sim.mob.n:
+			if sim.mob.wid[i]==family and sim.mob.pz[i]>lead and sim.mob.life[i]>0:
+				lead=sim.mob.pz[i];cid=sim.mob.cohort[i]
+		for i in sim.mob.n:
+			if sim.mob.cohort[i]==cid:value+=sim.mob.wgt[i]
+	if cid<0:
+		var counts: Array = GameData.table("mob").volley.get(family,[3,3,3])
+		value=float(counts[clampi(int(sim.robot.parts.get(family,1))-1,0,2)])
+	return {"value":value,"family":family,"estimated":cid<0}
+
+func power(sim) -> float:
+	return float(stream_power(sim).value)
+
+func enemy_cap(sim) -> int:
+	return maxi(8,int(48*sim.density_limit))
+
+func resistance(enemy: Dictionary, damage: float, type: String) -> float:
+	return damage*0.45 if enemy.get("hook_shielded",false) and type not in ["rocket","cone"] else damage
