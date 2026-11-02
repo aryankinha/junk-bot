@@ -55,5 +55,10 @@
     "evolution_child_cap": 12,
     "dense_enemy_cap": 14
   },
-  "ui_v2": false
+  "ui_v2": false,
+  "gate_clarity": false,
+  "gate_preview": false,
+  "material_tiers": false,
+  "horde_scaling": false,
+  "jackpot_gate": false
 }

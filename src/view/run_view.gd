@@ -141,7 +141,7 @@ func _ready() -> void:
 		save.data = save.defaults()
 		flag_overrides["mob_stream"] = playtest_variant == "b"
 		flag_overrides["engagement_metrics"] = true
-	ui_v2_enabled = bool(flag_overrides.get("ui_v2", GameData.flags().get("ui_v2", false)))
+	ui_v2_enabled = _wants_ui_v2()
 	if ui_v2_enabled: display_font = load("res://assets/fonts/rajdhani_Rajdhani-Bold.ttf")
 	if OS.has_feature("macos") and DisplayServer.get_name() != "headless" and not OS.get_cmdline_args().has("--resolution") and not OS.get_cmdline_args().has("--write-movie"):
 		var available := DisplayServer.screen_get_usable_rect().size
@@ -170,6 +170,11 @@ func _ready() -> void:
 	sky_material.sky_horizon_color = Color("ede8dc")
 	sky_material.ground_horizon_color = Color("ede8dc")
 	sky_material.ground_bottom_color = Color("ded7c6")
+	if _hook_clarity():
+		sky_material.sky_top_color = Color("48556e")
+		sky_material.sky_horizon_color = Color("efb37c")
+		sky_material.ground_horizon_color = Color("a5917d")
+		sky_material.ground_bottom_color = Color("4c4444")
 	sky_material.sky_curve = 0.18
 	var sky := Sky.new()
 	sky.sky_material = sky_material
@@ -181,8 +186,8 @@ func _ready() -> void:
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	env.fog_enabled = true
 	env.fog_mode = Environment.FOG_MODE_DEPTH
-	env.fog_light_color = Color("ede8dc")
-	env.fog_depth_begin = 45.0
+	env.fog_light_color = Color("bda388") if _hook_clarity() else Color("ede8dc")
+	env.fog_depth_begin = 60.0 if _hook_clarity() else 45.0
 	env.fog_depth_end = 140.0
 	env.fog_depth_curve = 1.4
 	env.glow_enabled = false
@@ -608,7 +613,7 @@ func spacer(parent: Control) -> void:
 	parent.add_child(space)
 
 func start_run(is_daily := false) -> void:
-	_configure_ui_v2(bool(flag_overrides.get("ui_v2", GameData.flags().get("ui_v2", false))))
+	_configure_ui_v2(_wants_ui_v2())
 	daily = is_daily
 	daily_key = Time.get_date_string_from_system(true)
 	var seed_arg := int(daily_key.replace("-", "")) if daily else int(Time.get_unix_time_from_system())
@@ -666,6 +671,15 @@ func start_run(is_daily := false) -> void:
 	world.sync(sim, 0)
 	if ui_v2_enabled: ui_v2.reset(self)
 
+func _wants_ui_v2() -> bool:
+	if bool(flag_overrides.get("ui_v2", GameData.flags().get("ui_v2", false))): return true
+	for flag in ["gate_clarity", "gate_preview", "material_tiers", "horde_scaling", "jackpot_gate"]:
+		if bool(flag_overrides.get(flag, GameData.flags().get(flag, false))): return true
+	return false
+
+func _hook_clarity() -> bool:
+	return bool(flag_overrides.get("gate_clarity", GameData.flags().get("gate_clarity", false)))
+
 func _configure_ui_v2(enabled: bool) -> void:
 	if enabled != ui_v2_enabled:
 		var old_canvas = hud.get_parent()
@@ -680,14 +694,17 @@ func _configure_ui_v2(enabled: bool) -> void:
 
 # One camera update owns the transform. Rewards never change projection, offsets or simulation timing.
 func _reset_camera() -> void:
-	camera.position = Vector3(0, 7.8, 9.5)
-	camera_focus = Vector3(0, 0.7, -7.5)
+	camera.position = Vector3(0, 8.4, 10.2) if _hook_clarity() else Vector3(0, 7.8, 9.5)
+	camera_focus = Vector3(0, 0.5, -6.5) if _hook_clarity() else Vector3(0, 0.7, -7.5)
 	camera.look_at(camera_focus)
 	camera.fov = 62.0
 	camera.h_offset = 0.0
 	camera.v_offset = 0.0
 
 func _update_camera(delta: float) -> void:
+	if _hook_clarity():
+		# Static from boot through gates, rewards and boss; no event reframing.
+		_reset_camera(); return
 	var in_boss := sim.boss != null
 	var blend := 1.0 - exp(-maxf(0.0, delta) * 5.0)
 	camera.position = camera.position.lerp(Vector3(0, 8.5, 11) if in_boss else Vector3(0, 7.8, 9.5), blend)

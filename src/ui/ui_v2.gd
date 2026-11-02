@@ -13,6 +13,9 @@ var dock: Control
 var charge: ProgressBar
 var receipt: Label
 var counter_row: HBoxContainer
+var decision_panel: PanelContainer
+var decision_label: Label
+var family_guides := {"part": false, "mob": false}
 var ready_before := false
 var ready_time := 0.0
 var last_parts := ""
@@ -66,6 +69,10 @@ func build(game) -> void:
 	for threshold in [0.25, 0.5, 0.75]: add_tick(game.hp_bar, threshold)
 	game.progress_bar = game.bar(Color("7b8985"), 12); column.add_child(game.progress_bar)
 	game.parts_row = HFlowContainer.new(); game.parts_row.add_theme_constant_override("h_separation", 12); column.add_child(game.parts_row)
+	decision_panel = PanelContainer.new()
+	var decision_style: StyleBoxFlat = game.style(Color("26343d"), Color("81929c"), 4, 0); decision_style.content_margin_top = 4; decision_style.content_margin_bottom = 4
+	decision_panel.add_theme_stylebox_override("panel", decision_style); column.add_child(decision_panel)
+	decision_label = label(game, "", 48, Color.WHITE); decision_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; decision_label.add_theme_color_override("font_outline_color", Color("15202a")); decision_label.add_theme_constant_override("outline_size", 3); decision_panel.add_child(decision_label); decision_panel.visible = false
 	game.boss_panel = VBoxContainer.new(); game.boss_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE); game.boss_panel.offset_left = 50; game.boss_panel.offset_right = -50; support.add_child(game.boss_panel)
 	game.boss_label = label(game, "SCRAP TITAN", 36); game.boss_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; game.boss_panel.add_child(game.boss_label)
 	game.boss_bar = game.bar(RED, 26); game.boss_panel.add_child(game.boss_bar)
@@ -108,10 +115,17 @@ func layout(game) -> void:
 	if safe_override != Vector2.ZERO: safe = safe_override
 	game.top_bar.offset_top = safe.x
 	var left: bool = bool(game.save.data.settings.get("left_handed", false))
-	game.special_button.position = Vector2(v.x * (0.35 if left else 0.65) - 130, v.y - safe.y - 270); game.special_button.size = Vector2(260, 164)
+	var compact: bool = game.sim != null and game.sim.flags.get("gate_clarity", false) and game.special_button.disabled
+	var special_size := Vector2(200, 132) if compact else Vector2(260, 164)
+	game.special_button.position = Vector2(v.x * (0.35 if left else 0.65) - special_size.x / 2, v.y - safe.y - 270); game.special_button.size = special_size
 	game.reroll_button.position = Vector2(v.x * (0.65 if left else 0.35) - 94, v.y - safe.y - 246); game.reroll_button.size = Vector2(188, 120)
 	game.hint_label.offset_top = -380 - safe.y; game.hint_label.offset_bottom = -300 - safe.y
 	var y: float = maxf(safe.x + 240, game.top_bar.offset_top + game.top_bar.size.y + 12)
+	if game.sim != null and game.sim.flags.get("gate_clarity", false):
+		game.hint_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+		var hint_width: float = minf(v.x - 100, game.hint_label.get_minimum_size().x + 20)
+		game.hint_label.offset_left = -hint_width / 2; game.hint_label.offset_right = hint_width / 2
+		game.hint_label.offset_top = y + 120; game.hint_label.offset_bottom = y + 174
 	game.boss_panel.offset_top = y
 	var boss_visible: bool = game.sim != null and (game.sim.boss != null or game.sim.enemies.any(func(e): return e.id == "hauler" and e.hp > 0))
 	hero_panel.offset_top = y + (108 if boss_visible else 4); hero_panel.offset_bottom = hero_panel.offset_top + 90
@@ -137,6 +151,13 @@ func sync_hud(game) -> void:
 			game.parts_row.add_child(label(game, "%s  L%d" % [text, s.robot.parts[id]], 32, BLUE))
 		if equipment > 0: game.parts_row.add_child(label(game, "+%d EQUIPMENT" % equipment, 30, Color("64716a")))
 		if lost_time > 0: game.parts_row.add_child(label(game, "× " + lost_id.to_upper(), 30, RED))
+	var clarity: bool = bool(s.flags.get("gate_clarity", false))
+	var next: Dictionary = s.next_gate()
+	decision_panel.visible = clarity and s.state == "running" and not next.is_empty() and float(next.z) - s.z <= 45 and hero_time <= 0
+	if decision_panel.visible:
+		var choices: Array = next.get("options", []).map(func(o): return GateGen.label(o).to_upper().replace("LAUNCHER", "RKT").replace("EXTRA ", ""))
+		decision_label.text = "DRIVE / " + "  |  ".join(choices)
+		decision_label.add_theme_font_size_override("font_size", 48 if choices.size() <= 2 else 42)
 	counter_row.visible = not game.chain_label.text.is_empty() or not game.combo_label.text.is_empty()
 	game.boss_panel.visible = s.boss != null
 	if s.boss != null:
@@ -164,6 +185,15 @@ func sync_hud(game) -> void:
 	elif s.boss != null and not s.boss.attack.is_empty(): game.hint_label.text = "LEAVE THE MARKED ZONE"
 	elif game._gate_charging(): game.hint_label.text = "AIM THROUGH THE PANEL TO CHARGE IT"
 	else: game.hint_label.text = ""
+	if clarity:
+		var gate_gap: float = float(next.get("z", INF)) - s.z
+		game.reroll_button.visible = s.state == "running" and gate_gap > 0 and gate_gap <= 28 and s.free_rerolls > 0
+		game.special_button.modulate.a = 0.5 if game.special_button.disabled else 1.0
+		if not gesture_seen: game.hint_label.text = "← DRAG TO AIM →"
+		elif not family_guides.part and gate_gap <= 45: game.hint_label.text = "DRIVE THROUGH TO PICK A PART"
+		elif not family_guides.mob and s.mob != null and s.state == "running": game.hint_label.text = "SHOOT THROUGH TO BOOST YOUR STREAM"
+		else: game.hint_label.text = ""
+		if s.state != "running" or hero_time > 0: game.hint_label.text = ""
 	layout(game)
 
 func hero(game, text: String, priority: int, color: Color, duration := 1.1) -> void:
@@ -184,6 +214,8 @@ func on_event(game, event: Dictionary) -> void:
 	var reduced: bool = bool(game.save.data.settings.reduce_motion)
 	var rate := clampi(int(game.save.data.settings.get("flash_limit", 3)), 0, 3)
 	var action := str(event.t)
+	if action == "gate_choice": family_guides.part = true
+	if action in ["mob_gate_pass", "hook_gate_pass"]: family_guides.mob = true
 	var point := Vector3(float(event.get("x", s.x)), 0.1, s.z - float(event.get("z", s.z)))
 	match action:
 		"run_start": record(game, action, "sector / controls visible", 0)

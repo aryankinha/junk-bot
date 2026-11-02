@@ -1,0 +1,14 @@
+{
+  "_note": "Run-only quality, separate from part levels and saved Hangar tiers. Units are nominal weighted drone units; payload redirected to quality is never retained too.",
+  "names": ["Scrap", "Fixed", "Iron", "Metal"],
+  "damage": [1.0, 1.25, 1.6, 2.1],
+  "thresholds": [30.0, 80.0, 160.0],
+  "max_weight": 5.0,
+  "kill_bonus": 1.0,
+  "damage_pause_s": 1.2,
+  "ascend_units": 160.0,
+  "ascend_bonus_per_unit": 0.0005,
+  "ascend_bonus_cap": 0.15,
+  "shell_colors": ["825c43", "a68d6a", "67747b", "ced9df"],
+  "shell_growth_per_tier": 0.08
+}

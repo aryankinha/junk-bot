@@ -1,4 +1,9 @@
 class_name WorldView extends Node3D
+const HookGateScript = preload("res://src/view/hook_gate_view.gd")
+var hook_gates
+var gate_clarity := false
+var hook_underglow: MeshInstance3D
+var hook_eyes: MultiMeshInstance3D
 var ui_v2_enabled := false
 var popup_limit := 10
 const UiWorldScript = preload("res://src/ui/ui_world_feedback.gd")
@@ -567,6 +572,16 @@ func _build_player_fx() -> void:
 func popup(text: String, pos: Vector3, color := Color.WHITE, size := 72) -> void:
 	var label := popups[popup_index % popup_limit]
 	popup_index = (popup_index + 1) % popup_limit
+	if gate_clarity:
+		var camera := get_viewport().get_camera_3d()
+		if camera != null:
+			var center := camera.unproject_position(to_global(pos))
+			var width: float = get_viewport().get_visible_rect().size.x
+			var region := clampi(int(center.x / maxf(1, width / 3)), 0, 2)
+			for other in popups:
+				if other.visible and other != label:
+					var other_center := camera.unproject_position(other.global_position)
+					if clampi(int(other_center.x / maxf(1, width / 3)), 0, 2) == region: other.visible = false
 	label.text = text
 	label.font_size = mini(size, 64)
 	label.modulate = color
@@ -576,10 +591,27 @@ func popup(text: String, pos: Vector3, color := Color.WHITE, size := 72) -> void
 
 func sync(sim: RunSim, dt: float) -> void:
 	elapsed += dt
+	gate_clarity = bool(sim.flags.get("gate_clarity", false))
+	if sim.flags.get("horde_scaling", false) and enemy_nodes.size() < 48:
+		while enemy_nodes.size() < 48:
+			var enemy_node := MeshFactory.instance(MeshFactory.enemy("scrapper")); enemy_node.visible = false; add_child(enemy_node); enemy_nodes.append(enemy_node)
+		crowd_scrappers.multimesh.instance_count = 48
+		shadows.multimesh.instance_count = 49
+	if gate_clarity and hook_eyes == null:
+		var lens := SphereMesh.new(); lens.radius = 0.09; lens.height = 0.18; lens.radial_segments = 6; lens.rings = 3
+		var glow := StandardMaterial3D.new(); glow.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED; glow.albedo_color = Color("ff554f"); glow.emission_enabled = true; glow.emission = Color("ed3333"); lens.material = glow
+		hook_eyes = make_multimesh(lens, 96)
+		var disc := CylinderMesh.new(); disc.top_radius = 1.0; disc.bottom_radius = 1.0; disc.height = 0.01; disc.radial_segments = 20
+		var under := StandardMaterial3D.new(); under.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED; under.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA; under.albedo_color = Color(0.1,0.65,0.95,0.12); disc.material = under
+		hook_underglow = MeshInstance3D.new(); hook_underglow.mesh = disc; add_child(hook_underglow)
+	if hook_eyes != null:
+		hook_eyes.visible = gate_clarity; hook_eyes.multimesh.visible_instance_count = 0
+		hook_underglow.visible = gate_clarity; hook_underglow.position = Vector3(sim.x,0.015,0); hook_underglow.scale = Vector3(1.2,1,1.4)
 	player.position.x = sim.x
 	player.position.y = absf(sin(elapsed * 9.0)) * 0.035 if sim.state in ["running", "boss"] and not reduce_motion else 0.0
 	var lean := (sim.x - sim.target_x) * 0.05
 	player.rotation.z = lerpf(player.rotation.z, lean if absf(lean) > 0.004 else 0.0, 0.2)
+	if "compact_layout" in player: player.set("compact_layout", gate_clarity)
 	player.sync(sim.robot)
 	player.drive_speed = (float(sim.robot.stats.fwd_mult) * (0.6 if sim.oil_time > 0 else 1.0)) if sim.state == "running" else (0.3 if sim.state == "boss" else 0.0)
 	player.steer = clampf(sim.target_x - sim.x, -1.5, 1.5)
@@ -656,7 +688,7 @@ func sync(sim: RunSim, dt: float) -> void:
 		node.visible = i < sim.enemies.size()
 		if node.visible:
 			var enemy: Dictionary = sim.enemies[i]
-			var size := 0.75 if enemy.id == "scrapper" else (1.35 if enemy.id == "hauler" else 1.0)
+			var size := (1.0 if gate_clarity else 0.75) if enemy.id == "scrapper" else (1.35 if enemy.id == "hauler" else 1.0)
 			node.scale = Vector3.ONE * size
 			if node.get_meta("kind", "") != enemy.id:
 				node.set_meta("kind", enemy.id)
@@ -690,7 +722,15 @@ func sync(sim: RunSim, dt: float) -> void:
 					hop = absf(sin(phase * 0.5)) * 0.1
 					node.rotation.z = sin(phase * 0.5) * 0.06
 					node.rotation.x = -0.18 if enemy.warning else 0.0
+			if gate_clarity and reduce_motion: hop = 0.0; node.rotation.z = 0
 			node.position = Vector3(enemy.x, hop, sim.z - float(enemy.z))
+			if gate_clarity and enemy.id in ["scrapper", "gunner", "bruiser"]:
+				var at_eye := hook_eyes.multimesh.visible_instance_count
+				for side in [-1,1]:
+					if at_eye < 96:
+						hook_eyes.multimesh.set_instance_transform(at_eye, Transform3D(Basis().scaled(Vector3.ONE * size), node.position + Vector3(side*0.16*size,0.9*size,0.65*size)))
+						at_eye += 1
+				hook_eyes.multimesh.visible_instance_count = at_eye
 			var last_hp: float = node.get_meta("hp", float(enemy.hp))
 			if float(enemy.hp) < last_hp - 0.01:
 				if not ui_v2_enabled or (not reduce_motion and flash_rate > 0 and elapsed - float(node.get_meta("flash_at", -10.0)) >= 1.0 / flash_rate + 0.002):
@@ -740,6 +780,13 @@ func sync(sim: RunSim, dt: float) -> void:
 		var travel: float = 2.0 * (float(sim.flags.tuning.moving_amplitude) + 1.4 + float(sim.flags.tuning.moving_half))
 		gate_rail.scale = Vector3(travel, 1, 1)
 	_sync_mob_gates(sim)
+	gate_clarity = bool(sim.flags.get("gate_clarity", false))
+	if gate_clarity:
+		if hook_gates == null: hook_gates = HookGateScript.new(); add_child(hook_gates)
+		hook_gates.visible = true; hook_gates.sync(self, sim, dt)
+		gate_root.visible = false; gate_rail.visible = false
+		for slot in mob_gate_nodes: slot.root.visible = false; slot.rail.visible = false
+	elif hook_gates != null: hook_gates.visible = false
 	boss_root.visible = sim.boss != null
 	if boss_root.visible:
 		boss_root.position.y = 0.0 if reduce_motion else sin(elapsed * 2) * 0.06

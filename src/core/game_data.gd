@@ -1,7 +1,7 @@
 class_name GameData extends RefCounted
 
 static var tables: Dictionary = {}
-const NAMES = ["constants", "parts", "combos", "enemies", "boss_scrap_titan", "gates_level1", "level_generator", "tradeoffs", "economy", "zones", "bot_models", "flags", "blocks", "mob"]
+const NAMES = ["constants", "parts", "combos", "enemies", "boss_scrap_titan", "gates_level1", "level_generator", "tradeoffs", "economy", "zones", "bot_models", "flags", "blocks", "mob", "tiers"]
 
 static func load_all() -> void:
 	if not tables.is_empty():

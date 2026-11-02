@@ -15,6 +15,7 @@ class Availability:
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg == "--after": variant = true; output = "hook_after"
+		if arg == "--clarity-only": variant = true; output = "hook_clarity"
 	call_deferred("run")
 
 func fixture(state: String) -> void:
@@ -24,6 +25,8 @@ func fixture(state: String) -> void:
 	game.flag_overrides = {"ui_v2": variant, "mob_stream": true, "engagement_metrics": true}
 	if variant:
 		for flag in ["gate_clarity", "gate_preview", "material_tiers", "horde_scaling", "jackpot_gate"]: game.flag_overrides[flag] = true
+		if OS.get_cmdline_user_args().has("--clarity-only"):
+			game.flag_overrides = {"ui_v2":true,"mob_stream":true,"gate_clarity":true}
 	game.start_run(false)
 	game.paused = true
 	game.bot = null
@@ -100,6 +103,7 @@ func run() -> void:
 			row["render_draw_calls"] = RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME)
 			row["state"] = state; row["window_size"] = [size.x, size.y]
 			rows.append(row)
+	FileAccess.open("res://results/%s/inventory.json" % output, FileAccess.WRITE).store_string(JSON.stringify(rows, "  "))
 	if variant:
 		for row in rows:
 			assert(int(row.render_draw_calls) <= 135, "per-state draw budget " + row.state)

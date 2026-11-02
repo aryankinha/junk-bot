@@ -6,6 +6,13 @@ enum Kind { BOLT, BOMB, TORCH, CHAMPION }
 const KIND_NAMES := ["bolt", "bomb", "torch", "champion"]
 const KIND_TYPE := ["projectile", "rocket", "cone", "rocket"]  # weapon type the boss sees (plate rule)
 
+var hook_owner
+var cohort := PackedInt64Array()
+var unit_damage := PackedFloat64Array()
+var material := PackedInt32Array()
+var active_cohort := 0
+var active_unit_damage := 1.0
+var active_material := 1
 var cfg: Dictionary
 var n := 0
 var px := PackedFloat64Array()
@@ -70,6 +77,7 @@ func _grow() -> int:
 		hit_ids.append([])
 		gmask.append(0)
 		wid.append("")
+		cohort.append(0); unit_damage.append(1); material.append(1)
 	return i
 
 # Adds a drone, or folds it into a compatible heavier drone at the cap. Champions share the same cap.
@@ -109,6 +117,7 @@ func add_drone(k: int, x: float, z: float, svx: float, svz: float, damage: float
 	hit_ids[i] = []
 	gmask[i] = mask
 	wid[i] = weapon_id
+	cohort[i] = active_cohort; unit_damage[i] = active_unit_damage; material[i] = active_material
 	return i
 
 func _compact_one() -> void:
@@ -171,6 +180,7 @@ func _swap_remove(i: int) -> void:
 		hit_ids[i] = hit_ids[last]
 		gmask[i] = gmask[last]
 		wid[i] = wid[last]
+		cohort[i] = cohort[last]; unit_damage[i] = unit_damage[last]; material[i] = material[last]
 	n -= 1
 
 # One barrel shot becomes a volley of drones. Level of the weapon part sets the volley size.
@@ -192,6 +202,9 @@ func launch_volley(sim, weapon: Dictionary, z_offset: float) -> void:
 	var k := KIND_NAMES.find(str(cfg.kind_of_weapon.get(str(weapon.type), "bolt")))
 	var spec: Dictionary = cfg.kinds[KIND_NAMES[k]]
 	var total := float(weapon.get("damage", 4)) * float(sim.robot.stats.dps_mult)
+	if hook_owner != null:
+		hook_owner.new_cohort(self, weapon_id, total / count)
+		total *= hook_owner.multiplier(weapon_id)
 	var per := total / count
 	var charge_total: float = sim._bullet_charge(weapon)
 	var speed := float(weapon.get("speed", 36))
@@ -233,6 +246,7 @@ func launch_champion(sim, overcharged: bool) -> void:
 	var spec: Dictionary = cfg.champion
 	var kind_spec: Dictionary = cfg.kinds.champion
 	var damage := float(spec.damage) * float(sim.robot.stats.dps_mult) * (1.5 if overcharged else 1.0)
+	if hook_owner != null: hook_owner.new_cohort(self,"champion",damage)
 	add_drone(Kind.CHAMPION, sim.x, sim.z + 1.4, robot_vx * float(cfg.lateral_inherit), float(spec.speed), damage, 0.0, float(kind_spec.life_s), 1.0, "champion", 0.0, float(spec.splash))
 	stats["champions"] = int(stats.get("champions", 0)) + 1
 	sim.emit("mob_champion", {"damage": snappedf(damage, 0.1)})
@@ -249,6 +263,8 @@ func flame(sim, weapon: Dictionary, dt: float) -> bool:
 		var counts: Array = cfg.volley.flame
 		var count := int(counts[clampi(level - 1, 0, counts.size() - 1)])
 		var total := float(weapon.damage) / rate * float(sim.robot.stats.dps_mult)
+		if hook_owner != null:
+			hook_owner.new_cohort(self,"flame",total / count); total *= hook_owner.multiplier("flame")
 		var speed := float(cfg.torch.speed)
 		var life_s := (float(cfg.torch.boss_reach_m) / speed) if sim.state == "boss" else float(weapon.range) / speed
 		torch_burn_s = float(weapon.get("burn_s", 2.0))
@@ -411,6 +427,7 @@ func _clone(i: int) -> int:
 	hit_ids[j] = hit_ids[i].duplicate()
 	gmask[j] = gmask[i]
 	wid[j] = wid[i]
+	cohort[j] = cohort[i]; unit_damage[j] = unit_damage[i]; material[j] = material[i]
 	return j
 
 # Register the authored mob gates (beats of type mob_gate). Each gate and panel keeps its own pass counters.
@@ -480,6 +497,8 @@ func _multiply(i: int, extra: int, jitter_seed: int) -> void:
 
 # Applies one panel to drone i. Returns true when the drone is destroyed (trap).
 func _apply_panel(sim, i: int, gate: Dictionary, lane: int) -> bool:
+	if hook_owner != null and hook_owner.enabled("gate_preview"):
+		return hook_owner.apply_gate(sim,self,i,gate,lane)
 	var panel: Dictionary = gate.panels[lane]
 	var state: Dictionary = gate.state[lane]
 	var value := float(panel.v)

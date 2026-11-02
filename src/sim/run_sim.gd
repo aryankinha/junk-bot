@@ -1,4 +1,6 @@
 class_name RunSim extends RefCounted
+const HookScript = preload("res://src/sim/hook_sim.gd")
+var hook
 var t := 0.0
 var z := 0.0
 var x := 0.0
@@ -76,6 +78,11 @@ func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count :
 	robot = RobotState.new()
 	robot.tiers = tiers.duplicate()
 	robot.refresh()
+	for flag in ["gate_clarity","gate_preview","material_tiers","horde_scaling","jackpot_gate"]:
+		if bool(flags.get(flag,false)):
+			hook = HookScript.new(); hook.setup(self)
+			if mob != null: mob.hook_owner = hook
+			break
 	free_rerolls = int(GameData.constants().free_rerolls_per_run)
 	beats = GameData.table("gates_level1").beats.duplicate(true)
 	boss_z = float(GameData.table("gates_level1").boss_z)
@@ -93,6 +100,7 @@ func setup(level_value := 1, seed_arg := 1, tiers: Dictionary = {}, loss_count :
 		_add_rhythm_beats()
 	if flags.mob_stream:
 		_add_mob_gates()
+	if hook != null: hook.author(self)
 	var gate_index := 0
 	for beat in beats:
 		beat.resolved = false
@@ -256,6 +264,7 @@ func emit(type: String, data: Dictionary = {}) -> void:
 	events.append({"t": type, "time": snappedf(t, 0.0001)}.merged(data))
 	if engage != null:
 		engage.on_event(self, type, data)
+	if hook != null: hook.on_event(self,type,data)
 
 func drag(dx: float) -> void:
 	var width := float(GameData.constants().road_half_width)
@@ -905,6 +914,7 @@ func _tick(dt: float) -> void:
 			hazards.clear()
 			emit("boss_intro")
 	_combat(dt)
+	if hook != null: hook.tick(self,dt)
 	if _lane_aim():
 		aim_target = _pick_target()
 	if engage != null:
