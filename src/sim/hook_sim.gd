@@ -28,7 +28,7 @@ var paused_credit := 0.0
 
 func setup(sim) -> void:
 	host = weakref(sim)
-	cfg = GameData.table("mob").get("hook", {})
+	cfg = GameData.table("mob").get("hook", {}).duplicate(true)
 	tiers = GameData.tables.get("tiers", {})
 	if tiers.is_empty(): tiers = JSON.parse_string(FileAccess.get_file_as_string("res://data/tiers.json"))
 
@@ -145,13 +145,15 @@ func apply_gate(sim, mob, i: int, gate: Dictionary, lane: int) -> bool:
 	gate.hook_done[cid] = true
 	var indices: Array[int] = []
 	var input := 0.0
+	var payload := 0.0
 	var charge := 0.0
 	var family: String = mob.wid[i]
 	var unit: float = mob.unit_damage[i]
 	var bit := 1 << int(gate.ord)
 	for j in mob.n:
 		if mob.cohort[j] == cid:
-			indices.append(j); input += mob.wgt[j]; charge += mob.chg[j]; mob.gmask[j] |= bit
+			indices.append(j); input += mob.wgt[j]; payload += mob.dmg[j]; charge += mob.chg[j]; mob.gmask[j] |= bit
+	unit = payload / maxf(0.000001,input)
 	var panel: Dictionary = gate.panels[lane]
 	var requested := resolve(input, panel)
 	var desired := maxi(indices.size(), mini(int(ceil(requested)), mob.live_cap() - mob.n + indices.size()))
@@ -165,6 +167,7 @@ func apply_gate(sim, mob, i: int, gate: Dictionary, lane: int) -> bool:
 	var weight := retained / maxf(1, indices.size())
 	for j in indices:
 		mob.wgt[j] = weight; mob.dmg[j] = unit * weight; mob.chg[j] = charge / indices.size()
+		if retained <= 0: mob.life[j] = 0
 		if panel.t == "speed": mob.vx[j] *= 1.0 + float(panel.v) / 100; mob.vz[j] *= 1.0 + float(panel.v) / 100
 	var residual := maxf(0, requested - retained)
 	if residual > 0: credit(family, residual, residual * unit, "overflow")
@@ -231,3 +234,23 @@ func on_event(sim, event: String, data: Dictionary) -> void:
 func tick(sim, _dt: float) -> void:
 	if enabled("material_tiers"):
 		for family in pending: _apply_credit(sim, family, "overflow")
+
+# Cap compaction fuses same-family volleys; STREAM POWER names that compacted cohort,
+# not the number of render entities. Direct damage and charge remain additive.
+func compact_preview(mob) -> void:
+	var groups: Dictionary = {}; var a := -1; var b := -1
+	for j in mob.n:
+		var key := "%d:%s:%d" % [mob.kind[j],mob.wid[j],mob.gmask[j]]
+		if groups.has(key):a=int(groups[key]);b=j;break
+		groups[key]=j
+	if b<0:
+		var saved=mob.hook_owner;mob.hook_owner=null;mob._compact_one();mob.hook_owner=saved;return
+	var old: int=mob.cohort[b];var merged: int=mob.cohort[a]
+	for j in mob.n:
+		if mob.cohort[j]==old:mob.cohort[j]=merged
+	mob.dmg[a]+=mob.dmg[b];mob.wgt[a]+=mob.wgt[b];mob.chg[a]+=mob.chg[b]
+	mob.unit_damage[a]=mob.dmg[a]/maxf(0.000001,mob.wgt[a])
+	mob.life[a]=maxf(mob.life[a],mob.life[b]);mob.burn[a]=maxf(mob.burn[a],mob.burn[b]);mob.rad[a]=maxf(mob.rad[a],mob.rad[b])
+	for uid in mob.hit_ids[b]:
+		if not mob.hit_ids[a].has(uid):mob.hit_ids[a].append(uid)
+	mob._swap_remove(b);mob.stats.merges+=1

@@ -86,7 +86,7 @@ func add_drone(k: int, x: float, z: float, svx: float, svz: float, damage: float
 	if n >= live_cap():
 		var last := -1
 		for candidate in range(n - 1, -1, -1):
-			if kind[candidate] == k and gmask[candidate] == mask and wid[candidate] == weapon_id:
+			if kind[candidate] == k and gmask[candidate] == mask and wid[candidate] == weapon_id and (hook_owner == null or not hook_owner.enabled("gate_preview") or cohort[candidate] == active_cohort):
 				last = candidate
 				break
 		# Free a slot rather than turning a bomb/champion into an unrelated bolt.
@@ -121,6 +121,8 @@ func add_drone(k: int, x: float, z: float, svx: float, svz: float, damage: float
 	return i
 
 func _compact_one() -> void:
+	if hook_owner != null and hook_owner.enabled("gate_preview"):
+		hook_owner.compact_preview(self); return
 	var a := 0
 	var b := 1
 	var best := INF
