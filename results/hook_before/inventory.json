@@ -1,0 +1,4190 @@
+[
+  {
+    "attention_groups": 0,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 13.9222608024691,
+    "hud_popup_area_pct": 13.9222608024691,
+    "inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127",
+        "rect": [
+          34.0,
+          45.0,
+          1012.0,
+          322.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133",
+        "rect": [
+          34.0,
+          45.0,
+          249.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Control@131",
+        "rect": [
+          48.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Label@132",
+        "rect": [
+          120.0,
+          72.0,
+          137.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "LEVEL 1"
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138",
+        "rect": [
+          680.0,
+          45.0,
+          240.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Control@136",
+        "rect": [
+          694.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 48,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Label@137",
+        "rect": [
+          766.0,
+          70.0,
+          128.0,
+          56.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140",
+        "rect": [
+          934.0,
+          45.0,
+          112.0,
+          112.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140/@Control@139",
+        "rect": [
+          960.0,
+          65.0,
+          60.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@Control@142",
+        "rect": [
+          34.0,
+          171.0,
+          74.0,
+          74.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147",
+        "rect": [
+          118.0,
+          183.0,
+          928.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147/@Label@146",
+        "rect": [
+          118.0,
+          183.0,
+          928.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": "60 / 60"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@ProgressBar@149",
+        "rect": [
+          34.0,
+          277.0,
+          940.0,
+          26.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@Control@150",
+        "rect": [
+          984.0,
+          259.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 26,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@Label@185",
+        "rect": [
+          34.0,
+          335.0,
+          385.0,
+          32.0
+        ],
+        "tappable": false,
+        "text": "TINY BOT  ·  BUILD YOUR MACHINE"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Button@160",
+        "rect": [
+          40.0,
+          1685.0,
+          190.0,
+          190.0
+        ],
+        "tappable": true,
+        "text": "RE-ROLL\nFREE"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Control@163",
+        "rect": [
+          750.0,
+          1555.0,
+          290.0,
+          320.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Button@164",
+        "rect": [
+          777.0,
+          1597.0,
+          236.0,
+          236.0
+        ],
+        "tappable": true,
+        "text": "0%"
+      }
+    ],
+    "logical_size": [
+      1080.0,
+      1920.0
+    ],
+    "popups": 0,
+    "render_draw_calls": 56,
+    "state": "run_start",
+    "window_size": [
+      360,
+      640
+    ]
+  },
+  {
+    "attention_groups": 2,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 13.813850308642,
+    "hud_popup_area_pct": 13.8851466178894,
+    "inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127",
+        "rect": [
+          34.0,
+          45.0,
+          1012.0,
+          329.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133",
+        "rect": [
+          34.0,
+          45.0,
+          249.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Control@131",
+        "rect": [
+          48.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Label@132",
+        "rect": [
+          120.0,
+          72.0,
+          137.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "LEVEL 1"
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138",
+        "rect": [
+          680.0,
+          45.0,
+          240.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Control@136",
+        "rect": [
+          694.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 48,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Label@137",
+        "rect": [
+          766.0,
+          70.0,
+          128.0,
+          56.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140",
+        "rect": [
+          934.0,
+          45.0,
+          112.0,
+          112.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140/@Control@139",
+        "rect": [
+          960.0,
+          65.0,
+          60.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@Control@142",
+        "rect": [
+          34.0,
+          171.0,
+          74.0,
+          74.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147",
+        "rect": [
+          118.0,
+          183.0,
+          928.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147/@Label@146",
+        "rect": [
+          118.0,
+          183.0,
+          928.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": "210 / 210"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@ProgressBar@149",
+        "rect": [
+          34.0,
+          277.0,
+          940.0,
+          26.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@Control@150",
+        "rect": [
+          984.0,
+          259.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@198",
+        "rect": [
+          34.0,
+          335.0,
+          143.0,
+          39.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@198/@Label@197",
+        "rect": [
+          50.0,
+          337.0,
+          111.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "CANNON 2"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@Label@199",
+        "rect": [
+          187.0,
+          340.0,
+          155.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "+2 EQUIPMENT"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Button@160",
+        "rect": [
+          40.0,
+          1685.0,
+          190.0,
+          190.0
+        ],
+        "tappable": true,
+        "text": "RE-ROLL\nFREE"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Control@163",
+        "rect": [
+          750.0,
+          1555.0,
+          290.0,
+          320.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Button@164",
+        "rect": [
+          777.0,
+          1597.0,
+          236.0,
+          236.0
+        ],
+        "tappable": true,
+        "text": "0%"
+      }
+    ],
+    "logical_size": [
+      1080.0,
+      1920.0
+    ],
+    "popups": 1,
+    "render_draw_calls": 62,
+    "state": "mob_gate",
+    "window_size": [
+      360,
+      640
+    ]
+  },
+  {
+    "attention_groups": 0,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 13.813850308642,
+    "hud_popup_area_pct": 13.813850308642,
+    "inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127",
+        "rect": [
+          34.0,
+          45.0,
+          1012.0,
+          329.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133",
+        "rect": [
+          34.0,
+          45.0,
+          249.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Control@131",
+        "rect": [
+          48.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Label@132",
+        "rect": [
+          120.0,
+          72.0,
+          137.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "LEVEL 1"
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138",
+        "rect": [
+          680.0,
+          45.0,
+          240.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Control@136",
+        "rect": [
+          694.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 48,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Label@137",
+        "rect": [
+          766.0,
+          70.0,
+          128.0,
+          56.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140",
+        "rect": [
+          934.0,
+          45.0,
+          112.0,
+          112.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140/@Control@139",
+        "rect": [
+          960.0,
+          65.0,
+          60.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@Control@142",
+        "rect": [
+          34.0,
+          171.0,
+          74.0,
+          74.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147",
+        "rect": [
+          118.0,
+          183.0,
+          928.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147/@Label@146",
+        "rect": [
+          118.0,
+          183.0,
+          928.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": "210 / 210"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@ProgressBar@149",
+        "rect": [
+          34.0,
+          277.0,
+          940.0,
+          26.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@Control@150",
+        "rect": [
+          984.0,
+          259.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@198",
+        "rect": [
+          34.0,
+          335.0,
+          143.0,
+          39.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@198/@Label@197",
+        "rect": [
+          50.0,
+          337.0,
+          111.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "CANNON 2"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@Label@199",
+        "rect": [
+          187.0,
+          340.0,
+          155.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "+2 EQUIPMENT"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Button@160",
+        "rect": [
+          40.0,
+          1685.0,
+          190.0,
+          190.0
+        ],
+        "tappable": true,
+        "text": "RE-ROLL\nFREE"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Control@163",
+        "rect": [
+          750.0,
+          1555.0,
+          290.0,
+          320.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Button@164",
+        "rect": [
+          777.0,
+          1597.0,
+          236.0,
+          236.0
+        ],
+        "tappable": true,
+        "text": "0%"
+      }
+    ],
+    "logical_size": [
+      1080.0,
+      1920.0
+    ],
+    "popups": 0,
+    "render_draw_calls": 78,
+    "state": "part_gate",
+    "window_size": [
+      360,
+      640
+    ]
+  },
+  {
+    "attention_groups": 0,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 13.813850308642,
+    "hud_popup_area_pct": 13.813850308642,
+    "inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127",
+        "rect": [
+          34.0,
+          45.0,
+          1012.0,
+          329.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133",
+        "rect": [
+          34.0,
+          45.0,
+          249.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Control@131",
+        "rect": [
+          48.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Label@132",
+        "rect": [
+          120.0,
+          72.0,
+          137.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "LEVEL 1"
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138",
+        "rect": [
+          680.0,
+          45.0,
+          240.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Control@136",
+        "rect": [
+          694.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 48,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Label@137",
+        "rect": [
+          766.0,
+          70.0,
+          128.0,
+          56.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140",
+        "rect": [
+          934.0,
+          45.0,
+          112.0,
+          112.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140/@Control@139",
+        "rect": [
+          960.0,
+          65.0,
+          60.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@Control@142",
+        "rect": [
+          34.0,
+          171.0,
+          74.0,
+          74.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147",
+        "rect": [
+          118.0,
+          183.0,
+          928.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147/@Label@146",
+        "rect": [
+          118.0,
+          183.0,
+          928.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": "210 / 210"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@ProgressBar@149",
+        "rect": [
+          34.0,
+          277.0,
+          940.0,
+          26.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@Control@150",
+        "rect": [
+          984.0,
+          259.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@198",
+        "rect": [
+          34.0,
+          335.0,
+          143.0,
+          39.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@198/@Label@197",
+        "rect": [
+          50.0,
+          337.0,
+          111.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "CANNON 2"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@Label@199",
+        "rect": [
+          187.0,
+          340.0,
+          155.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "+2 EQUIPMENT"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Button@160",
+        "rect": [
+          40.0,
+          1685.0,
+          190.0,
+          190.0
+        ],
+        "tappable": true,
+        "text": "RE-ROLL\nFREE"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Control@163",
+        "rect": [
+          750.0,
+          1555.0,
+          290.0,
+          320.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Button@164",
+        "rect": [
+          777.0,
+          1597.0,
+          236.0,
+          236.0
+        ],
+        "tappable": true,
+        "text": "0%"
+      }
+    ],
+    "logical_size": [
+      1080.0,
+      1920.0
+    ],
+    "popups": 0,
+    "render_draw_calls": 60,
+    "state": "mid_run",
+    "window_size": [
+      360,
+      640
+    ]
+  },
+  {
+    "attention_groups": 3,
+    "full_screen_effects": 1,
+    "hero_events": 0,
+    "hud_area_pct": 13.813850308642,
+    "hud_popup_area_pct": 13.9360724790597,
+    "inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127",
+        "rect": [
+          34.0,
+          45.0,
+          1012.0,
+          329.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133",
+        "rect": [
+          34.0,
+          45.0,
+          249.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Control@131",
+        "rect": [
+          48.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Label@132",
+        "rect": [
+          120.0,
+          72.0,
+          137.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "LEVEL 1"
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138",
+        "rect": [
+          680.0,
+          45.0,
+          240.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Control@136",
+        "rect": [
+          694.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 48,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Label@137",
+        "rect": [
+          766.0,
+          70.0,
+          128.0,
+          56.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140",
+        "rect": [
+          934.0,
+          45.0,
+          112.0,
+          112.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140/@Control@139",
+        "rect": [
+          960.0,
+          65.0,
+          60.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@Control@142",
+        "rect": [
+          34.0,
+          171.0,
+          74.0,
+          74.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147",
+        "rect": [
+          118.0,
+          183.0,
+          928.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147/@Label@146",
+        "rect": [
+          118.0,
+          183.0,
+          928.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": "210 / 210"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@ProgressBar@149",
+        "rect": [
+          34.0,
+          277.0,
+          940.0,
+          26.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@Control@150",
+        "rect": [
+          984.0,
+          259.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@198",
+        "rect": [
+          34.0,
+          335.0,
+          143.0,
+          39.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@198/@Label@197",
+        "rect": [
+          50.0,
+          337.0,
+          111.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "CANNON 2"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@Label@199",
+        "rect": [
+          187.0,
+          340.0,
+          155.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "+2 EQUIPMENT"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Button@160",
+        "rect": [
+          40.0,
+          1685.0,
+          190.0,
+          190.0
+        ],
+        "tappable": true,
+        "text": "RE-ROLL\nFREE"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Control@163",
+        "rect": [
+          750.0,
+          1555.0,
+          290.0,
+          320.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Button@164",
+        "rect": [
+          777.0,
+          1597.0,
+          236.0,
+          236.0
+        ],
+        "tappable": true,
+        "text": "0%"
+      }
+    ],
+    "logical_size": [
+      1080.0,
+      1920.0
+    ],
+    "popups": 1,
+    "render_draw_calls": 61,
+    "state": "damage",
+    "window_size": [
+      360,
+      640
+    ]
+  },
+  {
+    "attention_groups": 0,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 19.8096064814815,
+    "hud_popup_area_pct": 19.8096064814815,
+    "inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127",
+        "rect": [
+          34.0,
+          45.0,
+          1012.0,
+          276.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133",
+        "rect": [
+          34.0,
+          45.0,
+          249.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Control@131",
+        "rect": [
+          48.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Label@132",
+        "rect": [
+          120.0,
+          72.0,
+          137.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "LEVEL 1"
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138",
+        "rect": [
+          680.0,
+          45.0,
+          240.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Control@136",
+        "rect": [
+          694.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 48,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Label@137",
+        "rect": [
+          766.0,
+          70.0,
+          128.0,
+          56.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140",
+        "rect": [
+          934.0,
+          45.0,
+          112.0,
+          112.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140/@Control@139",
+        "rect": [
+          960.0,
+          65.0,
+          60.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@Control@142",
+        "rect": [
+          34.0,
+          171.0,
+          74.0,
+          74.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147",
+        "rect": [
+          118.0,
+          183.0,
+          928.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147/@Label@146",
+        "rect": [
+          118.0,
+          183.0,
+          928.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": "210 / 210"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@ProgressBar@149",
+        "rect": [
+          34.0,
+          277.0,
+          940.0,
+          26.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@Control@150",
+        "rect": [
+          984.0,
+          259.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@VBoxContainer@152/@Label@153",
+        "rect": [
+          70.0,
+          341.0,
+          940.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "SCRAP TITAN  /  PLATED"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@VBoxContainer@152/@ProgressBar@154",
+        "rect": [
+          70.0,
+          396.0,
+          940.0,
+          24.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 30,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@Label@158",
+        "rect": [
+          40.0,
+          1440.0,
+          1000.0,
+          100.0
+        ],
+        "tappable": false,
+        "text": "MOVE OUT OF THE RED"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Control@163",
+        "rect": [
+          750.0,
+          1555.0,
+          290.0,
+          320.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Button@164",
+        "rect": [
+          777.0,
+          1597.0,
+          236.0,
+          236.0
+        ],
+        "tappable": true,
+        "text": "0%"
+      }
+    ],
+    "logical_size": [
+      1080.0,
+      1920.0
+    ],
+    "popups": 0,
+    "render_draw_calls": 64,
+    "state": "boss_fight",
+    "window_size": [
+      360,
+      640
+    ]
+  },
+  {
+    "attention_groups": 0,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 0.0,
+    "hud_popup_area_pct": 0.0,
+    "inventory": [],
+    "logical_size": [
+      1080.0,
+      1920.0
+    ],
+    "menu_inventory": [
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 76,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@325/@ScrollContainer@328/@VBoxContainer@329/@Label@330",
+        "rect": [
+          50.0,
+          50.0,
+          980.0,
+          88.0
+        ],
+        "tappable": false,
+        "text": "TITAN DOWN!"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 52,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@325/@ScrollContainer@328/@VBoxContainer@329/@Label@332",
+        "rect": [
+          50.0,
+          682.0,
+          980.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": "THE SCRAP SPEEDSTER"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@325/@ScrollContainer@328/@VBoxContainer@329/@HBoxContainer@333/@Control@334",
+        "rect": [
+          291.0,
+          764.0,
+          150.0,
+          150.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@325/@ScrollContainer@328/@VBoxContainer@329/@HBoxContainer@333/@Control@335",
+        "rect": [
+          465.0,
+          764.0,
+          150.0,
+          150.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@325/@ScrollContainer@328/@VBoxContainer@329/@HBoxContainer@333/@Control@336",
+        "rect": [
+          639.0,
+          764.0,
+          150.0,
+          150.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@325/@ScrollContainer@328/@VBoxContainer@329/@HBoxContainer@339/@Control@337",
+        "rect": [
+          461.0,
+          936.0,
+          90.0,
+          97.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 84,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@325/@ScrollContainer@328/@VBoxContainer@329/@HBoxContainer@339/@Label@338",
+        "rect": [
+          565.0,
+          936.0,
+          54.0,
+          97.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 28,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@325/@ScrollContainer@328/@VBoxContainer@329/@Label@340",
+        "rect": [
+          50.0,
+          1055.0,
+          980.0,
+          34.0
+        ],
+        "tappable": false,
+        "text": "0 KILLS   ·   BEST COMBO x0   ·   0 PARTS LOST"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 46,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@325/@ScrollContainer@328/@VBoxContainer@329/@Button@341",
+        "rect": [
+          50.0,
+          1111.0,
+          980.0,
+          128.0
+        ],
+        "tappable": true,
+        "text": "DOUBLE COGS  ·  WATCH"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 46,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@325/@ScrollContainer@328/@VBoxContainer@329/@Button@342",
+        "rect": [
+          50.0,
+          1261.0,
+          980.0,
+          128.0
+        ],
+        "tappable": true,
+        "text": "NEXT LEVEL"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 46,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@325/@ScrollContainer@328/@VBoxContainer@329/@Button@343",
+        "rect": [
+          50.0,
+          1411.0,
+          980.0,
+          128.0
+        ],
+        "tappable": true,
+        "text": "HOME"
+      }
+    ],
+    "popups": 0,
+    "render_draw_calls": 46,
+    "state": "result_win",
+    "window_size": [
+      360,
+      640
+    ]
+  },
+  {
+    "attention_groups": 0,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 0.0,
+    "hud_popup_area_pct": 0.0,
+    "inventory": [],
+    "logical_size": [
+      1080.0,
+      1920.0
+    ],
+    "menu_inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@367/@VBoxContainer@368/@HBoxContainer@369/@PanelContainer@373",
+        "rect": [
+          50.0,
+          50.0,
+          316.0,
+          124.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@367/@VBoxContainer@368/@HBoxContainer@369/@PanelContainer@373/@HBoxContainer@370/@Control@371",
+        "rect": [
+          64.0,
+          56.0,
+          62.0,
+          106.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 42,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@367/@VBoxContainer@368/@HBoxContainer@369/@PanelContainer@373/@HBoxContainer@370/@Label@372",
+        "rect": [
+          136.0,
+          84.0,
+          204.0,
+          49.0
+        ],
+        "tappable": false,
+        "text": "1600 COGS"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 46,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@367/@VBoxContainer@368/@HBoxContainer@369/@Button@376",
+        "rect": [
+          906.0,
+          50.0,
+          124.0,
+          124.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@367/@VBoxContainer@368/@HBoxContainer@369/@Button@376/@Control@375",
+        "rect": [
+          937.0,
+          81.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 88,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@367/@VBoxContainer@368/@Label@377",
+        "rect": [
+          50.0,
+          196.0,
+          980.0,
+          102.0
+        ],
+        "tappable": false,
+        "text": "SCRAP BOT"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@367/@VBoxContainer@368/@Label@378",
+        "rect": [
+          50.0,
+          320.0,
+          980.0,
+          38.0
+        ],
+        "tappable": false,
+        "text": "Build your next big thing"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 62,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@367/@VBoxContainer@368/@Button@399",
+        "rect": [
+          50.0,
+          1570.0,
+          980.0,
+          160.0
+        ],
+        "tappable": true,
+        "text": "PLAY  ·  LEVEL 1"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 46,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@367/@VBoxContainer@368/@HBoxContainer@400/@Button@401",
+        "rect": [
+          50.0,
+          1752.0,
+          481.0,
+          128.0
+        ],
+        "tappable": true,
+        "text": "GARAGE"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 46,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@367/@VBoxContainer@368/@HBoxContainer@400/@Button@402",
+        "rect": [
+          549.0,
+          1752.0,
+          481.0,
+          128.0
+        ],
+        "tappable": true,
+        "text": "DAILY RUN"
+      }
+    ],
+    "popups": 0,
+    "render_draw_calls": 67,
+    "state": "hangar",
+    "window_size": [
+      360,
+      640
+    ]
+  },
+  {
+    "attention_groups": 0,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 12.9258680555556,
+    "hud_popup_area_pct": 12.9258680555556,
+    "inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127",
+        "rect": [
+          34.0,
+          45.0,
+          1132.0,
+          322.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133",
+        "rect": [
+          34.0,
+          45.0,
+          249.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Control@131",
+        "rect": [
+          48.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Label@132",
+        "rect": [
+          120.0,
+          72.0,
+          137.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "LEVEL 1"
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138",
+        "rect": [
+          800.0,
+          45.0,
+          240.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Control@136",
+        "rect": [
+          814.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 48,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Label@137",
+        "rect": [
+          886.0,
+          70.0,
+          128.0,
+          56.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140",
+        "rect": [
+          1054.0,
+          45.0,
+          112.0,
+          112.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140/@Control@139",
+        "rect": [
+          1080.0,
+          65.0,
+          60.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@Control@142",
+        "rect": [
+          34.0,
+          171.0,
+          74.0,
+          74.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147",
+        "rect": [
+          118.0,
+          183.0,
+          1048.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147/@Label@146",
+        "rect": [
+          118.0,
+          183.0,
+          1048.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": "60 / 60"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@ProgressBar@149",
+        "rect": [
+          34.0,
+          277.0,
+          1060.0,
+          26.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@Control@150",
+        "rect": [
+          1104.0,
+          259.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 26,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@Label@411",
+        "rect": [
+          34.0,
+          335.0,
+          385.0,
+          32.0
+        ],
+        "tappable": false,
+        "text": "TINY BOT  ·  BUILD YOUR MACHINE"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Button@160",
+        "rect": [
+          40.0,
+          1685.0,
+          190.0,
+          190.0
+        ],
+        "tappable": true,
+        "text": "RE-ROLL\nFREE"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Control@163",
+        "rect": [
+          870.0,
+          1555.0,
+          290.0,
+          320.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Button@164",
+        "rect": [
+          897.0,
+          1597.0,
+          236.0,
+          236.0
+        ],
+        "tappable": true,
+        "text": "0%"
+      }
+    ],
+    "logical_size": [
+      1200.0,
+      1920.0
+    ],
+    "popups": 0,
+    "render_draw_calls": 56,
+    "state": "run_start",
+    "window_size": [
+      600,
+      960
+    ]
+  },
+  {
+    "attention_groups": 2,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 12.8282986111111,
+    "hud_popup_area_pct": 12.8924652311537,
+    "inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127",
+        "rect": [
+          34.0,
+          45.0,
+          1132.0,
+          329.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133",
+        "rect": [
+          34.0,
+          45.0,
+          249.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Control@131",
+        "rect": [
+          48.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Label@132",
+        "rect": [
+          120.0,
+          72.0,
+          137.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "LEVEL 1"
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138",
+        "rect": [
+          800.0,
+          45.0,
+          240.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Control@136",
+        "rect": [
+          814.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 48,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Label@137",
+        "rect": [
+          886.0,
+          70.0,
+          128.0,
+          56.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140",
+        "rect": [
+          1054.0,
+          45.0,
+          112.0,
+          112.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140/@Control@139",
+        "rect": [
+          1080.0,
+          65.0,
+          60.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@Control@142",
+        "rect": [
+          34.0,
+          171.0,
+          74.0,
+          74.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147",
+        "rect": [
+          118.0,
+          183.0,
+          1048.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147/@Label@146",
+        "rect": [
+          118.0,
+          183.0,
+          1048.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": "210 / 210"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@ProgressBar@149",
+        "rect": [
+          34.0,
+          277.0,
+          1060.0,
+          26.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@Control@150",
+        "rect": [
+          1104.0,
+          259.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@424",
+        "rect": [
+          34.0,
+          335.0,
+          143.0,
+          39.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@424/@Label@423",
+        "rect": [
+          50.0,
+          337.0,
+          111.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "CANNON 2"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@Label@425",
+        "rect": [
+          187.0,
+          340.0,
+          155.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "+2 EQUIPMENT"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Button@160",
+        "rect": [
+          40.0,
+          1685.0,
+          190.0,
+          190.0
+        ],
+        "tappable": true,
+        "text": "RE-ROLL\nFREE"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Control@163",
+        "rect": [
+          870.0,
+          1555.0,
+          290.0,
+          320.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Button@164",
+        "rect": [
+          897.0,
+          1597.0,
+          236.0,
+          236.0
+        ],
+        "tappable": true,
+        "text": "0%"
+      }
+    ],
+    "logical_size": [
+      1200.0,
+      1920.0
+    ],
+    "popups": 1,
+    "render_draw_calls": 62,
+    "state": "mob_gate",
+    "window_size": [
+      600,
+      960
+    ]
+  },
+  {
+    "attention_groups": 0,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 12.8282986111111,
+    "hud_popup_area_pct": 12.8282986111111,
+    "inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127",
+        "rect": [
+          34.0,
+          45.0,
+          1132.0,
+          329.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133",
+        "rect": [
+          34.0,
+          45.0,
+          249.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Control@131",
+        "rect": [
+          48.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Label@132",
+        "rect": [
+          120.0,
+          72.0,
+          137.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "LEVEL 1"
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138",
+        "rect": [
+          800.0,
+          45.0,
+          240.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Control@136",
+        "rect": [
+          814.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 48,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Label@137",
+        "rect": [
+          886.0,
+          70.0,
+          128.0,
+          56.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140",
+        "rect": [
+          1054.0,
+          45.0,
+          112.0,
+          112.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140/@Control@139",
+        "rect": [
+          1080.0,
+          65.0,
+          60.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@Control@142",
+        "rect": [
+          34.0,
+          171.0,
+          74.0,
+          74.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147",
+        "rect": [
+          118.0,
+          183.0,
+          1048.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147/@Label@146",
+        "rect": [
+          118.0,
+          183.0,
+          1048.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": "210 / 210"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@ProgressBar@149",
+        "rect": [
+          34.0,
+          277.0,
+          1060.0,
+          26.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@Control@150",
+        "rect": [
+          1104.0,
+          259.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@424",
+        "rect": [
+          34.0,
+          335.0,
+          143.0,
+          39.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@424/@Label@423",
+        "rect": [
+          50.0,
+          337.0,
+          111.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "CANNON 2"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@Label@425",
+        "rect": [
+          187.0,
+          340.0,
+          155.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "+2 EQUIPMENT"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Button@160",
+        "rect": [
+          40.0,
+          1685.0,
+          190.0,
+          190.0
+        ],
+        "tappable": true,
+        "text": "RE-ROLL\nFREE"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Control@163",
+        "rect": [
+          870.0,
+          1555.0,
+          290.0,
+          320.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Button@164",
+        "rect": [
+          897.0,
+          1597.0,
+          236.0,
+          236.0
+        ],
+        "tappable": true,
+        "text": "0%"
+      }
+    ],
+    "logical_size": [
+      1200.0,
+      1920.0
+    ],
+    "popups": 0,
+    "render_draw_calls": 78,
+    "state": "part_gate",
+    "window_size": [
+      600,
+      960
+    ]
+  },
+  {
+    "attention_groups": 0,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 12.8282986111111,
+    "hud_popup_area_pct": 12.8282986111111,
+    "inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127",
+        "rect": [
+          34.0,
+          45.0,
+          1132.0,
+          329.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133",
+        "rect": [
+          34.0,
+          45.0,
+          249.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Control@131",
+        "rect": [
+          48.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Label@132",
+        "rect": [
+          120.0,
+          72.0,
+          137.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "LEVEL 1"
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138",
+        "rect": [
+          800.0,
+          45.0,
+          240.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Control@136",
+        "rect": [
+          814.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 48,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Label@137",
+        "rect": [
+          886.0,
+          70.0,
+          128.0,
+          56.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140",
+        "rect": [
+          1054.0,
+          45.0,
+          112.0,
+          112.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140/@Control@139",
+        "rect": [
+          1080.0,
+          65.0,
+          60.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@Control@142",
+        "rect": [
+          34.0,
+          171.0,
+          74.0,
+          74.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147",
+        "rect": [
+          118.0,
+          183.0,
+          1048.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147/@Label@146",
+        "rect": [
+          118.0,
+          183.0,
+          1048.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": "210 / 210"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@ProgressBar@149",
+        "rect": [
+          34.0,
+          277.0,
+          1060.0,
+          26.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@Control@150",
+        "rect": [
+          1104.0,
+          259.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@424",
+        "rect": [
+          34.0,
+          335.0,
+          143.0,
+          39.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@424/@Label@423",
+        "rect": [
+          50.0,
+          337.0,
+          111.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "CANNON 2"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@Label@425",
+        "rect": [
+          187.0,
+          340.0,
+          155.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "+2 EQUIPMENT"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Button@160",
+        "rect": [
+          40.0,
+          1685.0,
+          190.0,
+          190.0
+        ],
+        "tappable": true,
+        "text": "RE-ROLL\nFREE"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Control@163",
+        "rect": [
+          870.0,
+          1555.0,
+          290.0,
+          320.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Button@164",
+        "rect": [
+          897.0,
+          1597.0,
+          236.0,
+          236.0
+        ],
+        "tappable": true,
+        "text": "0%"
+      }
+    ],
+    "logical_size": [
+      1200.0,
+      1920.0
+    ],
+    "popups": 0,
+    "render_draw_calls": 60,
+    "state": "mid_run",
+    "window_size": [
+      600,
+      960
+    ]
+  },
+  {
+    "attention_groups": 3,
+    "full_screen_effects": 1,
+    "hero_events": 0,
+    "hud_area_pct": 12.8282986111111,
+    "hud_popup_area_pct": 12.938298564487,
+    "inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127",
+        "rect": [
+          34.0,
+          45.0,
+          1132.0,
+          329.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133",
+        "rect": [
+          34.0,
+          45.0,
+          249.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Control@131",
+        "rect": [
+          48.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Label@132",
+        "rect": [
+          120.0,
+          72.0,
+          137.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "LEVEL 1"
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138",
+        "rect": [
+          800.0,
+          45.0,
+          240.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Control@136",
+        "rect": [
+          814.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 48,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Label@137",
+        "rect": [
+          886.0,
+          70.0,
+          128.0,
+          56.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140",
+        "rect": [
+          1054.0,
+          45.0,
+          112.0,
+          112.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140/@Control@139",
+        "rect": [
+          1080.0,
+          65.0,
+          60.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@Control@142",
+        "rect": [
+          34.0,
+          171.0,
+          74.0,
+          74.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147",
+        "rect": [
+          118.0,
+          183.0,
+          1048.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147/@Label@146",
+        "rect": [
+          118.0,
+          183.0,
+          1048.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": "210 / 210"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@ProgressBar@149",
+        "rect": [
+          34.0,
+          277.0,
+          1060.0,
+          26.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@Control@150",
+        "rect": [
+          1104.0,
+          259.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@424",
+        "rect": [
+          34.0,
+          335.0,
+          143.0,
+          39.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@PanelContainer@424/@Label@423",
+        "rect": [
+          50.0,
+          337.0,
+          111.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "CANNON 2"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 24,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HFlowContainer@151/@Label@425",
+        "rect": [
+          187.0,
+          340.0,
+          155.0,
+          29.0
+        ],
+        "tappable": false,
+        "text": "+2 EQUIPMENT"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Button@160",
+        "rect": [
+          40.0,
+          1685.0,
+          190.0,
+          190.0
+        ],
+        "tappable": true,
+        "text": "RE-ROLL\nFREE"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Control@163",
+        "rect": [
+          870.0,
+          1555.0,
+          290.0,
+          320.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Button@164",
+        "rect": [
+          897.0,
+          1597.0,
+          236.0,
+          236.0
+        ],
+        "tappable": true,
+        "text": "0%"
+      }
+    ],
+    "logical_size": [
+      1200.0,
+      1920.0
+    ],
+    "popups": 1,
+    "render_draw_calls": 61,
+    "state": "damage",
+    "window_size": [
+      600,
+      960
+    ]
+  },
+  {
+    "attention_groups": 0,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 19.1359375,
+    "hud_popup_area_pct": 19.1359375,
+    "inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127",
+        "rect": [
+          34.0,
+          45.0,
+          1132.0,
+          276.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133",
+        "rect": [
+          34.0,
+          45.0,
+          249.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Control@131",
+        "rect": [
+          48.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@133/@HBoxContainer@130/@Label@132",
+        "rect": [
+          120.0,
+          72.0,
+          137.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "LEVEL 1"
+      },
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138",
+        "rect": [
+          800.0,
+          45.0,
+          240.0,
+          112.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Control@136",
+        "rect": [
+          814.0,
+          51.0,
+          62.0,
+          94.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 48,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@PanelContainer@138/@HBoxContainer@135/@Label@137",
+        "rect": [
+          886.0,
+          70.0,
+          128.0,
+          56.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140",
+        "rect": [
+          1054.0,
+          45.0,
+          112.0,
+          112.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@129/@Button@140/@Control@139",
+        "rect": [
+          1080.0,
+          65.0,
+          60.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@Control@142",
+        "rect": [
+          34.0,
+          171.0,
+          74.0,
+          74.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147",
+        "rect": [
+          118.0,
+          183.0,
+          1048.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@141/@ProgressBar@147/@Label@146",
+        "rect": [
+          118.0,
+          183.0,
+          1048.0,
+          50.0
+        ],
+        "tappable": false,
+        "text": "210 / 210"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@ProgressBar@149",
+        "rect": [
+          34.0,
+          277.0,
+          1060.0,
+          26.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@PanelContainer@127/@VBoxContainer@128/@HBoxContainer@148/@Control@150",
+        "rect": [
+          1104.0,
+          259.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 44,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@VBoxContainer@152/@Label@153",
+        "rect": [
+          70.0,
+          341.0,
+          1060.0,
+          51.0
+        ],
+        "tappable": false,
+        "text": "SCRAP TITAN  /  PLATED"
+      },
+      {
+        "class": "ProgressBar",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@VBoxContainer@152/@ProgressBar@154",
+        "rect": [
+          70.0,
+          396.0,
+          1060.0,
+          24.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 30,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@Label@158",
+        "rect": [
+          40.0,
+          1440.0,
+          1120.0,
+          100.0
+        ],
+        "tappable": false,
+        "text": "MOVE OUT OF THE RED"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Control@163",
+        "rect": [
+          870.0,
+          1555.0,
+          290.0,
+          320.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 34,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@126/@HBoxContainer@159/@Control@162/@Button@164",
+        "rect": [
+          897.0,
+          1597.0,
+          236.0,
+          236.0
+        ],
+        "tappable": true,
+        "text": "0%"
+      }
+    ],
+    "logical_size": [
+      1200.0,
+      1920.0
+    ],
+    "popups": 0,
+    "render_draw_calls": 64,
+    "state": "boss_fight",
+    "window_size": [
+      600,
+      960
+    ]
+  },
+  {
+    "attention_groups": 0,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 0.0,
+    "hud_popup_area_pct": 0.0,
+    "inventory": [],
+    "logical_size": [
+      1200.0,
+      1920.0
+    ],
+    "menu_inventory": [
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 76,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@551/@ScrollContainer@554/@VBoxContainer@555/@Label@556",
+        "rect": [
+          50.0,
+          50.0,
+          1100.0,
+          88.0
+        ],
+        "tappable": false,
+        "text": "TITAN DOWN!"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 52,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@551/@ScrollContainer@554/@VBoxContainer@555/@Label@558",
+        "rect": [
+          50.0,
+          682.0,
+          1100.0,
+          60.0
+        ],
+        "tappable": false,
+        "text": "THE SCRAP SPEEDSTER"
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@551/@ScrollContainer@554/@VBoxContainer@555/@HBoxContainer@559/@Control@560",
+        "rect": [
+          351.0,
+          764.0,
+          150.0,
+          150.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@551/@ScrollContainer@554/@VBoxContainer@555/@HBoxContainer@559/@Control@561",
+        "rect": [
+          525.0,
+          764.0,
+          150.0,
+          150.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@551/@ScrollContainer@554/@VBoxContainer@555/@HBoxContainer@559/@Control@562",
+        "rect": [
+          699.0,
+          764.0,
+          150.0,
+          150.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@551/@ScrollContainer@554/@VBoxContainer@555/@HBoxContainer@565/@Control@563",
+        "rect": [
+          521.0,
+          936.0,
+          90.0,
+          97.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 84,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@551/@ScrollContainer@554/@VBoxContainer@555/@HBoxContainer@565/@Label@564",
+        "rect": [
+          625.0,
+          936.0,
+          54.0,
+          97.0
+        ],
+        "tappable": false,
+        "text": "0"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 28,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@551/@ScrollContainer@554/@VBoxContainer@555/@Label@566",
+        "rect": [
+          50.0,
+          1055.0,
+          1100.0,
+          34.0
+        ],
+        "tappable": false,
+        "text": "0 KILLS   ·   BEST COMBO x0   ·   0 PARTS LOST"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 46,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@551/@ScrollContainer@554/@VBoxContainer@555/@Button@567",
+        "rect": [
+          50.0,
+          1111.0,
+          1100.0,
+          128.0
+        ],
+        "tappable": true,
+        "text": "DOUBLE COGS  ·  WATCH"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 46,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@551/@ScrollContainer@554/@VBoxContainer@555/@Button@568",
+        "rect": [
+          50.0,
+          1261.0,
+          1100.0,
+          128.0
+        ],
+        "tappable": true,
+        "text": "NEXT LEVEL"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 46,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@551/@ScrollContainer@554/@VBoxContainer@555/@Button@569",
+        "rect": [
+          50.0,
+          1411.0,
+          1100.0,
+          128.0
+        ],
+        "tappable": true,
+        "text": "HOME"
+      }
+    ],
+    "popups": 0,
+    "render_draw_calls": 46,
+    "state": "result_win",
+    "window_size": [
+      600,
+      960
+    ]
+  },
+  {
+    "attention_groups": 0,
+    "full_screen_effects": 0,
+    "hero_events": 0,
+    "hud_area_pct": 0.0,
+    "hud_popup_area_pct": 0.0,
+    "inventory": [],
+    "logical_size": [
+      1200.0,
+      1920.0
+    ],
+    "menu_inventory": [
+      {
+        "class": "PanelContainer",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@593/@VBoxContainer@594/@HBoxContainer@595/@PanelContainer@599",
+        "rect": [
+          50.0,
+          50.0,
+          316.0,
+          124.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@593/@VBoxContainer@594/@HBoxContainer@595/@PanelContainer@599/@HBoxContainer@596/@Control@597",
+        "rect": [
+          64.0,
+          56.0,
+          62.0,
+          106.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 42,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@593/@VBoxContainer@594/@HBoxContainer@595/@PanelContainer@599/@HBoxContainer@596/@Label@598",
+        "rect": [
+          136.0,
+          84.0,
+          204.0,
+          49.0
+        ],
+        "tappable": false,
+        "text": "1600 COGS"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 46,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@593/@VBoxContainer@594/@HBoxContainer@595/@Button@602",
+        "rect": [
+          1026.0,
+          50.0,
+          124.0,
+          124.0
+        ],
+        "tappable": true,
+        "text": ""
+      },
+      {
+        "class": "Control",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 0,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@593/@VBoxContainer@594/@HBoxContainer@595/@Button@602/@Control@601",
+        "rect": [
+          1057.0,
+          81.0,
+          62.0,
+          62.0
+        ],
+        "tappable": false,
+        "text": ""
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 88,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@593/@VBoxContainer@594/@Label@603",
+        "rect": [
+          50.0,
+          196.0,
+          1100.0,
+          102.0
+        ],
+        "tappable": false,
+        "text": "SCRAP BOT"
+      },
+      {
+        "class": "Label",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 32,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@593/@VBoxContainer@594/@Label@604",
+        "rect": [
+          50.0,
+          320.0,
+          1100.0,
+          38.0
+        ],
+        "tappable": false,
+        "text": "Build your next big thing"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 62,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@593/@VBoxContainer@594/@Button@625",
+        "rect": [
+          50.0,
+          1570.0,
+          1100.0,
+          160.0
+        ],
+        "tappable": true,
+        "text": "PLAY  ·  LEVEL 1"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 46,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@593/@VBoxContainer@594/@HBoxContainer@626/@Button@627",
+        "rect": [
+          50.0,
+          1752.0,
+          541.0,
+          128.0
+        ],
+        "tappable": true,
+        "text": "GARAGE"
+      },
+      {
+        "class": "Button",
+        "color": "(1.0, 1.0, 1.0, 1.0)",
+        "font_px": 46,
+        "path": "/root/ScrapDragon/@CanvasLayer@125/@Control@167/@MarginContainer@593/@VBoxContainer@594/@HBoxContainer@626/@Button@628",
+        "rect": [
+          609.0,
+          1752.0,
+          541.0,
+          128.0
+        ],
+        "tappable": true,
+        "text": "DAILY RUN"
+      }
+    ],
+    "popups": 0,
+    "render_draw_calls": 67,
+    "state": "hangar",
+    "window_size": [
+      600,
+      960
+    ]
+  }
+]

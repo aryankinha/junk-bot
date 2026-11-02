@@ -1,0 +1,138 @@
+[
+  {
+    "bot": "MobBot delay150ms",
+    "engagement": {
+      "bursts": 0,
+      "chosen": "cannon",
+      "evolution_t": -1.0,
+      "mark_count": 148,
+      "marks_by_kind": {
+        "dodge": 1,
+        "gate": 7,
+        "pickup": 90,
+        "shot": 44,
+        "special": 6
+      },
+      "max_gap_full_run": 8.66666666666617,
+      "max_gap_pre_boss": 5.04999999999971,
+      "mob_passes": 0,
+      "time_to_first_gate": 8.90000000000002,
+      "time_to_first_multiply": -1.0,
+      "time_to_first_payoff": 3.26666666666683
+    },
+    "first_multiply_t": -1,
+    "first_part_choice_t": 8.90000000000002,
+    "mob_stats": {},
+    "mode": "off",
+    "peak_enemy_array_count": 10,
+    "peak_gate_rows_under_pool_distance_rules": 1,
+    "seed": 20261031,
+    "sim_end_t": 92.0666666666627,
+    "state": "won"
+  },
+  {
+    "bot": "MobBot delay150ms",
+    "engagement": {
+      "bursts": 0,
+      "chosen": "cannon",
+      "evolution_t": -1.0,
+      "mark_count": 401,
+      "marks_by_kind": {
+        "dodge": 1,
+        "gate": 7,
+        "mobgate": 138,
+        "pickup": 37,
+        "shot": 210,
+        "special": 8
+      },
+      "max_gap_full_run": 6.24999999999964,
+      "max_gap_pre_boss": 2.21666666666678,
+      "mob_passes": 677,
+      "time_to_first_gate": 8.90000000000002,
+      "time_to_first_multiply": 1.23333333333333,
+      "time_to_first_payoff": 1.01666666666672
+    },
+    "first_multiply_t": 1.23333333333333,
+    "first_part_choice_t": 8.90000000000002,
+    "mob_stats": {
+      "cap_ticks": 0,
+      "champions": 1,
+      "gain": 6851.02,
+      "hit_damage": 3704.06666666667,
+      "launched": 1112,
+      "launched_damage": 10036.0000000001,
+      "live_sum": 108357.0,
+      "merges": 0,
+      "over_cap": 0,
+      "passes": {
+        "add": 83,
+        "mult": 390,
+        "power": 160,
+        "speed": 39,
+        "trap": 5
+      },
+      "peak": 105,
+      "ticks": 5548,
+      "trap_loss": 8.33333333333333
+    },
+    "mode": "mob",
+    "peak_enemy_array_count": 9,
+    "peak_gate_rows_under_pool_distance_rules": 2,
+    "seed": 20261031,
+    "sim_end_t": 92.4666666666627,
+    "state": "won"
+  },
+  {
+    "bot": "MobBot delay150ms",
+    "engagement": {
+      "bursts": 5,
+      "chosen": "cannon",
+      "evolution_t": 32.3499999999994,
+      "mark_count": 803,
+      "marks_by_kind": {
+        "charge": 152,
+        "dodge": 1,
+        "gate": 7,
+        "mobgate": 132,
+        "pickup": 40,
+        "shot": 464,
+        "special": 7
+      },
+      "max_gap_full_run": 5.86666666666633,
+      "max_gap_pre_boss": 2.81666666666671,
+      "mob_passes": 1233,
+      "time_to_first_gate": 8.90000000000002,
+      "time_to_first_multiply": 1.23333333333333,
+      "time_to_first_payoff": 0.300000000000015
+    },
+    "first_multiply_t": 1.23333333333333,
+    "first_part_choice_t": 8.90000000000002,
+    "mob_stats": {
+      "cap_ticks": 14,
+      "champions": 1,
+      "gain": 10707.2133333333,
+      "hit_damage": 4700.46666666667,
+      "launched": 2341,
+      "launched_damage": 14338.0000000001,
+      "live_sum": 218758.0,
+      "merges": 39,
+      "over_cap": 0,
+      "passes": {
+        "add": 157,
+        "mult": 708,
+        "power": 316,
+        "speed": 43,
+        "trap": 9
+      },
+      "peak": 200,
+      "ticks": 5506,
+      "trap_loss": 30.6666666666667
+    },
+    "mode": "bundle",
+    "peak_enemy_array_count": 14,
+    "peak_gate_rows_under_pool_distance_rules": 2,
+    "seed": 20261031,
+    "sim_end_t": 91.7666666666627,
+    "state": "won"
+  }
+]

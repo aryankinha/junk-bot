@@ -1,0 +1,26 @@
+{
+  "context": "Desktop",
+  "draw_calls_max": 96,
+  "draw_calls_median": 79,
+  "engine_max_fps": 60,
+  "p50_ms": 16.665,
+  "p95_ms": 18.334,
+  "p99_ms": 18.791,
+  "primitives_max": 41688,
+  "renderer": "gl_compatibility",
+  "samples": 2675,
+  "scene_init_to_first_playable_ms": 27.713,
+  "screen_refresh_hz": 120.0,
+  "screen_scale": 2.0,
+  "share_over_16.7_ms": 0.431775700934579,
+  "share_over_20.0_ms": 0.00448598130841121,
+  "share_over_25.0_ms": 0.00373831775700935,
+  "share_over_33.0_ms": 0.00186915887850467,
+  "static_memory_bytes": 57870871,
+  "vsync_mode": 1,
+  "window_size": [
+    648,
+    1152
+  ],
+  "worst_ms": 595.641
+}

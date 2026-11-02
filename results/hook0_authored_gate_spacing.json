@@ -1,0 +1,85 @@
+{
+  "part_family_z": [
+    80,
+    180,
+    290,
+    400,
+    520,
+    610,
+    670
+  ],
+  "mob_rows": [
+    {
+      "mob_z": 45,
+      "nearest_part_z": 80,
+      "distance": 35
+    },
+    {
+      "mob_z": 105,
+      "nearest_part_z": 80,
+      "distance": 25
+    },
+    {
+      "mob_z": 150,
+      "nearest_part_z": 180,
+      "distance": 30
+    },
+    {
+      "mob_z": 215,
+      "nearest_part_z": 180,
+      "distance": 35
+    },
+    {
+      "mob_z": 255,
+      "nearest_part_z": 290,
+      "distance": 35
+    },
+    {
+      "mob_z": 320,
+      "nearest_part_z": 290,
+      "distance": 30
+    },
+    {
+      "mob_z": 375,
+      "nearest_part_z": 400,
+      "distance": 25
+    },
+    {
+      "mob_z": 435,
+      "nearest_part_z": 400,
+      "distance": 35
+    },
+    {
+      "mob_z": 480,
+      "nearest_part_z": 520,
+      "distance": 40
+    },
+    {
+      "mob_z": 560,
+      "nearest_part_z": 520,
+      "distance": 40
+    },
+    {
+      "mob_z": 620,
+      "nearest_part_z": 610,
+      "distance": 10
+    },
+    {
+      "mob_z": 690,
+      "nearest_part_z": 670,
+      "distance": 20
+    }
+  ],
+  "violations_at_25m": [
+    {
+      "mob_z": 620,
+      "nearest_part_z": 610,
+      "distance": 10
+    },
+    {
+      "mob_z": 690,
+      "nearest_part_z": 670,
+      "distance": 20
+    }
+  ]
+}
