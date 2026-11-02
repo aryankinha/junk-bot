@@ -4,6 +4,7 @@ var hook_gates
 var gate_clarity := false
 var hook_underglow: MeshInstance3D
 var hook_eyes: MultiMeshInstance3D
+var hook_drones: MultiMeshInstance3D
 var ui_v2_enabled := false
 var popup_limit := 10
 const UiWorldScript = preload("res://src/ui/ui_world_feedback.gd")
@@ -482,8 +483,15 @@ func _sync_drones(sim: RunSim) -> void:
 	var mob: MobSim = sim.mob
 	if mob == null:
 		drones.multimesh.visible_instance_count = 0
+		if hook_drones != null: hook_drones.visible = false; hook_drones.multimesh.visible_instance_count = 0
 		impact_count = 0
 		return
+	var use_material: bool = bool(sim.flags.get("material_tiers",false))
+	if use_material and hook_drones == null:
+		hook_drones = make_multimesh(MeshFactory.hook_drone(),256,false,true); hook_drones.material_override = MeshFactory.hook_drone_palette()
+	if hook_drones != null: hook_drones.visible = use_material
+	drones.visible = not use_material
+	var draw_node: MultiMeshInstance3D = hook_drones if use_material else drones
 	var count := mini(mob.n, 256)
 	var kinds: Dictionary = mob.cfg.kinds
 	var extra := float(mob.cfg.scale_per_extra_weight)
@@ -493,11 +501,16 @@ func _sync_drones(sim: RunSim) -> void:
 		var s := minf(limit * (3.0 if k == MobSim.Kind.CHAMPION else 1.0), float(kinds[MobSim.KIND_NAMES[k]].scale) * (1.0 + extra * (mob.wgt[i] - 1.0)))
 		var yaw := -atan2(mob.vx[i], maxf(mob.vz[i], 0.1)) if absf(mob.vx[i]) > 0.3 else 0.0
 		var at := Vector3(mob.px[i], mob.py[i] + (0.0 if reduce_motion else sin(elapsed * 14.0 + float(i)) * 0.05), sim.z - mob.pz[i])
-		drones.multimesh.set_instance_transform(i, Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3.ONE * s), at))
+		var quality := int(mob.material[i]) if use_material else 1
+		if use_material: s *= 1.0 + float(quality-1)*0.08
+		draw_node.multimesh.set_instance_transform(i, Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3.ONE * s), at))
 		var tint: Color = DRONE_COLORS[k]
 		if ui_v2_enabled and mob.wgt[i] > 1.01: tint = tint.lerp(Color.WHITE, minf(0.4, (mob.wgt[i] - 1.0) * 0.12))
-		drones.multimesh.set_instance_color(i, tint)
-	drones.multimesh.visible_instance_count = count
+		if use_material:
+			var ascend := 0.0 if sim.get("hook") == null else float(sim.hook.ascensionbonus(str(mob.wid[i])) > 0)
+			draw_node.multimesh.set_instance_custom_data(i,Color(float(quality),0,ascend,1))
+		else: draw_node.multimesh.set_instance_color(i, tint)
+	draw_node.multimesh.visible_instance_count = count
 	var shown := 0
 	impact_count = mob.impacts.size()
 	for impact in mob.impacts:
@@ -581,13 +594,23 @@ func popup(text: String, pos: Vector3, color := Color.WHITE, size := 72) -> void
 			for other in popups:
 				if other.visible and other != label:
 					var other_center := camera.unproject_position(other.global_position)
-					if clampi(int(other_center.x / maxf(1, width / 3)), 0, 2) == region: other.visible = false
+					if clampi(int(other_center.x / maxf(1, width / 3)), 0, 2) == region or popup_rect(text,pos,mini(size,64)).intersects(popup_rect(other.text,other.position,other.font_size)): other.visible = false
 	label.text = text
 	label.font_size = mini(size, 64)
 	label.modulate = color
 	label.position = pos
 	label.visible = true
 	label.set_meta("life", 1.0)
+
+# Conservative billboard bounds, also used by the region-collision check.
+func popup_rect(text: String, pos: Vector3, font_size: int) -> Rect2:
+	var camera := get_viewport().get_camera_3d()
+	if camera == null: return Rect2()
+	var center := camera.unproject_position(to_global(pos))
+	var half_width := float(text.length()*font_size)*0.0065*0.34
+	var right := camera.unproject_position(to_global(pos)+camera.global_basis.x*half_width)
+	var top := camera.unproject_position(to_global(pos)+camera.global_basis.y*font_size*0.0065*0.7)
+	return Rect2(center-Vector2(absf(right.x-center.x),absf(top.y-center.y)),Vector2(absf(right.x-center.x)*2,absf(top.y-center.y)*2)).grow(8)
 
 func sync(sim: RunSim, dt: float) -> void:
 	elapsed += dt
@@ -612,6 +635,11 @@ func sync(sim: RunSim, dt: float) -> void:
 	var lean := (sim.x - sim.target_x) * 0.05
 	player.rotation.z = lerpf(player.rotation.z, lean if absf(lean) > 0.004 else 0.0, 0.2)
 	if "compact_layout" in player: player.set("compact_layout", gate_clarity)
+	player.hook_materials_enabled = bool(sim.flags.get("material_tiers",false))
+	if player.hook_materials_enabled and sim.get("hook") != null:
+		for family in ["cannon","rocket","flame"]:
+			player.material_levels[family] = sim.hook.quality(family)
+			player.material_ascending[family] = sim.hook.ascensionbonus(family) > 0
 	player.sync(sim.robot)
 	player.drive_speed = (float(sim.robot.stats.fwd_mult) * (0.6 if sim.oil_time > 0 else 1.0)) if sim.state == "running" else (0.3 if sim.state == "boss" else 0.0)
 	player.steer = clampf(sim.target_x - sim.x, -1.5, 1.5)

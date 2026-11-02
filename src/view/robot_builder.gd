@@ -7,6 +7,16 @@ var antenna_pivot: Node3D
 var wheels: Array[MeshInstance3D] = []
 var sockets: Dictionary = {}
 var attachments: Dictionary = {}
+var hook_materials_enabled := false
+var compact_layout := false
+var compact_was_enabled := false
+var material_levels: Dictionary = {}
+var material_ascending: Dictionary = {}
+var material_signature := 0
+var hook_was_enabled := false
+var forge_family := ""
+var forge_time := 0.0
+var forge_duration := 0.55
 var signature := ""
 var stage_value := 0
 var growth_tween: Tween
@@ -20,7 +30,7 @@ var reduced_motion := false:
 			if growth_tween != null: growth_tween.kill()
 			if stage_value > 0: scale = Vector3.ONE * [0.85, 1.12, 1.4][stage_value - 1]
 			for node in attachments.values():
-				var tween = node.get_meta("attach_tween", null)
+				var tween = node.get_meta("attach_tween") if node.has_meta("attach_tween") else null
 				if tween != null and tween.is_valid(): tween.kill()
 				node.position = Vector3.ZERO; node.scale = Vector3.ONE
 			flash_amount = 0
@@ -70,6 +80,7 @@ func flash() -> void:
 func _process(delta: float) -> void:
 	if body == null:
 		return
+	_tick_forge(delta)
 	if reduced_motion:
 		body.position = Vector3.ZERO
 		body.rotation.z = -steer * 0.05
@@ -108,9 +119,17 @@ func _process(delta: float) -> void:
 func sync(robot: RobotState, animate := true) -> void:
 	animate = animate and not reduced_motion
 	var key := JSON.stringify(robot.parts) + str(robot.stage()) + JSON.stringify(robot.slots) + JSON.stringify(robot.tiers)
-	if key == signature:
+	var material_key := material_levels.hash() if hook_materials_enabled else 0
+	if hook_materials_enabled:
+		for id in attachments:
+			var amount := clampf(float(material_ascending.get(id, 0)), 0, 1)
+			if bool(attachments[id].get_meta("hook_materials", false)) and float(attachments[id].get_meta("ascending", -1)) != amount:
+				attachments[id].set_instance_shader_parameter("ascending", amount)
+				attachments[id].set_meta("ascending", amount)
+	if key == signature and hook_was_enabled == hook_materials_enabled and material_signature == material_key and compact_was_enabled == compact_layout:
 		return
 	signature = key
+	hook_was_enabled = hook_materials_enabled; material_signature = material_key; compact_was_enabled = compact_layout
 	var changed_stage := stage_value != robot.stage()
 	stage_value = robot.stage()
 	body.mesh = MeshFactory.chassis_body(stage_value)
@@ -132,17 +151,28 @@ func sync(robot: RobotState, animate := true) -> void:
 		var id: String = robot.slots[slot]
 		var level: int = int(robot.parts[id])
 		var tier := int(robot.tiers.get(id, 1))
-		if attachments.has(id) and int(attachments[id].get_meta("level")) == level and int(attachments[id].get_meta("tier", 1)) == tier:
+		if attachments.has(id) and int(attachments[id].get_meta("level")) == level and int(attachments[id].get_meta("tier", 1)) == tier and bool(attachments[id].get_meta("hook_materials", false)) == hook_materials_enabled:
 			if attachments[id].get_parent() != sockets[slot]:
 				attachments[id].reparent(sockets[slot], false)
+			if hook_materials_enabled:
+				var quality := clampi(int(material_levels.get(id, 1)), 1, 4)
+				attachments[id].mesh = MeshFactory.hook_part(id, level, quality, tier)
+				attachments[id].set_instance_shader_parameter("tier", float(quality))
+				attachments[id].set_instance_shader_parameter("ascending", float(material_ascending.get(id, 0)))
 			continue
 		if attachments.has(id):
 			attachments[id].queue_free()
-		var node := MeshFactory.instance(MeshFactory.part(id, level))
+		var quality := clampi(int(material_levels.get(id, 1)), 1, 4)
+		var node := MeshFactory.instance(MeshFactory.hook_part(id, level, quality, tier) if hook_materials_enabled else MeshFactory.part(id, level))
+		node.set_meta("hook_materials", hook_materials_enabled)
+		if hook_materials_enabled:
+			node.set_instance_shader_parameter("tier", float(quality))
+			node.set_instance_shader_parameter("forge", 0.0)
+			node.set_instance_shader_parameter("ascending", float(material_ascending.get(id, 0)))
 		node.set_meta("level", level)
 		node.set_meta("tier", tier)
 		sockets[slot].add_child(node)
-		if tier >= 3:
+		if tier >= 3 and not hook_materials_enabled:
 			var trim := MeshFactory.instance(MeshFactory.merged([MeshFactory.box(Vector3(0.1, 0.15, 0.5), Vector3(-0.18, 0.28, 0), MeshFactory.YELLOW if tier < 5 else MeshFactory.BLUE), MeshFactory.box(Vector3(0.1, 0.15, 0.5), Vector3(0.18, 0.28, 0), MeshFactory.YELLOW if tier < 5 else MeshFactory.BLUE)]))
 			node.add_child(trim)
 		attachments[id] = node
@@ -188,6 +218,9 @@ func _layout_attachments(robot: RobotState) -> void:
 		elif slot == "head": direction = Vector3.UP
 		elif slot.ends_with("_l"): direction = Vector3.LEFT
 		elif slot.ends_with("_r"): direction = Vector3.RIGHT
+		if (hook_materials_enabled or compact_layout) and _compact_socket(id, occupied):
+			occupied.append(attachment_bounds(id).grow(0.035))
+			continue
 		for attempt in 80:
 			var bounds := attachment_bounds(id).grow(0.035)
 			var overlap := false
@@ -219,3 +252,41 @@ func visual_bounds() -> AABB:
 		if wheel.visible: bounds = bounds.merge(wheel.transform * wheel.mesh.get_aabb())
 	for id in attachments: bounds = bounds.merge(attachment_bounds(id))
 	return AABB(bounds.position * scale, bounds.size * scale)
+
+# A forge moment travels once along the current family; no brightness oscillation or camera effect.
+func forge(family: String, _quality: int) -> void:
+	if not forge_family.is_empty() and attachments.has(forge_family) and bool(attachments[forge_family].get_meta("hook_materials", false)):
+		attachments[forge_family].set_instance_shader_parameter("forge", 0.0)
+	forge_family = family
+	forge_time = forge_duration if hook_materials_enabled and not reduced_motion else 0.0
+
+func _tick_forge(delta: float) -> void:
+	if forge_time <= 0: return
+	forge_time = 0.0 if reduced_motion or not hook_materials_enabled else maxf(0.0, forge_time - delta)
+	if attachments.has(forge_family) and bool(attachments[forge_family].get_meta("hook_materials", false)):
+		attachments[forge_family].set_instance_shader_parameter("forge", clampf(1.0 - forge_time / forge_duration, 0.001, 0.999) if forge_time > 0 else 0.0)
+
+# Preserve the named socket and all clearance envelopes, but search forward/up as well as sideways.
+# This runs only on a build change; no frame-time packing or physics/hitbox changes.
+func _compact_socket(id: String, occupied: Array[AABB]) -> bool:
+	var socket: Node3D = attachments[id].get_parent()
+	var origin := socket.position
+	var movement: bool = GameData.table("parts")[id].category == "movement"
+	var best := INF
+	var chosen := origin
+	var sign_x := -1.0 if origin.x < 0 else 1.0
+	for dy in ([0.0] if movement else [0.0, 0.35, 0.7, 1.05, 1.4, 1.75, 2.1, -0.35, -0.7]):
+		for dz in [0.0, -0.35, 0.35, -0.7, 0.7, -1.05, 1.05, -1.4, 1.4, -1.75, 1.75, -2.1, 2.1, -2.45, 2.45]:
+			for dx in ([0.0] if movement else [0.0, 0.25, 0.5]):
+				var offset := Vector3(float(dx) * sign_x, float(dy), float(dz))
+				var score := offset.x * offset.x * 2.5 + offset.y * offset.y * 1.3 + offset.z * offset.z
+				if score >= best: continue
+				socket.position = origin + offset
+				var bounds := attachment_bounds(id).grow(0.035)
+				if bounds.position.x < -2.6 or bounds.end.x > 2.6 or bounds.position.y < 0 or bounds.end.y > 4.8: continue
+				var overlap := false
+				for other in occupied:
+					if bounds.intersects(other): overlap = true; break
+				if not overlap: best = score; chosen = socket.position
+	socket.position = chosen if best < INF else origin
+	return best < INF

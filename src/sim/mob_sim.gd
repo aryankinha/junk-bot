@@ -389,6 +389,7 @@ func _attribute(i: int, damage: float) -> void:
 
 func _hit_enemy(sim, i: int, enemy: Dictionary, targets: Array) -> void:
 	var damage := dmg[i]
+	if hook_owner != null and hook_owner.enabled("horde_scaling"): damage = hook_owner.resistance(enemy,damage,KIND_TYPE[kind[i]])
 	var landed := minf(damage, maxf(0.0, float(enemy.hp)))
 	if track_realised:
 		_attribute(i, landed)

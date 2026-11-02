@@ -392,7 +392,7 @@ func _coin_x(zc: float) -> float:
 
 func spawn_pack(id: String, count: int, at_z: float) -> void:
 	var def: Dictionary = GameData.table("enemies")[id]
-	var enemy_cap := int(flags.tuning.dense_enemy_cap) if flags.dense_blocks else 24
+	var enemy_cap: int = hook.enemy_cap(self) if hook != null and bool(flags.get("horde_scaling",false)) else (int(flags.tuning.dense_enemy_cap) if flags.dense_blocks else 24)
 	for i in mini(count, enemy_cap - enemies.size()):
 		entity_counter += 1
 		enemies.append({"uid": entity_counter, "id": id, "x": rng.spawns.randf_range(-2.7, 2.7), "z": at_z + float(i / 3) * 1.7, "hp": float(def.hp) * (0.8 if level == 1 else 1.0), "max_hp": float(def.hp), "timer": 1.5 + float(i) * 0.3, "warning": false, "aim_x": x, "windup": 0.0, "charge_left": 0.0, "charges_remaining": 0, "burn_left": 0.0, "burn_dps": 0.0})
@@ -733,7 +733,7 @@ func _combat(dt: float) -> void:
 			if impacted or enemy.hp <= 0:
 				continue
 			if Vector2(float(enemy.x) - float(bullet.x), float(enemy.z) - float(bullet.z)).length() < 0.85:
-				enemy.hp -= float(bullet.damage)
+				enemy.hp -= hook.resistance(enemy,float(bullet.damage),str(bullet.type)) if hook != null and bool(flags.get("horde_scaling",false)) else float(bullet.damage)
 				if engage != null:
 					engage.on_hit(self, bullet, enemy)
 				if bullet.type == "rocket" and flags.weapon_evolution and evolution_active():
@@ -772,6 +772,7 @@ func _combat(dt: float) -> void:
 				if Vector2(x - float(enemy.x), z - float(enemy.z)).length() < float(def.blast_radius):
 					robot.take_damage(float(def.blast_damage_player), self, "barrel")
 			collect_scrap(int(def.get("scrap", 2)))
+			if hook != null: hook.enemy_killed(self,enemy)
 			emit("enemy_death", {"x": enemy.x, "z": enemy.z, "id": enemy.id})
 			if enemy.id == "crate":
 				for k in int(def.get("coin_burst", 10)):

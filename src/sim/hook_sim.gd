@@ -12,6 +12,7 @@ var kill_streak := 0
 var last_kill := -10.0
 var converted_damage := 0.0
 var converted_units := 0.0
+var kill_bonus_units := 0.0
 var ledger := {"requested": 0.0, "retained": 0.0, "converted": 0.0, "operations": 0}
 var cohort_serial := 0
 var chain_totals: Dictionary = {}
@@ -25,6 +26,8 @@ var recent_kills: Array = []
 var reveal_seen: Dictionary = {}
 var mystery_seen := false
 var paused_credit := 0.0
+var next_wave_sample := 0.0
+var last_crush := -10.0
 
 func setup(sim) -> void:
 	host = weakref(sim)
@@ -114,7 +117,7 @@ func preview(sim, gate: Dictionary, panel) -> Dictionary:
 
 func credit(family: String, units: float, damage: float, reason: String) -> void:
 	if not enabled("material_tiers") or units <= 0: return
-	if not family_units.has(family): family = primary(host.get_ref())
+	if reason in ["overflow","launch_cap","merge_cap","governor_cap","gate_cap"] or not family_units.has(family): family = primary(host.get_ref())
 	converted_damage += maxf(0, damage); converted_units += units
 	pending[family] = float(pending.get(family, 0)) + units
 	_apply_credit(host.get_ref(), family, reason)
@@ -230,12 +233,20 @@ func on_event(sim, event: String, data: Dictionary) -> void:
 		kill_streak = kill_streak + 1 if sim.t - last_kill <= 4 else 1; last_kill = sim.t
 		var family := primary(sim)
 		var bonus := float(tiers.get("kill_bonus", 1.0)) * (1 + minf(1, kill_streak / 10.0))
+		kill_bonus_units += bonus
 		pending[family] = float(pending.get(family,0)) + bonus
 		_apply_credit(sim,family,"kill_chain")
 
 func tick(sim, _dt: float) -> void:
 	if enabled("material_tiers"):
 		for family in pending: _apply_credit(sim, family, "overflow")
+	if enabled("horde_scaling"):
+		if sim.state=="running":
+			while next_flow_z<=sim.z+40 and next_flow_z<sim.boss_z-10:
+				spawn_flow(sim,next_flow_z)
+				next_flow_z+=float(cfg.get("flow",{}).get("spacing_m",36))
+		if sim.t>=next_wave_sample:
+			next_wave_sample=sim.t+0.1;update_waves(sim)
 
 # Cap compaction fuses same-family volleys; STREAM POWER names that compacted cohort,
 # not the number of render entities. Direct damage and charge remain additive.
@@ -358,3 +369,76 @@ func enemy_cap(sim) -> int:
 
 func resistance(enemy: Dictionary, damage: float, type: String) -> float:
 	return damage*0.45 if enemy.get("hook_shielded",false) and type not in ["rocket","cone"] else damage
+
+func estimated_dps(sim) -> float:
+	var total := 0.0
+	for weapon in sim.robot.stats.weapons:
+		var family := str(weapon.id)
+		var level := clampi(int(sim.robot.parts.get(family,1))-1,0,2)
+		var nominal: float = GameData.table("mob").volley.get(family,[3,3,3])[level]
+		var ratio := 1.0
+		if sim.mob != null:
+			var lead := -INF; var cid := -1; var units := 0.0
+			for i in sim.mob.n:
+				if sim.mob.wid[i]==family and sim.mob.life[i]>0 and sim.mob.pz[i]>lead:lead=sim.mob.pz[i];cid=sim.mob.cohort[i]
+			if cid>=0:
+				for i in sim.mob.n:
+					if sim.mob.cohort[i]==cid:units+=sim.mob.wgt[i]
+				ratio=maxf(0.25,units/maxf(1,nominal))
+		var rate := 1.0 if weapon.type=="cone" else float(weapon.get("rate",1))*int(weapon.get("barrels",1))
+		total+=float(weapon.get("damage",0))*rate*ratio*multiplier(family)
+	return maxf(1,total)
+
+func spawn_flow(sim, at_z: float) -> void:
+	var value := power(sim)
+	var flow: Dictionary=cfg.get("flow",{})
+	var limit := mini(30,16+sim.level*2)
+	var count := clampi(int(round(float(flow.get("base",4))+float(flow.get("per_power",0.35))*value)),5,limit)
+	var available := maxi(0,enemy_cap(sim)-sim.enemies.size())
+	var accepted := mini(count,available)
+	wave_serial+=1
+	var ident := wave_serial
+	var data := {"id":ident,"spawn_t":sim.t,"z":at_z,"power":value,"requested":count,"count":accepted,"kills":0,"status":"active","uids":[],"dps":estimated_dps(sim)}
+	wave_spawned+=accepted;wave_truncated+=count-accepted
+	var desired_hp: float = clampf(float(data.dps)*4/maxf(1,accepted),10,220)
+	for i in accepted:
+		var role := "scrapper"
+		if ident%3==0 and i==0:role="gunner"
+		if sim.t>20 and ident%4==0 and i==1:role="bruiser"
+		var lane := float(ident%3-1)*1.8 + float(i%3-1)*0.28
+		var z := at_z+float(i/3)*1.6
+		var before: int = sim.enemies.size()
+		sim._place(role,lane,z)
+		if sim.enemies.size()==before:continue
+		var enemy: Dictionary = sim.enemies.back()
+		enemy["hook_wave"]=ident;enemy["hook_shielded"]=role=="bruiser"
+		enemy.max_hp=desired_hp;enemy.hp=desired_hp
+		data.uids.append(int(enemy.uid))
+	if accepted>0:
+		waves[ident]=data
+		sim.emit("hook_wave",{"id":ident,"count":accepted,"power":value,"hp":desired_hp,"z":at_z})
+
+func enemy_killed(sim, enemy: Dictionary) -> void:
+	if not enabled("horde_scaling"): return
+	var id := int(enemy.get("hook_wave",-1))
+	if waves.has(id):waves[id].kills+=1
+	if enemy.id in ["barrel","crate"]:return
+	recent_kills.append(sim.t)
+	while not recent_kills.is_empty() and float(recent_kills[0])<sim.t-1.1:recent_kills.pop_front()
+	if recent_kills.size()>=8 and sim.t-last_crush>=1.2:
+		last_crush=sim.t
+		sim.emit("hook_crush",{"kills":recent_kills.size(),"duration":0.8})
+
+func update_waves(sim) -> void:
+	var alive: Dictionary = {}
+	for e in sim.enemies:alive[int(e.uid)]=true
+	var ended: Array = []
+	for id in waves:
+		var wave: Dictionary = waves[id]
+		var remaining := 0
+		for uid in wave.uids:remaining+=int(alive.has(uid))
+		if remaining>0:continue
+		wave["end_t"]=sim.t;wave["clear_time"]=sim.t-float(wave.spawn_t)
+		wave.status="cleared" if int(wave.kills)==int(wave.count) else "escaped_or_interrupted"
+		wave_results.append(wave);ended.append(id)
+	for id in ended:waves.erase(id)

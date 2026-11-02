@@ -30,10 +30,10 @@ func _ready() -> void:
 	music_player.finished.connect(func():
 		if music_enabled:
 			music_player.play())
-	for id in ["attach", "upgrade", "stage", "scrap", "fire", "hit", "break", "warning", "special", "victory", "defeat", "click", "explosion", "dodge", "multiply", "swarm_hit", "champion", "trap", "ready", "run_music", "hangar_music"]:
+	for id in ["attach", "upgrade", "stage", "scrap", "fire", "hit", "break", "warning", "special", "victory", "defeat", "click", "explosion", "dodge", "multiply", "swarm_hit", "champion", "trap", "ready", "weld", "plate_clang", "polish", "gate_step", "jackpot", "kill_pop", "run_music", "hangar_music"]:
 		streams[id] = load("res://assets/audio/%s.%s" % [id, "ogg" if id.ends_with("music") else "wav"])
 
-func play(id: String) -> void:
+func play(id: String, pitch := 0.0) -> void:
 	if DisplayServer.get_name() == "headless":
 		return
 	if not enabled or not streams.has(id):
@@ -51,7 +51,7 @@ func play(id: String) -> void:
 		if not player.playing:
 			player.stream = streams[id]
 			player.bus = "UI" if id == "click" else "SFX"
-			player.pitch_scale = randf_range(0.92, 1.08)
+			player.pitch_scale = clampf(pitch, 0.6, 1.8) if pitch > 0 else randf_range(0.92, 1.08)
 			player.play()
 			last_played[id] = now
 			return

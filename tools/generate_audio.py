@@ -10,6 +10,16 @@ def write(name,values):
   f.setparams((1,2,rate,0,'NONE','not compressed'));f.writeframes(b''.join(struct.pack('<h',int(max(-1,min(1,v))*22000)) for v in values))
 # UI-v2 ready cue; isolated mode leaves every existing sample byte-identical.
 import sys
+if '--hook-only' in sys.argv:
+ hook_rng=random.Random(412)
+ for name,duration,f0,f1,noise in [('weld',.36,440,950,.22),('plate_clang',.34,210,90,.13),('polish',.5,720,1700,.005),('gate_step',.18,520,840,.01),('jackpot',.48,370,1550,.025),('kill_pop',.12,360,160,.05)]:
+  values=[];phase=0.0
+  for i in range(int(rate*duration)):
+   t=i/rate;u=t/duration;phase+=2*math.pi*(f0+(f1-f0)*u)/rate
+   tone=math.sin(phase)+.22*math.sin(phase*2.03)+.13*math.sin(phase*4.1)
+   values.append((tone*.3+hook_rng.uniform(-1,1)*noise)*min(1,t/.006)*(1-u)**1.6)
+  write(name,values)
+ sys.exit(0)
 if '--ui-only' in sys.argv:
  values=[]
  for i in range(int(rate*.22)):

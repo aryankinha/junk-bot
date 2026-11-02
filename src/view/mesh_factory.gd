@@ -663,3 +663,185 @@ static func gold_coin() -> ArrayMesh:
 		return cache.gold_coin
 	cache.gold_coin = merged([cylinder(0.34, 0.14, Vector3.ZERO, ORANGE, Vector3(PI / 2, 0, 0), -1.0, 16), cylinder(0.24, 0.18, Vector3.ZERO, Color("fff2a8"), Vector3(PI / 2, 0, 0), -1.0, 14)])
 	return cache.gold_coin
+
+# Hook material path is opt-in. Vertex alpha is a material mask, never transparency:
+# 1 = hardware receiving the run material; 0 = preserved energy/permanent accent.
+static var hook_material: ShaderMaterial
+static var hook_drone_material: ShaderMaterial
+const HOOK_BLUE := Color("3ab0ff")
+const HOOK_SHADER := """
+shader_type spatial;
+render_mode cull_back;
+instance uniform float tier : hint_range(1.0, 4.0) = 1.0;
+instance uniform float forge : hint_range(0.0, 1.0) = 0.0;
+instance uniform float ascending : hint_range(0.0, 1.0) = 0.0;
+instance uniform float flash : hint_range(0.0, 1.0) = 0.0;
+varying vec3 vcol;
+varying vec3 local_pos;
+varying float hardware;
+void vertex() {
+ vcol = pow(COLOR.rgb, vec3(2.2));
+ hardware = COLOR.a;
+ local_pos = VERTEX;
+}
+void fragment() {
+ float q = clamp(tier, 1.0, 4.0);
+ float base_value = dot(vcol, vec3(0.299, 0.587, 0.114));
+ float broad_patch = step(0.1, sin(local_pos.x * 11.0 + local_pos.z * 7.0));
+ vec3 scrap = mix(vec3(0.16, 0.067, 0.025), vec3(0.43, 0.22, 0.075), broad_patch * 0.4 + base_value * 0.6);
+ vec3 fixed_metal = mix(scrap, vec3(0.38, 0.4, 0.36), step(0.5, broad_patch) * 0.38);
+ vec3 iron = vec3(0.17, 0.21, 0.23) * (0.65 + base_value * 0.8);
+ vec3 steel = vec3(0.62, 0.7, 0.74) * (0.65 + base_value * 0.55);
+ vec3 surface_color = q < 1.5 ? scrap : (q < 2.5 ? fixed_metal : (q < 3.5 ? iron : steel));
+ float active_forge = step(0.0001, forge) * (1.0 - step(0.9999, forge));
+ float sweep_pos = (local_pos.z + 1.15 - forge * 1.8) * 8.0;
+ float sweep = exp(-sweep_pos * sweep_pos);
+ vec3 forge_color = q < 2.5 ? vec3(1.0, 0.43, 0.1) : (q < 3.5 ? vec3(0.8, 0.86, 0.88) : vec3(0.6, 0.83, 1.0));
+ float core = (1.0 - hardware) * step(vcol.r + 0.15, vcol.b) * step(vcol.g + 0.05, vcol.b);
+ ALBEDO = mix(vcol, surface_color, hardware);
+ ALBEDO = mix(ALBEDO, vec3(0.9), flash * 0.65 * hardware);
+ EMISSION = vcol * core * 0.45 + forge_color * sweep * sin(forge * 3.14159) * active_forge * hardware * 0.65;
+ EMISSION += vec3(0.27, 0.39, 0.48) * clamp(ascending, 0.0, 1.0) * hardware * (0.04 + 0.03 * sin(local_pos.z * 6.0));
+ ROUGHNESS = mix(0.6, mix(0.9, 0.28, clamp((q - 1.0) / 3.0, 0.0, 1.0)), hardware);
+ METALLIC = hardware * (q >= 3.0 ? 0.45 : 0.08);
+ SPECULAR = 0.3;
+ RIM = 0.28;
+ RIM_TINT = 0.35;
+}
+void light() {
+ float nl = dot(NORMAL, LIGHT) * 0.5 + 0.5;
+ float band = smoothstep(0.38, 0.52, nl) * 0.5 + smoothstep(0.62, 0.78, nl) * 0.35;
+ DIFFUSE_LIGHT += LIGHT_COLOR * ATTENUATION * (0.28 + band);
+ vec3 h = normalize(LIGHT + VIEW);
+ float finish = clamp((0.9 - ROUGHNESS) / 0.62,0.0,1.0);
+ float spec = smoothstep(mix(0.96,0.88,finish),mix(0.99,0.95,finish),dot(NORMAL,h));
+ SPECULAR_LIGHT += LIGHT_COLOR * ATTENUATION * spec * mix(0.025,0.18,finish);
+}
+"""
+
+static func hook_palette() -> ShaderMaterial:
+	if hook_material == null:
+		var shader := Shader.new(); shader.code = HOOK_SHADER
+		hook_material = ShaderMaterial.new(); hook_material.shader = shader
+		hook_material.next_pass = palette().next_pass
+	return hook_material
+
+# MultiMesh contract: INSTANCE_CUSTOM.r=tier1..4, g=forge0..1, b=ascending0..1;
+# alpha is unused. Protected blue cores and trails do not inherit INSTANCE_COLOR.
+static func hook_drone_palette() -> ShaderMaterial:
+	if hook_drone_material == null:
+		var shader := Shader.new()
+		var code := HOOK_SHADER.replace("instance uniform float tier : hint_range(1.0, 4.0) = 1.0;", "varying float tier;")
+		code = code.replace("instance uniform float forge : hint_range(0.0, 1.0) = 0.0;", "varying float forge;")
+		code = code.replace("instance uniform float ascending : hint_range(0.0, 1.0) = 0.0;", "varying float ascending;")
+		code = code.replace("instance uniform float flash : hint_range(0.0, 1.0) = 0.0;", "varying float flash;")
+		code = code.replace("void vertex() {", "void vertex() {\n tier = INSTANCE_CUSTOM.r; forge = INSTANCE_CUSTOM.g; ascending = INSTANCE_CUSTOM.b; flash = 0.0;")
+		# Use a single opaque pass for the entire crowd, matching the old crowd draw budget.
+		code = code.replace("render_mode cull_back;", "render_mode cull_back, unshaded;")
+		shader.code = code
+		hook_drone_material = ShaderMaterial.new(); hook_drone_material.shader = shader
+	return hook_drone_material
+
+static func _protected(color: Color) -> Color:
+	return Color(color, 0.0)
+
+# Retain source vertex colors when merging an existing assembled mesh with artefacts.
+static func _hook_merge(base: ArrayMesh, pieces: Array, shader_material: Material) -> ArrayMesh:
+	var tool := SurfaceTool.new(); tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var meshes: Array = [base]
+	if not pieces.is_empty(): meshes.append(merged(pieces))
+	for mesh in meshes:
+		var arrays: Array = mesh.surface_get_arrays(0)
+		var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+		var normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
+		var colors: PackedColorArray = arrays[Mesh.ARRAY_COLOR]
+		var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
+		for i in indices.size() if not indices.is_empty() else vertices.size():
+			var at: int = indices[i] if not indices.is_empty() else i
+			tool.set_color(colors[at] if at < colors.size() else Color.WHITE)
+			tool.set_normal(normals[at]); tool.add_vertex(vertices[at])
+	tool.set_material(shader_material); tool.index()
+	return tool.commit()
+
+static func _hook_muzzle_ring(inner: float, outer: float, point: Vector3) -> Dictionary:
+	var ring := TorusMesh.new(); ring.inner_radius = inner; ring.outer_radius = outer; ring.rings = 16; ring.ring_segments = 5
+	return {"mesh":ring,"transform":_xform(point,Vector3(PI / 2,0,0)),"color":LIGHT}
+
+static func hook_part(id: String, level: int, run_tier := 1, permanent_tier := 1) -> ArrayMesh:
+	var quality := clampi(run_tier, 1, 4)
+	var stars := clampi(permanent_tier, 1, 5)
+	var key := "hook_%s_%d_q%d_p%d" % [id, level, quality, stars]
+	if cache.has(key): return cache[key]
+	var base := part(id, level)
+	var bounds := base.get_aabb()
+	# Receiver/tank anchors, not the complete gun's AABB center (which lies over its long barrel).
+	var top := 0.31 if id == "cannon" else ((0.33 if level == 3 else 0.22) if id == "rocket" else bounds.end.y + 0.01)
+	var center_z := 0.05 if id == "cannon" else (0.1 if id == "rocket" else (0.0 if id == "flame" else bounds.get_center().z))
+	var pieces: Array = []
+	var weapon := id in ["cannon", "rocket", "flame"]
+	if weapon:
+		# A receiver rack is physically connected to the dome/tank. All top artefacts contact this rack.
+		pieces.append(box(Vector3(0.54,0.035,0.36),Vector3(0,top - 0.02,center_z),STEEL))
+		var receiver_top := 0.14 if id == "cannon" else (0.21 if id == "rocket" else top - 0.1)
+		for side in [-1,1]:
+			for dz in [-0.1,0.1]:
+				pieces.append(cylinder(0.04,maxf(0.04,top - receiver_top + 0.025),Vector3(side * (0.12 if id == "flame" else 0.2),(receiver_top + top) / 2,center_z + dz),STEEL,Vector3.ZERO,-1.0,6))
+		pieces.append(box(Vector3(0.12,0.03,0.06),Vector3(0.23,top,center_z - 0.05),DARK))
+		pieces.append(box(Vector3(0.12,0.055,0.07),Vector3(0.23,top + 0.035,center_z - 0.05),_protected(HOOK_BLUE)))
+		match quality:
+			1:
+				pieces.append(box(Vector3(0.2,0.035,0.15),Vector3(-0.1,top,center_z + 0.04),RUST_DARK,Vector3(0,0.12,0.07)))
+				pieces.append(cylinder(0.035,0.05,Vector3(-0.2,top,center_z - 0.05),DARK,Vector3.ZERO,-1.0,6))
+			2:
+				pieces.append(box(Vector3(0.32,0.045,0.25),Vector3(-0.04,top,center_z),_protected(Color("c6ceca")),Vector3(0,0.06,-0.04)))
+				pieces.append(box(Vector3(0.065,0.065,0.32),Vector3(0.12,top + 0.018,center_z),_protected(Color("7d694f")),Vector3(0,0.18,0)))
+			3:
+				for side in [-1,1]:
+					for dz in [-0.12,0.12]: pieces.append(cylinder(0.027,0.055,Vector3(side * 0.2,top + 0.012,center_z + dz),LIGHT,Vector3.ZERO,-1.0,6))
+				for i in 3: pieces.append(box(Vector3(0.035,0.035,0.18),Vector3(-0.08 + i * 0.08,top + 0.005,center_z),_protected(Color("313b3e"))))
+			4:
+				if id == "cannon":
+					var count := 4 if level == 3 else level
+					for i in count:
+						var dx := (float(i) - float(count - 1) / 2) * 0.17
+						pieces.append(_hook_muzzle_ring(0.083,0.13,Vector3(dx,0.14,-0.9)))
+					for side in [-1,1]:
+						var dx: float = side * (0.255 if level == 3 else (0.085 if level == 2 else 0.035))
+						pieces.append(box(Vector3(0.025,0.025,0.45),Vector3(dx,0.22,-0.4),_protected(Color("81d6ff"))))
+				elif id == "rocket":
+					for i in (6 if level == 3 else level):
+						var dx := (i % 3 - 1) * 0.23 if level == 3 else ((i - (level - 1) / 2.0) * 0.3)
+						var dy := float(i / 3) * 0.24 if level == 3 else 0.0
+						pieces.append(_hook_muzzle_ring(0.055,0.1,Vector3(dx,dy,-0.59)))
+					for side in [-1,1]: pieces.append(box(Vector3(0.025,0.025,0.17),Vector3(side * 0.22,0.22,0.2),_protected(Color("81d6ff"))))
+				else:
+					pieces.append(_hook_muzzle_ring(0.13,0.2,Vector3(0,0,-0.745)))
+					for side in [-1,1]: pieces.append(box(Vector3(0.025,0.32,0.03),Vector3(side * 0.13,0.02,-0.16),_protected(Color("81d6ff"))))
+	# Permanent2/4/5 artefacts stay on the receiver/tank;3gold/5cyan keep their established roles.
+	if stars >= 2 and weapon:
+		for side in [-1,1]: pieces.append(box(Vector3(0.045,0.1,0.12),Vector3(side * 0.2,top + 0.02,center_z + 0.1),LIGHT))
+	if stars >= 3:
+		var trim_color := _protected(YELLOW if stars < 5 else BLUE)
+		if id == "flame":
+			for side in [-1,1]: pieces.append(box(Vector3(0.035,0.4,0.04),Vector3(side * 0.16,0,-0.13),trim_color))
+		elif weapon:
+			for side in [-1,1]: pieces.append(box(Vector3(0.045,0.12,0.26),Vector3(side * (bounds.size.x / 2 - 0.035),0.04,0),trim_color))
+		else:
+			for side in [-1,1]: pieces.append(box(Vector3(0.1,0.15,0.5),Vector3(side * 0.18,0.28,0),trim_color))
+	if stars >= 4 and weapon:
+		for side in [-1,1]: pieces.append(box(Vector3(0.045,0.12,0.22),Vector3(side * (bounds.size.x * 0.48),0.06,center_z),STEEL))
+	if stars >= 5 and weapon:
+		for i in 3: pieces.append(box(Vector3(0.035,0.025,0.1),Vector3(-0.08 + i * 0.08,top + 0.008,center_z - 0.08),_protected(Color("dcebf0"))))
+	cache[key] = _hook_merge(base,pieces,hook_palette())
+	return cache[key]
+
+static func hook_drone() -> ArrayMesh:
+	if cache.has("hook_drone"): return cache.hook_drone
+	var pieces := [
+		rbox(Vector3(0.34, 0.24, 0.4), Vector3.ZERO, LIGHT, 0.05),
+		box(Vector3(0.44, 0.04, 0.11), Vector3(0, 0.15, 0.02), STEEL),
+		box(Vector3(0.11, 0.1, 0.04), Vector3(0, 0.035, -0.21), _protected(HOOK_BLUE)),
+		box(Vector3(0.07, 0.045, 0.32), Vector3(0, 0.005, 0.33), _protected(HOOK_BLUE)),
+		box(Vector3(0.025, 0.08, 0.22), Vector3(0.12, 0.09, 0.0), STEEL)]
+	cache.hook_drone = _hook_merge(merged(pieces), [], hook_drone_palette())
+	return cache.hook_drone

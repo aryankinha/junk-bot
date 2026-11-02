@@ -1,4 +1,6 @@
 extends Node3D
+const HookFeedbackScript = preload("res://src/ui/hook_feedback.gd")
+var hook_feedback = HookFeedbackScript.new()
 const UiV2Script = preload("res://src/ui/ui_v2.gd")
 var ui_v2_enabled := false
 var ui_v2
@@ -69,6 +71,8 @@ var last_perf_save := 0.0
 var kill_timer := 0.0
 var ui_tick := 0.0
 var settings_return := "hangar"
+var hangar_compare_next := false
+var hangar_compare_label: Label
 var hangar_model: RobotBuilder
 var hangar_camera: Camera3D
 var display_font: Font
@@ -670,6 +674,7 @@ func start_run(is_daily := false) -> void:
 	audio.music("run_music")
 	world.sync(sim, 0)
 	if ui_v2_enabled: ui_v2.reset(self)
+	hook_feedback.reset(self)
 
 func _wants_ui_v2() -> bool:
 	if bool(flag_overrides.get("ui_v2", GameData.flags().get("ui_v2", false))): return true
@@ -737,7 +742,7 @@ func _events() -> void:
 		if event.t not in ["scrap", "weapon_fire", "gate_charge_tick", "wave_spawn", "cluster_burst", "mob_gate_pass"]:
 			TelemetryLog.log_event(event)
 		if ui_v2_enabled:
-			ui_v2.on_event(self, event)
+			if not hook_feedback.active(self) or not hook_feedback.on_event(self,event): ui_v2.on_event(self, event)
 			if event.t not in ["combo_active", "buy_offer", "station_unavailable"]: continue
 		match str(event.t):
 			"part_attached", "part_upgraded":
@@ -966,7 +971,7 @@ func _process(delta: float) -> void:
 		var reduced := ui_v2_enabled and bool(save.data.settings.reduce_motion)
 		if not reduced: world.player.rotation.y += delta * 0.3
 		if is_instance_valid(hangar_model):
-			if not reduced: hangar_model.rotation.y += delta * 0.4
+			if not reduced and not hangar_model.has_meta("comparison"): hangar_model.rotation.y += delta * 0.4
 			if is_instance_valid(hangar_camera):
 				frame_model(hangar_camera, hangar_model, 1.9)
 	if stress_mode and not stress_done and runtime >= 60:
@@ -981,7 +986,9 @@ func _process(delta: float) -> void:
 		await RenderingServer.frame_post_draw
 		if not snapshot_path.is_empty():
 			get_viewport().get_texture().get_image().save_png(snapshot_path)
-	if ui_v2_enabled: ui_v2.tick(self, delta)
+	if ui_v2_enabled:
+		ui_v2.tick(self, delta)
+		if hook_feedback.active(self): hook_feedback.tick(self,delta)
 	if exit_after > 0 and runtime >= exit_after:
 		perf.write()
 		perf.write(perf_output)
@@ -999,6 +1006,7 @@ func chip_style(category: String) -> StyleBoxFlat:
 func _update_hud() -> void:
 	if ui_v2_enabled:
 		ui_v2.sync_hud(self)
+		if hook_feedback.active(self): hook_feedback.sync_hud(self)
 		return
 	level_label.text = "DAILY" if daily else "LEVEL %d" % sim.level
 	scrap_label.text = "%d" % sim.robot.scrap
@@ -1390,6 +1398,19 @@ func _hangar_page(tab: String) -> void:
 		navigation.add_child(button)
 	currency_row(column)
 	_hangar_preview(column, 300)
+	if bool(sim.flags.get("material_tiers",false)):
+		var family: String = sim.hook.primary(sim) if sim.get("hook") != null else "cannon"
+		if family not in ["cannon","rocket","flame"]: family = "cannon"
+		var part_name := str(GameData.table("parts")[family].name).to_upper()
+		var saved_tier := int(save.data.part_tiers.get(family,1))
+		hangar_compare_label = text_label("",30,MUTED); hangar_compare_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; column.add_child(hangar_compare_label)
+		var compare: Button = make_button("COMPARE %s / T%d → T%d" % [part_name,saved_tier,mini(5,saved_tier+1)],func():
+			hangar_compare_next = not hangar_compare_next
+			_preview_permanent(family,hangar_compare_next))
+		compare.disabled = saved_tier >= 5
+		compare.custom_minimum_size.y = 120; compare.add_theme_font_size_override("font_size",32); compare.tooltip_text = "Visual comparison only. No purchase or saved progress."
+		column.add_child(compare)
+		_preview_permanent(family,false)
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -1519,6 +1540,12 @@ func _hangar_preview(column: VBoxContainer, height := 290, actual_build := false
 	hangar_model = RobotBuilder.new()
 	viewport.add_child(hangar_model)
 	hangar_model.reduced_motion = ui_v2_enabled and bool(save.data.settings.reduce_motion)
+	hangar_model.hook_materials_enabled = bool(sim.flags.get("material_tiers",false))
+	hangar_model.compact_layout = _hook_clarity()
+	if actual_build and sim.get("hook") != null:
+		for family in ["cannon","rocket","flame"]:
+			hangar_model.material_levels[family] = sim.hook.quality(family)
+			hangar_model.material_ascending[family] = sim.hook.ascensionbonus(family)>0
 	hangar_model.rotation_degrees.y = 155
 	var preview := RobotState.new()
 	preview.parts = sim.robot.parts.duplicate()
@@ -1532,6 +1559,17 @@ func _hangar_preview(column: VBoxContainer, height := 290, actual_build := false
 	viewport.add_child(cam)
 	hangar_camera = cam
 	frame_model(cam, hangar_model, 1.9)
+
+func _preview_permanent(family: String, after: bool) -> void:
+	if not is_instance_valid(hangar_model): return
+	var preview := RobotState.new(); preview.parts = sim.robot.parts.duplicate(); preview.slots = sim.robot.slots.duplicate(); preview.tiers = save.data.part_tiers.duplicate()
+	if not preview.parts.has(family): preview.add_part(family)
+	var tier := int(save.data.part_tiers.get(family,1)); preview.tiers[family] = mini(5,tier+1) if after else tier
+	preview.refresh(); hangar_model.sync(preview,false)
+	hangar_model.rotation_degrees.y = 155
+	if is_instance_valid(hangar_compare_label): hangar_compare_label.text = ("AFTER / " if after else "BEFORE / ") + family.to_upper() + " / T%d" % int(preview.tiers[family])
+	hangar_model.set_meta("comparison",{"family":family,"owned":tier,"shown":preview.tiers[family],"after":after})
+	if is_instance_valid(hangar_camera): frame_model(hangar_camera,hangar_model,1.9)
 
 func frame_model(cam: Camera3D, model: RobotBuilder, platform_radius := 0.0) -> void:
 	var bounds := model.visual_bounds()
@@ -1677,6 +1715,7 @@ func navigate_back() -> void:
 		_: show_hangar()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if hook_feedback.reveal_time > 0 and (event is InputEventScreenDrag or (event is InputEventScreenTouch and event.pressed) or (event is InputEventMouseButton and event.pressed)): hook_feedback.skip()
 	if event is InputEventScreenTouch and OS.is_debug_build() and not capture:
 		if event.pressed:
 			debug_touches[event.index] = true

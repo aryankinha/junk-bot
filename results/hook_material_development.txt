@@ -1,0 +1,6 @@
+Development notes (not passing evidence):
+The first revision of receiver/muzzle artefacts introduced an inferred dx type at MeshFactory line805.
+A bounded60-second headless subprocess timed out after parser failure; it was not counted as passing.
+A5-frame diagnostic identified Cannot infer type of dx; changing it to explicit float resolved it.
+Final normal-completion material/unit/trace/portrait logs are separate hook_material_* files.
+Portrait review also corrected barrel-centered AABB anchors into receiver/tank anchors and visible support posts.

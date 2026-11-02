@@ -1,0 +1,32 @@
+{
+  "blue_core_rgb": [
+    0.227450981736183,
+    0.690196096897125,
+    1.0
+  ],
+  "checks": 1456,
+  "failures": [],
+  "forge_seconds": 0.55,
+  "gpu_pixels": "separate rendered portrait verification required",
+  "material_geometry_hashes": {
+    "cannon": [
+      2634813002,
+      4186389154,
+      4185059368,
+      585856508
+    ],
+    "flame": [
+      718293551,
+      3980663618,
+      1995785436,
+      243795463
+    ],
+    "rocket": [
+      3761675576,
+      3816155099,
+      3903589217,
+      4268103572
+    ]
+  },
+  "widest_full_build": 5.11853981018066
+}

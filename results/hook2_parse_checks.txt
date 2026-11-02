@@ -1,0 +1,37 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+INTEGRATION: 59 checks; 0 failures
+25320 checks; 0 failures
+SCRIPT ERROR: Parse Error: Cannot infer the type of "locked" variable because the value doesn't have a set type.
+          at: GDScript::reload (res://src/sim/hook_sim.gd:105)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://src/sim/run_sim.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tests/run_all.gd:0)
+ERROR: Failed to load script "res://tests/run_all.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "width" variable because the value doesn't have a set type.
+          at: GDScript::reload (res://src/view/hook_gate_view.gd:40)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/integration_suite.gd:9)
+              [1] run (res://tests/run_all.gd:500)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "x" variable because the value doesn't have a set type.
+          at: GDScript::reload (res://src/view/hook_gate_view.gd:42)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/integration_suite.gd:9)
+              [1] run (res://tests/run_all.gd:500)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://src/view/world_view.gd:0)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/integration_suite.gd:9)
+              [1] run (res://tests/run_all.gd:500)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://src/view/run_view.gd:0)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/integration_suite.gd:9)
+              [1] run (res://tests/run_all.gd:500)
+ERROR: Failed to load script "res://src/view/run_view.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] run (res://tests/integration_suite.gd:9)
+       [1] run (res://tests/run_all.gd:500)

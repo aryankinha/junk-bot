@@ -1,0 +1,128 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+25263 checks; 0 failures
+SCRIPT ERROR: Parse Error: Cannot infer the type of "dx" variable because the value doesn't have a set type.
+          at: GDScript::reload (res://src/view/mesh_factory.gd:805)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/run_all.gd:499)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tests/integration_suite.gd:0)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/run_all.gd:499)
+ERROR: Failed to load script "res://tests/integration_suite.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] run (res://tests/run_all.gd:499)
+SCRIPT ERROR: Invalid call. Nonexistent function 'box' in base 'GDScript'.
+          at: WorldView._ready (res://src/view/world_view.gd:69)
+          GDScript backtrace (most recent call first):
+              [0] _ready (res://src/view/world_view.gd:69)
+              [1] _ready (res://src/view/run_view.gd:212)
+              [2] run (res://tests/integration_suite.gd:10)
+              [3] run (res://tests/run_all.gd:500)
+SCRIPT ERROR: Invalid assignment of property or key 'reduced_motion' with value of type 'bool' on a base object of type 'Nil'.
+          at: WorldView.configure_ui_v2 (res://src/view/world_view.gd:887)
+          GDScript backtrace (most recent call first):
+              [0] configure_ui_v2 (res://src/view/world_view.gd:887)
+              [1] _configure_ui_v2 (res://src/view/run_view.gd:696)
+              [2] start_run (res://src/view/run_view.gd:619)
+              [3] _ready (res://src/view/run_view.gd:221)
+              [4] run (res://tests/integration_suite.gd:10)
+              [5] run (res://tests/run_all.gd:500)
+SCRIPT ERROR: Invalid assignment of property or key 'scale' with value of type 'Vector3' on a base object of type 'Nil'.
+          at: start_run (res://src/view/run_view.gd:668)
+          GDScript backtrace (most recent call first):
+              [0] start_run (res://src/view/run_view.gd:668)
+              [1] _ready (res://src/view/run_view.gd:221)
+              [2] run (res://tests/integration_suite.gd:10)
+              [3] run (res://tests/run_all.gd:500)
+SCRIPT ERROR: Invalid assignment of property or key 'reduced_motion' with value of type 'bool' on a base object of type 'Nil'.
+          at: WorldView.configure_ui_v2 (res://src/view/world_view.gd:887)
+          GDScript backtrace (most recent call first):
+              [0] configure_ui_v2 (res://src/view/world_view.gd:887)
+              [1] _configure_ui_v2 (res://src/view/run_view.gd:696)
+              [2] start_run (res://src/view/run_view.gd:619)
+              [3] run (res://tests/integration_suite.gd:14)
+SCRIPT ERROR: Invalid assignment of property or key 'scale' with value of type 'Vector3' on a base object of type 'Nil'.
+          at: start_run (res://src/view/run_view.gd:668)
+          GDScript backtrace (most recent call first):
+              [0] start_run (res://src/view/run_view.gd:668)
+              [1] run (res://tests/integration_suite.gd:14)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] run (res://tests/integration_suite.gd:23)
+SCRIPT ERROR: Invalid access to property or key 'attachments' on a base object of type 'Nil'.
+          at: run (res://tests/integration_suite.gd:24)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/integration_suite.gd:24)
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: WorldView.sync (res://src/view/world_view.gd:633)
+          GDScript backtrace (most recent call first):
+              [0] sync (res://src/view/world_view.gd:633)
+              [1] _process (res://src/view/run_view.gd:953)
+SCRIPT ERROR: Invalid access to property or key 'cache' on a base object of type 'GDScript'.
+          at: _exit_tree (res://src/view/run_view.gd:1765)
+          GDScript backtrace (most recent call first):
+              [0] _exit_tree (res://src/view/run_view.gd:1765)
